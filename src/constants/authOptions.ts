@@ -1,9 +1,9 @@
 import { NextAuthOptions } from "next-auth";
 
 import CredentialsProvider from "next-auth/providers/credentials";
-import { dbClient } from "../../lib/db/client";
+import { dbClient } from "../lib/db/client";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { authenticateUser } from "../../lib/services/auth";
+import { authenticateUser } from "../lib/services/auth";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(dbClient),
@@ -18,6 +18,7 @@ export const authOptions: NextAuthOptions = {
       },
 
       async authorize(credentials, req) {
+        // for login purposes
         if (!credentials || !credentials.email || !credentials.password)
           return null;
 

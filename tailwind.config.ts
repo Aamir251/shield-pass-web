@@ -8,10 +8,16 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      colors : {
-        "primary-dark" : "#16161C",
-        "light" : "#E0DBF9"
-      }
+      colors: {
+        "primary-dark": "#141415",
+        "secondary-dark": "#252528",
+        "primary-orange": "#F86262",
+        light: "#E0DBF9",
+      },
+      textColor: {
+        "primary-white": "#D8D5F1",
+        "secondary-white": "#B2B2C9",
+      },
     },
   },
   plugins: [],

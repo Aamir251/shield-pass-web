@@ -3,10 +3,13 @@
 @tailwind utilities;
 
 
+:root {
+  --primary-dark : #141415;
+}
+
 @layer base {
   input {
-    @apply rounded-md px-5 py-2.5 outline-none w-full max-w-xs;
-    background-color: rgba(25, 21, 37, 0.29);
+    @apply rounded-md px-5 py-2.5 outline-none w-full max-w-xs bg-secondary-dark w-full max-w-none;
   }
   
 }
@@ -14,8 +17,8 @@
 
 @layer components {
   .btn-primary {
-    @apply hover:opacity-80;
-    background: linear-gradient(264.34deg, #581BA4 20.88%, #D4359E 116.03%);
+    @apply bg-primary-orange hover:opacity-80;
+    /* background: linear-gradient(264.34deg, #581BA4 20.88%, #D4359E 116.03%); */
   }
 }
 

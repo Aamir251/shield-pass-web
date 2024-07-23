@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Jost } from "next/font/google";
 import "./globals.css";
+import AuthProvider from "@/providers/AuthProvider";
 
 
 const inter = Inter({ subsets: ["latin"] });
+
+const jost = Jost({ subsets: ["latin"] });
+
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,11 +21,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-primary-dark relative`}>
-        <div className="w-[30vw] h-[30vw] bg-[#77347C] opacity-30 absolute rounded-full top-0 left-0 blur-[120px]	"></div>
-        <div className="w-[30vw] h-[30vw] bg-[#30336C] opacity-30 absolute rounded-full top-[20vh] left-[20vw] blur-[120px]	"></div>
-        {children}
-      </body>
+      <AuthProvider>
+        <body className={`${jost.className} bg-primary-dark relative`}>
+          <div className="w-[30vw] h-[30vw] bg-[#77347C] opacity-30 absolute rounded-full top-0 left-0 blur-[120px]	"></div>
+          <div className="w-[30vw] h-[30vw] bg-[#30336C] opacity-30 absolute rounded-full top-[20vh] left-[20vw] blur-[120px]	"></div>
+          {children}
+        </body>
+      </AuthProvider>
     </html>
   );
 }

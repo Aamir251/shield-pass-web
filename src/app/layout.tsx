@@ -22,9 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <AuthProvider>
-        <body className={`${jost.className} bg-primary-dark relative`}>
-          <div className="w-[30vw] h-[30vw] bg-[#77347C] opacity-30 absolute rounded-full top-0 left-0 blur-[120px]	"></div>
-          <div className="w-[30vw] h-[30vw] bg-[#30336C] opacity-30 absolute rounded-full top-[20vh] left-[20vw] blur-[120px]	"></div>
+        <body className={`${jost.className} bg-primary-dark relative text-primary-white`}>
           {children}
         </body>
       </AuthProvider>

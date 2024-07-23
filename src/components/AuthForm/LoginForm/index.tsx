@@ -1,28 +1,38 @@
 "use client"
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Form from "../Form"
 import LoginButton from "./LoginButton";
 import { signIn } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation"
+import { extractFormData, handleAuthError, validateFormFields } from "@/lib/helpers/form";
 
 const LoginForm = () => {
 
   const [error, setError] = useState<string>("")
 
+  const router = useRouter()
+
+  const searchParams = useSearchParams()
+
+
   const formAction = async (formData: FormData) => {
+
     try {
-      const email = formData.get("email");
+      const formFields = ["email", "password"]  as const
 
-      const password = formData.get("password");
+      validateFormFields(formData, formFields);
 
-      if (!email) throw new Error("Please Enter Email");
-      if (!password) throw new Error("Please Enter Password");
+      const { email, password } = extractFormData(formData, formFields)
 
       const resp = await signIn("credentials", { email, password, redirect: false })
+      
+      resp?.error && handleAuthError(resp.error)
 
-      if (resp?.error && resp.error === "CredentialsSignin") {
-        throw new Error("User Not found")
-      }
+      const callbackUrl = searchParams.get("callbackUrl")
+
+      router.push(callbackUrl ?? "/")
+
 
     } catch (error: any) {
       setError(error.message)

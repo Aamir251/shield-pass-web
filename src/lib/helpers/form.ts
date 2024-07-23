@@ -27,3 +27,13 @@ export const extractFormData = <T extends readonly string[]>(
 
   return data;
 };
+
+
+type ErrorMessage = "Invalid Password" | "CredentialsSignin" | string
+
+export const handleAuthError = (errorMessage : ErrorMessage) => {
+
+  if (errorMessage === "CredentialsSignin") throw new Error("User Not found")
+  if (errorMessage === "Invalid Password") throw new Error("Incorrect Password")
+
+}

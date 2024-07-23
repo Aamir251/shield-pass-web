@@ -6,7 +6,7 @@ export const authenticateUser = async (
   email: string,
   password: string
 ): Promise<User | null> => {
-  try {
+ 
     const userExists = await dbClient.user.findUnique({ where: { email } });
 
     if (!userExists) throw new Error("User Not Found");
@@ -22,9 +22,5 @@ export const authenticateUser = async (
       email: userExists.email,
       name: userExists.name,
     };
-  } catch (error) {
-    console.log({ error });
-
-    return null;
-  }
+  
 };

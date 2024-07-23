@@ -9,7 +9,7 @@ const LoginButton = () => {
   return (
     <div>
       <button aria-disabled={pending} disabled={pending} type="submit"
-        className="btn-primary px-6 py-2.5 rounded-sm w-full"
+        className="btn-primary px-6 py-2.5 rounded-md w-full font-medium"
       >
         {pending ? "Please Wait" : "LOGIN"}
       </button>

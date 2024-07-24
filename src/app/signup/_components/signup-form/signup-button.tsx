@@ -16,7 +16,7 @@ const SignUpButton = () => {
       </button>
       <p className="text-light text-sm mt-4 text-right">
         <span>Have an Account? </span>
-        <Link className="hover:text-purple-700" href={"/signup"}>
+        <Link className="hover:text-purple-700" href={"/login"}>
           Log In
         </Link>
       </p>

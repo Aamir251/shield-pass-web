@@ -14,7 +14,7 @@ const SignUpPage = () => {
       </div>
       <div className="h-full relative text-white pl-[15%]">
 
-        <div className="relative z-10 flex flex-col justify-center h-full space-y-10 max-w-sm">
+        <div className="relative z-10 flex flex-col justify-between h-full  max-w-sm py-5">
 
           <div className="text-center">
             <h1 className="text-4xl text-primary-white">Welcome !</h1>

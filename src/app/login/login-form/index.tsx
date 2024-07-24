@@ -5,7 +5,7 @@ import Form from "../../../components/auth-form/Form"
 import LoginButton from "./login-button";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { handleAuthError } from "@/lib/helpers/form";
+import { extractFormData, handleAuthError, validateFormFields } from "@/lib/helpers/form";
 
 const LoginForm = () => {
 
@@ -13,14 +13,16 @@ const LoginForm = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
 
+
+
   const formAction = async (formData: FormData) => {
+
     try {
-      const email = formData.get("email");
+      const formFields = ["email", "password"] as const
 
-      const password = formData.get("password");
+      validateFormFields(formData, formFields);
 
-      if (!email) throw new Error("Please Enter Email");
-      if (!password) throw new Error("Please Enter Password");
+      const { email, password } = extractFormData(formData, formFields)
 
       const resp = await signIn("credentials", { email, password, redirect: false })
 
@@ -29,6 +31,7 @@ const LoginForm = () => {
       const callbackUrl = searchParams.get("callbackUrl")
 
       router.push(callbackUrl ?? "/")
+
     } catch (error: any) {
       setError(error.message)
     }

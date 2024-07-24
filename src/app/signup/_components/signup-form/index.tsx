@@ -1,12 +1,12 @@
 "use client";
 
-import { signUpAction } from "@/lib/actions/auth"
-import Form from "../Form"
-import SignUpButton from "./SignUpButton"
+import Form from "../../../../components/auth-form/Form"
+import SignUpButton from "./signup-button"
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { extractFormData, validateFormFields } from "@/lib/helpers/form";
+import { signUpAction } from "../../_actions/signUpAction";
 
 const SignUpForm = () => {
   const router = useRouter()
@@ -24,7 +24,6 @@ const SignUpForm = () => {
 
       const resp = await signUpAction({ error: "" }, formData)
 
-      console.log({ resp })
       if (resp?.error) throw Error(resp.error)
 
       const signInResp = await signIn("credentials", { email, password, redirect: false })

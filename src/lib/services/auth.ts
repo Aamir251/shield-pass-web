@@ -1,30 +1,25 @@
 import { User } from "next-auth";
 import { dbClient } from "../db/client";
 import bcrypt from "bcrypt";
+import { getUserByEmail } from "@/data/user";
 
 export const authenticateUser = async (
   email: string,
   password: string
 ): Promise<User | null> => {
-  try {
-    const userExists = await dbClient.user.findUnique({ where: { email } });
+  const userExists = await getUserByEmail(email);
 
-    if (!userExists) throw new Error("User Not Found");
+  if (!userExists) throw new Error("User Not Found");
 
-    // verify password
+  // verify password
 
-    const passwordMatch = await bcrypt.compare(password, userExists.password);
+  const passwordMatch = await bcrypt.compare(password, userExists.password);
 
-    if (!passwordMatch) throw new Error("Invalid Password");
+  if (!passwordMatch) throw new Error("Invalid Password");
 
-    return {
-      id: userExists.id,
-      email: userExists.email,
-      name: userExists.name,
-    };
-  } catch (error) {
-    console.log({ error });
-
-    return null;
-  }
+  return {
+    id: userExists.id,
+    email: userExists.email,
+    name: userExists.name,
+  };
 };

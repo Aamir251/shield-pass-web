@@ -1,6 +1,6 @@
 import Image from "next/image"
 import LoginImage from "@/assets/login-image.jpg";
-import SignUpForm from "@/components/AuthForm/SignUpForm";
+import SignUpForm from "./_components/signup-form";
 
 
 const SignUpPage = () => {

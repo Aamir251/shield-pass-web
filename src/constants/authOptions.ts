@@ -9,6 +9,12 @@ export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(dbClient),
   session: { strategy: "jwt" },
 
+  secret: process.env.NEXTAUTH_SECRET,
+
+  pages: {
+    signIn: "/login",
+  },
+
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -21,8 +27,6 @@ export const authOptions: NextAuthOptions = {
         // for login purposes
         if (!credentials || !credentials.email || !credentials.password)
           return null;
-
-        console.log("credentials ", credentials.email, credentials.password);
 
         return await authenticateUser(credentials.email, credentials.password);
       },

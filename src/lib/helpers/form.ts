@@ -27,3 +27,15 @@ export const extractFormData = <T extends readonly string[]>(
 
   return data;
 };
+
+enum KnownErrorMessages {
+  InvalidPassword = "Invalid Password",
+  CredentialsSignin = "CredentialsSignin",
+}
+
+export const handleAuthError = (errorMessage: KnownErrorMessages | string) => {
+  if (errorMessage === KnownErrorMessages.CredentialsSignin)
+    throw new Error("User Not found");
+  if (errorMessage === KnownErrorMessages.InvalidPassword)
+    throw new Error("Incorrect Password");
+};

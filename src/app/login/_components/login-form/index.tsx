@@ -1,11 +1,12 @@
 "use client"
 
 import { useState } from "react";
-import Form from "../../../components/auth-form/Form"
 import LoginButton from "./login-button";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { extractFormData, handleAuthError, validateFormFields } from "@/lib/helpers/form";
+import { HOME_LINK } from "@/constants/homelink";
+import Form from "@/components/auth-form/Form";
 
 const LoginForm = () => {
 
@@ -30,7 +31,7 @@ const LoginForm = () => {
 
       const callbackUrl = searchParams.get("callbackUrl")
 
-      router.push(callbackUrl ?? "/")
+      router.push(callbackUrl ?? HOME_LINK)
 
     } catch (error: any) {
       setError(error.message)

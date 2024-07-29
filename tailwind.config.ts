@@ -12,11 +12,20 @@ const config: Config = {
         "primary-dark": "#141415",
         "secondary-dark": "#252528",
         "primary-orange": "#F86262",
+        "primary-blue": "#6DC4F4",
         light: "#E0DBF9",
       },
       textColor: {
-        "primary-white": "#D8D5F1",
-        "secondary-white": "#B2B2C9",
+        "primary-white": "#F0F0F0",
+        "secondary-white": "#C3C1C1",
+      },
+
+      backgroundColor: {
+        "black-one": "#1B1B1D",
+      },
+      borderColor: {
+        primary: "#29292C",
+        input: "#353438",
       },
     },
   },

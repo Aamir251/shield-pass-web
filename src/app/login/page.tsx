@@ -1,6 +1,7 @@
 import Image from "next/image"
 import LoginImage from "@/assets/login-image.jpg";
-import LoginForm from "./login-form";
+import LoginForm from "./_components/login-form";
+import { Suspense } from "react";
 
 
 const LoginPage = () => {
@@ -19,7 +20,9 @@ const LoginPage = () => {
             <h1 className="text-4xl text-primary-white">Welcome Back</h1>
             <p className="mt-2 text-secondary-white">Please enter your email and password to Login</p>
           </div>
-          <LoginForm />
+          <Suspense fallback={<p>Loading...</p>}>
+            <LoginForm />
+          </Suspense>
         </div>
       </div>
     </section>

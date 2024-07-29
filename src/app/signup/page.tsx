@@ -1,6 +1,7 @@
 import Image from "next/image"
 import LoginImage from "@/assets/login-image.jpg";
 import SignUpForm from "./_components/signup-form";
+import { Suspense } from "react";
 
 
 const SignUpPage = () => {
@@ -14,14 +15,16 @@ const SignUpPage = () => {
       </div>
       <div className="h-full relative text-white pl-[15%]">
 
-        <div className="relative z-10 flex flex-col justify-between h-full  max-w-sm py-5">
+        <div className="relative z-10 flex flex-col justify-center h-full  max-w-sm py-5">
 
           <div className="text-center">
             <h1 className="text-4xl text-primary-white">Welcome !</h1>
             <p className="mt-2 text-secondary-white">Create an Account and Start using ShieldPass</p>
           </div>
 
-          <SignUpForm />
+          <Suspense fallback={<p>Loading...</p>}>
+            <SignUpForm />
+          </Suspense>
         </div>
       </div>
     </section>

@@ -22,7 +22,8 @@ export const extractFormData = <T extends readonly string[]>(
   let data = {} as ExtractFormData<T>;
 
   fields.forEach((field) => {
-    data[field as T[number]] = formData.get(field as string) as string;
+    const fieldData = formData.get(field) || "";
+    data[field as T[number]] = fieldData as string;
   });
 
   return data;

@@ -1,5 +1,7 @@
+"use server";
+
 import { extractFormData } from "@/lib/helpers/form";
-import { createUserUseCase } from "@/use-cases/users";
+import { createUserUseCase } from "@/use-cases/user";
 
 export const signUpAction = async (prevState: any, formData: FormData) => {
   try {

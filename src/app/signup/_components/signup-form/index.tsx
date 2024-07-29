@@ -1,16 +1,18 @@
 "use client";
 
-import Form from "../../../../components/auth-form/Form"
 import SignUpButton from "./signup-button"
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { extractFormData, validateFormFields } from "@/lib/helpers/form";
-import { signUpAction } from "../../_actions/signUpAction";
+import { HOME_LINK } from "@/constants/homelink";
+import Form from "@/components/auth-form/Form";
+import { signUpAction } from "../../_actions/signup-action";
 
 const SignUpForm = () => {
   const router = useRouter()
   const [error, setError] = useState<string>("")
+  const searchParams = useSearchParams()
 
   const formAction = async (formData: FormData) => {
     try {
@@ -29,7 +31,9 @@ const SignUpForm = () => {
       const signInResp = await signIn("credentials", { email, password, redirect: false })
 
       if (signInResp?.ok) {
-        router.push("/")
+        const callbackUrl = searchParams.get("callbackUrl")
+
+        router.push(callbackUrl ?? HOME_LINK)
       }
 
     } catch (error: any) {

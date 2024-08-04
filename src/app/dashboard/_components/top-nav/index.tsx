@@ -8,13 +8,13 @@ const TopNav = () => {
   return (
     <nav className="w-max mx-auto bg-black-one h-10 flex items-center rounded-sm overflow-hidden">
 
-      <Link className={`app-nav-link ${pathname.includes("private") && "active"}`} href="/private/recents">
+      <Link className={`app-nav-link ${pathname.includes("private") && "active"}`} href="/dashboard/private/recents">
         <span className="relative z-10">Private</span>
       </Link>
-      <Link className={`app-nav-link ${pathname.includes("work") && "active"}`} href="/work/recents">
+      <Link className={`app-nav-link ${pathname.includes("work") && "active"}`} href="/dashboard/work/recents">
         <span className="relative z-10">Work</span>
       </Link>
-      <Link className={`app-nav-link ${pathname.includes("business") && "active"}`} href="/business/recents">
+      <Link className={`app-nav-link ${pathname.includes("business") && "active"}`} href="/dashboard/business/recents">
         <span className="relative z-10">Business</span>
       </Link>
     </nav>

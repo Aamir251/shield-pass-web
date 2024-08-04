@@ -1,1 +1,1 @@
-export const HOME_LINK = "/credentials/logins";
+export const HOME_LINK = "/dashboard/credentials/logins";

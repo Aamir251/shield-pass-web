@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Jost } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "@/providers/auth-provider";
+import { Toaster } from "react-hot-toast";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -23,6 +24,8 @@ export default function RootLayout({
     <html lang="en">
       <AuthProvider>
         <body className={`${jost.className} bg-primary-dark relative text-primary-white`}>
+
+          <Toaster />
           {children}
         </body>
       </AuthProvider>

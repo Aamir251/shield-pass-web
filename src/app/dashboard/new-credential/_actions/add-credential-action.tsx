@@ -7,7 +7,7 @@ import { getServerSession } from "next-auth"
 
 export const addCredentialAction = async (formData: FormData) => {
 
-  const formFields = ["username", "type", "email", "category", "password", "pin", "websiteUrl"] as const
+  const formFields = ["name", "username", "type", "email", "category", "password", "websiteUrl"] as const
 
   const data = extractFormData(formData, formFields)
 
@@ -22,9 +22,6 @@ export const addCredentialAction = async (formData: FormData) => {
       ...data,
       tags
     }
-
-    console.log({ credentialObj });
-
 
     await createCredentialUseCase(session.user.email, credentialObj)
 

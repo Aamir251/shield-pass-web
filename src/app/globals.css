@@ -37,6 +37,10 @@
     border-radius: 6px;
     background-color: var(--primary-blue);
   }
+
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
 }
 
 @layer components {

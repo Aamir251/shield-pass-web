@@ -5,16 +5,49 @@ import SelectField from "@/components/inputs/select-input"
 import TagsDropdown from "@/components/inputs/tags-dropdown"
 import { addCredentialAction } from "../_actions/add-credential-action"
 import { useRef } from "react"
+import toast from "react-hot-toast";
+import { usePathname, useRouter } from "next/navigation";
 
 const CreateCredentialForm = () => {
 
   let formRef = useRef<HTMLFormElement>(null)
 
+  let timeoutId: NodeJS.Timeout
+
+  const router = useRouter()
+
+  const pathname = usePathname()
+
   const formAction = async (formData: FormData) => {
 
     const resp = await addCredentialAction(formData)
 
+
     if (!resp.success) {
+
+      if (resp.message === "Session Expired") {
+        // session expired Please Log In Again
+        toast.error("Session Expired! Redirecting to Login Page...", {
+          duration: 4000,
+          ariaProps: {
+            role: "status",
+            "aria-live": "assertive"
+          },
+          iconTheme: {
+            primary: "#141415",
+            secondary: "#C3C1C1"
+          }
+        })
+
+        clearTimeout(timeoutId)
+
+        timeoutId = setTimeout(() => {
+          const currentUrl = window.location.href
+          router.push(`/login?callbackUrl=${currentUrl}`)
+        })
+
+
+      }
 
       // show a toast
     } else {
@@ -27,10 +60,10 @@ const CreateCredentialForm = () => {
     <form ref={formRef} action={formAction} className="py-4 mt-5 overflow-y-auto">
       <div className="grid grid-cols-2 gap-x-10 gap-y-8 ">
         <FormInput
-          label="Username"
+          label="Name"
           inputProps={{
-            placeholder: "Username",
-            name: "username",
+            placeholder: "Name",
+            name: "name",
             type: "text"
           }}
         />
@@ -44,11 +77,29 @@ const CreateCredentialForm = () => {
           ]}
         />
         <FormInput
+          label="Username"
+          inputProps={{
+            placeholder: "Username",
+            name: "username",
+            type: "text"
+          }}
+        />
+
+        <FormInput
           label="Email"
           inputProps={{
             placeholder: "youremail@example.com",
             name: "email",
             type: "email",
+          }}
+        />
+
+        <FormInput
+          label="Password"
+          inputProps={{
+            placeholder: "Password",
+            name: "password",
+            type: "password"
           }}
         />
         <SelectField
@@ -61,24 +112,6 @@ const CreateCredentialForm = () => {
             { name: "Socials", value: "socials" },
           ]}
         />
-        <FormInput
-          label="Password"
-          inputProps={{
-            placeholder: "Password",
-            name: "password",
-            type: "password"
-          }}
-        />
-
-        <FormInput
-          label="PIN"
-          inputProps={{
-            placeholder: "541684",
-            name: "pin",
-            type: "text"
-          }}
-        />
-
 
         <FormInput
           label="Website URL"

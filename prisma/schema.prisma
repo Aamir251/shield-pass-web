@@ -64,12 +64,12 @@ model Session {
 
 model Credential {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
   username   String
   password   String
   type       String
   email      String
   category   String
-  pin        String
   websiteUrl String
   tags       String[]
 

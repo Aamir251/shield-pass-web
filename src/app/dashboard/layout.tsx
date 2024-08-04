@@ -2,8 +2,8 @@ import { PropsWithChildren } from "react"
 import TopNav from "./_components/top-nav"
 import SearchBar from "./_components/searchbar/page"
 import AddNewButton from "./_components/add-new-button"
-import MainSideBar from "./_components/main-side-bar"
 import { CredentialsType } from "@/types/credentials"
+import MainSideBar from "./_components/main-side-bar"
 
 
 

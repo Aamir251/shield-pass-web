@@ -26,7 +26,7 @@ const DashboardLayout = ({ children, params }: PropsWithChildren<DashboardLayout
         <AddNewButton />
       </div>
 
-      <section className="flex">
+      <section className="flex gap-x-4">
         <MainSideBar pageType={params.type} />
         {children}
 

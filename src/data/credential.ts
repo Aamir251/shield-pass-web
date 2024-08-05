@@ -6,9 +6,9 @@ export const createCredential = async (credential: CreateCredential) => {
   return await dbClient.credential.create({ data: { ...credential } });
 };
 
-export const getCredentials = async (userId: string) => {
+export const getCredentials = async (userId: string, category : string) => {
   return await dbClient.credential.findMany({
-    where: { userId },
+    where: { userId, category },
     select: {
       name: true,
       email: true,

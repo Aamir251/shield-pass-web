@@ -1,3 +1,4 @@
+import { CREDENTIAL_CATEGORIES } from "@/constants/categories";
 import {
   createCredential,
   getCredentialById,
@@ -18,12 +19,18 @@ export const createCredentialUseCase = async (
   await createCredential({ ...credential, userId: userExists.id });
 };
 
-export const getAllCredentialUseCase = async (email: string) => {
+export const getAllCredentialUseCase = async (email: string, category: string) => {
   const userExists = await getUserByEmail(email);
 
   if (!userExists) throw new Error("User Does not Exist");
 
-  return await getCredentials(userExists.id);
+  if (!category || !CREDENTIAL_CATEGORIES.includes(category)) {
+    throw new Error("Invalid Category");
+  }
+
+
+  const credentialCategory = category.charAt(0).toUpperCase() + category.slice(1);
+  return await getCredentials(userExists.id, credentialCategory);
 };
 
 export const getCredentialByIdUseCase = async (

@@ -7,10 +7,9 @@ import { CredentialsType } from "@/types/credentials";
 const MainSideBar = ({ pageType = "private" }: { pageType: CredentialsType }) => {
 
   const pathname = usePathname()
-  console.log({ pageType })
 
   return (
-    <aside className="mt-20 space-y-6 text-secondary-white font-medium w-1/3 max-w-56 flex-initial">
+    <aside className="mt-20 space-y-6 text-secondary-white font-medium flex-grow max-w-40">
 
       <SideBarLinkItem currentUrlPathname={pathname} href={`/dashboard/${pageType}/recents`} title="RECENTS" />
 

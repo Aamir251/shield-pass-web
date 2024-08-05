@@ -15,8 +15,10 @@ export type SideBarLinkItemType = {
 
 const SideBarLinkItem = ({ title, href, currentUrlPathname }: SideBarLinkItemType) => {
 
+  console.log({ currentUrlPathname })
+
   return (
-    <Link href={href} className={`block sidebar-link ${currentUrlPathname === href ? "active" : ""}`}>
+    <Link href={href} className={`block sidebar-link ${currentUrlPathname.includes(href) ? "active" : ""}`}>
       {title}
     </Link>
   )

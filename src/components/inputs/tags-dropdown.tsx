@@ -8,9 +8,14 @@ import Image from "next/image";
 
 type Tag = string
 
-const TagsDropdown = () => {
 
-  const [tags, setTags] = useState<Tag[]>([])
+type TagsDropdownProps = {
+  existingTags?: Tag[]
+}
+
+const TagsDropdown = ({ existingTags = [] }: TagsDropdownProps) => {
+
+  const [tags, setTags] = useState<Tag[]>(existingTags)
 
   let wrapperRef = useRef<HTMLDivElement>(null)
   let inputRef = useRef<HTMLInputElement>(null)

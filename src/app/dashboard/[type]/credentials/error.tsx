@@ -2,6 +2,7 @@
 "use client";
 
 
+import { BASE_URL } from "@/constants";
 import Link from "next/link"
 
 export default function Error({
@@ -13,7 +14,7 @@ export default function Error({
   return (
     <div>
       <h2>Something went wrong!</h2>
-      <Link href={"/dashboard/private/credentials/logins"}>Go Home</Link>
+      <Link href={BASE_URL}>Go Home</Link>
     </div>
   )
 }

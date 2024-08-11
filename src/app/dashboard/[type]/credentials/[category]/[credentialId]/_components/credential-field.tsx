@@ -1,6 +1,6 @@
 import Image from "next/image";
-import CopyCredentialButton from "./CopyCredentialButton";
-import PasswordField from "./PasswordField";
+import CopyCredentialButton from "./copy-credential-button";
+import PasswordField from "./password-field";
 
 import ExternalLinkIcon from "@/assets/icons/external-link.svg";
 import Link from "next/link";

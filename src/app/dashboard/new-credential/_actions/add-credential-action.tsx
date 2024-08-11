@@ -4,6 +4,7 @@ import { extractFormData } from "@/lib/helpers/form"
 import { CreateCredential } from "@/types/credentials"
 import { createCredentialUseCase } from "@/use-cases/credential"
 import { getServerSession } from "next-auth"
+import { revalidatePath } from "next/cache"
 
 export const addCredentialAction = async (formData: FormData) => {
 
@@ -13,9 +14,9 @@ export const addCredentialAction = async (formData: FormData) => {
 
   const tags = formData.getAll("tags") as string[]
 
-  const session = await getServerSession()
 
   try {
+    const session = await getServerSession()
     if (!session?.user?.email) throw new Error("Session Expired")
 
     const credentialObj: Omit<CreateCredential, "userId"> = {
@@ -25,6 +26,8 @@ export const addCredentialAction = async (formData: FormData) => {
 
     await createCredentialUseCase(session.user.email, credentialObj)
 
+
+    revalidatePath('/dashboard')
     return {
       success: true
     }

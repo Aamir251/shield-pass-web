@@ -1,15 +1,24 @@
 "use client";
 
-import FormInput from "@/components/inputs/default-input"
-import SelectField from "@/components/inputs/select-input"
-import TagsDropdown from "@/components/inputs/tags-dropdown"
-import { addCredentialAction } from "../_actions/add-credential-action"
-import { useRef } from "react"
-import toast from "react-hot-toast";
-import { usePathname, useRouter } from "next/navigation";
+import FormInput from "@/components/inputs/default-input";
+import PasswordInput from "@/components/inputs/password-input";
+import SelectField from "@/components/inputs/select-input";
+import TagsDropdown from "@/components/inputs/tags-dropdown";
+import { Credential } from "@prisma/client";
+import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useRef } from "react";
+import { updateCredentialAction } from "../_actions/update-credential-action";
 import { showSessionExpiredToastMessage, showSuccessToastMessage } from "@/lib/helpers/toast";
 
-const CreateCredentialForm = () => {
+
+
+type EditCredentialFormProps = {
+  credential: Credential
+}
+
+const EditCredentialForm = ({ credential }: EditCredentialFormProps) => {
+
 
   let formRef = useRef<HTMLFormElement>(null)
 
@@ -20,49 +29,44 @@ const CreateCredentialForm = () => {
   const pathname = usePathname()
 
   const formAction = async (formData: FormData) => {
+    
+    const { success, message } = await updateCredentialAction(formData, credential)
 
-    const resp = await addCredentialAction(formData)
-
-
-    if (!resp.success) {
-      // Failure
-      if (resp.message === "Session Expired") {
-
+    if (!success) {
+      if (message === "Session Expired") {
         showSessionExpiredToastMessage()
-
         clearTimeout(timeoutId)
 
         timeoutId = setTimeout(() => {
           const currentUrl = window.location.href
           router.push(`/login?callbackUrl=${currentUrl}`)
         })
-
-
       }
-
-      // show a toast
     } else {
-      // Success
-
-      showSuccessToastMessage("Credential Added!")
-      formRef?.current?.reset()
+      showSuccessToastMessage("Credential Updated!")
     }
   }
 
+
   return (
+
     <form ref={formRef} action={formAction} className="py-4 mt-5 overflow-y-auto">
       <div className="grid grid-cols-2 gap-x-10 gap-y-8 ">
+
+        <input aria-hidden={true} hidden={true} readOnly name="id" defaultValue={credential.id} />
         <FormInput
           label="Name"
           inputProps={{
             placeholder: "Name",
             name: "name",
-            type: "text"
+            type: "text",
+            defaultValue: credential.name
           }}
         />
         <SelectField
           selectProps={{ name: "type" }}
           label=""
+          defaultValue={credential.type}
           options={[
             "Personal", "Work", "Business"
           ]}
@@ -72,7 +76,8 @@ const CreateCredentialForm = () => {
           inputProps={{
             placeholder: "Username",
             name: "username",
-            type: "text"
+            type: "text",
+            defaultValue: credential.username
           }}
         />
 
@@ -82,40 +87,40 @@ const CreateCredentialForm = () => {
             placeholder: "youremail@example.com",
             name: "email",
             type: "email",
+            defaultValue: credential.email
           }}
         />
 
-        <FormInput
+        <PasswordInput
           label="Password"
-          inputProps={{
-            placeholder: "Password",
-            name: "password",
-            type: "password"
-          }}
+          defaultValue={credential.password}
         />
         <SelectField
           selectProps={{ name: "category" }}
+          defaultValue={credential.category}
           label="Category"
           options={["Logins", "Apps", "Websites", "Socials"]}
         />
+
         <FormInput
           label="Website URL"
           inputProps={{
             placeholder: "marklibrary.com",
             name: "websiteUrl",
-            type: "text"
+            type: "text",
+            defaultValue: credential.websiteUrl
           }}
         />
 
-        <TagsDropdown />
+        <TagsDropdown existingTags={credential.tags} />
       </div>
 
       <div className="flex justify-center">
-        <button className="btn-primary px-10 py-2 mt-10 rounded-md">SUBMIT</button>
+        <button type="submit" className="btn-primary px-10 py-2 mt-10 rounded-md">UPDATE</button>
       </div>
 
     </form>
   )
 }
 
-export default CreateCredentialForm
+export default EditCredentialForm

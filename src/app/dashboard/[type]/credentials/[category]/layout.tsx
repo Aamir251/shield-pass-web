@@ -2,7 +2,7 @@ import { getAllCredentialUseCase } from "@/use-cases/credential"
 import { getServerSession } from "next-auth"
 import CredentialItem from "../../_components/CredentialItem"
 import { PropsWithChildren } from "react"
-import { CREDENTIAL_CATEGORIES } from "@/constants/categories"
+import { CREDENTIAL_CATEGORIES } from "@/constants"
 
 type CredentialsPageProps = PropsWithChildren<{
   params: {

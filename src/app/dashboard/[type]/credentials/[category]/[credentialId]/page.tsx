@@ -1,7 +1,8 @@
 import { getCredentialByIdUseCase } from "@/use-cases/credential";
-import CredentialHeading from "./_components/CredentialHeading";
-import ActionButtons from "./_components/ActionButtons";
-import CredentialField from "./_components/CredentialField";
+import CredentialHeading from "./_components/credential-heading";
+import ActionButtons from "./_components/action-button";
+import CredentialField from "./_components/credential-field";
+import { getServerSession } from "next-auth";
 
 type SingleCredentialProps = {
   params: {
@@ -12,7 +13,12 @@ type SingleCredentialProps = {
 const SingleCredential = async ({
   params: { credentialId },
 }: SingleCredentialProps) => {
-  const credential = await getCredentialByIdUseCase(credentialId);
+
+  const session = await getServerSession()
+  if (!session?.user?.email) throw new Error("Session Expired")
+
+
+  const credential = await getCredentialByIdUseCase(credentialId, session.user.email);
 
   if (!credential)
     return (

@@ -5,8 +5,8 @@ import LoginButton from "./login-button";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { extractFormData, handleAuthError, validateFormFields } from "@/lib/helpers/form";
-import { HOME_LINK } from "@/constants/homelink";
 import Form from "@/components/auth-form/Form";
+import { BASE_URL } from "@/constants";
 
 const LoginForm = () => {
 
@@ -31,7 +31,7 @@ const LoginForm = () => {
 
       const callbackUrl = searchParams.get("callbackUrl")
 
-      router.push(callbackUrl ?? HOME_LINK)
+      router.push(callbackUrl ?? BASE_URL)
 
     } catch (error: any) {
       setError(error.message)

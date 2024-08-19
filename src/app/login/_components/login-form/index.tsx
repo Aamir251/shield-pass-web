@@ -1,16 +1,15 @@
 "use client"
 
-import { useState } from "react";
 import LoginButton from "./login-button";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { extractFormData, handleAuthError, validateFormFields } from "@/lib/helpers/form";
 import Form from "@/components/auth-form/Form";
 import { BASE_URL } from "@/constants";
+import { showToastErrorMessage } from "@/lib/helpers/toast";
 
 const LoginForm = () => {
 
-  const [error, setError] = useState<string>("")
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -27,14 +26,17 @@ const LoginForm = () => {
 
       const resp = await signIn("credentials", { email, password, redirect: false })
 
-      resp?.error && handleAuthError(resp.error)
+      if (resp?.error) throw new Error("Invalid Credentials")
+
+      // resp?.error && handleAuthError(resp.error)
 
       const callbackUrl = searchParams.get("callbackUrl")
 
       router.push(callbackUrl ?? BASE_URL)
 
     } catch (error: any) {
-      setError(error.message)
+
+      showToastErrorMessage(error.message)
     }
   }
 
@@ -42,7 +44,6 @@ const LoginForm = () => {
   return (
     <form action={formAction} className="space-y-12">
 
-      <div className="h-6">{error}</div>
       <Form />
       <LoginButton />
     </form>

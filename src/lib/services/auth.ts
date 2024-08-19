@@ -1,4 +1,4 @@
-import { User } from "next-auth";
+import { getServerSession, User } from "next-auth";
 import { getCompleteUser } from "@/data/user";
 import bcrypt from "bcrypt";
 
@@ -6,16 +6,34 @@ export const authenticateUser = async (
   email: string,
   password: string
 ): Promise<User | null> => {
-  const userExists = await getCompleteUser(email);
+  console.log({ email, password });
 
-  if (!userExists) throw new Error("User Not Found");
+  try {
+    const userExists = await getCompleteUser(email);
 
-  // verify password
+    console.log({ userExists });
 
-  const passwordMatch = await bcrypt.compare(password, userExists.password);
-  if (!passwordMatch) throw new Error("Invalid Password");
+    if (!userExists) throw new Error("Invalid Email");
 
-  return {
-    ...userExists,
-  };
+    // verify password
+
+    const passwordMatch = await bcrypt.compare(password, userExists.password);
+    if (!passwordMatch) throw new Error("Invalid Password");
+
+    return {
+      ...userExists,
+    };
+  } catch (error) {
+    console.log({ error });
+
+    return null;
+  }
+};
+
+export const checkIfSessionExists = async () => {
+  const session = await getServerSession();
+
+  if (!session?.user?.email) throw new Error("Session Expired");
+
+  return session.user;
 };

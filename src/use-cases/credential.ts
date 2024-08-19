@@ -24,7 +24,8 @@ export const createCredentialUseCase = async (
 
 export const getAllCredentialUseCase = async (
   email: string,
-  category: string
+  category: string,
+  type: string
 ) => {
   const userExists = await getUserByEmail(email);
 
@@ -36,7 +37,13 @@ export const getAllCredentialUseCase = async (
 
   const credentialCategory =
     category.charAt(0).toUpperCase() + category.slice(1);
-  return await getCredentials(userExists.id, credentialCategory);
+  const credentialType = type.charAt(0).toUpperCase() + type.slice(1);
+
+  return await getCredentials(
+    userExists.id,
+    credentialCategory,
+    credentialType
+  );
 };
 
 export const getCredentialByIdUseCase = async (
@@ -63,11 +70,17 @@ export const updateCredentialUseCase = async (
 
   if (!userExists) throw new Error("User Not Found");
 
-  return await updateCredential(propertiesToUpdate, userExists.id, credentialId);
+  return await updateCredential(
+    propertiesToUpdate,
+    userExists.id,
+    credentialId
+  );
 };
 
-
-export const deleteCredentialUseCase = async (email : string, credentialId : string) => {
+export const deleteCredentialUseCase = async (
+  email: string,
+  credentialId: string
+) => {
   if (!credentialId || !email) return null;
 
   const userExists = await getUserByEmail(email);
@@ -75,6 +88,4 @@ export const deleteCredentialUseCase = async (email : string, credentialId : str
   if (!userExists) throw new Error("User Not Found");
 
   return await deleteCredential(credentialId, userExists.id);
-
-
-}
+};

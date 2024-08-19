@@ -2,23 +2,31 @@ import { getAllCredentialUseCase } from "@/use-cases/credential"
 import { getServerSession } from "next-auth"
 import CredentialItem from "../../_components/CredentialItem"
 import { PropsWithChildren } from "react"
-import { CREDENTIAL_CATEGORIES } from "@/constants"
+import { CREDENTIAL_CATEGORIES, CREDENTIAL_TYPES } from "@/constants"
 
 type CredentialsPageProps = PropsWithChildren<{
   params: {
     category: string
+    type: string
   }
 }>
 
 
-const CredentialsLayout = async ({ params: { category }, children }: CredentialsPageProps) => {
+const CredentialsLayout = async ({ params: { category, type }, children }: CredentialsPageProps) => {
 
 
   if (!CREDENTIAL_CATEGORIES.includes(category)) throw new Error("Oops! You hit the wrong Route")
+  if (!CREDENTIAL_TYPES.includes(type)) throw new Error("Oops! You hit the wrong Route")
 
   const session = await getServerSession()
 
-  const credentials = await getAllCredentialUseCase(session?.user?.email!, category)
+  const credentials = await getAllCredentialUseCase(session?.user?.email!, category, type)
+
+  if (!credentials.length) {
+    return (
+      <section>No Credentials Found</section>
+    )
+  }
 
   return (
     <>

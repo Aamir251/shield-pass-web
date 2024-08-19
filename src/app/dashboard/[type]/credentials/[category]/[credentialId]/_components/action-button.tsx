@@ -2,25 +2,25 @@ import Link from "next/link"
 import EditIcon from "@/assets/icons/edit-icon.svg"
 
 import Image from "next/image";
-import DeleteCredential from "./DeleteCredential";
+import DeleteCredential from "./delete-credential";
 
 type ActionButtonsProps = {
-    type: string;
-    category: string;
-    credentialId: string;
+  type: string;
+  category: string;
+  credentialId: string;
 }
-const ActionButtons = ({type, category, credentialId}: ActionButtonsProps) => {
+const ActionButtons = ({ type, category, credentialId }: ActionButtonsProps) => {
   return <div className="flex gap-x-8 items-center">
 
-    <Link 
-      className="text-primary-blue flex gap-x-2 items-center border border-primary-blue rounded-sm px-6 py-2 font-medium" 
+    <Link
+      className="text-primary-blue text-sm flex gap-x-2 items-center border border-primary-blue rounded-sm px-4 py-1.5 font-medium hover:opacity-70"
       href={`/dashboard/${type.toLowerCase()}/credentials/${category.toLowerCase()}/${credentialId}/edit`}
     >
-        <span>Edit</span>
-        <Image src={EditIcon} alt="Edit" width={16} height={16} />
+      <span>Edit</span>
+      <Image src={EditIcon} alt="Edit" width={14} height={14} />
     </Link>
 
-    <DeleteCredential />
+    <DeleteCredential credentialId={credentialId} />
 
   </div>
 }

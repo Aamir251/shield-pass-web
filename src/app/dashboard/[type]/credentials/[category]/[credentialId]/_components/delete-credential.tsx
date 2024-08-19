@@ -7,7 +7,11 @@ import { useState } from "react";
 import { deleteCredentialAction } from "../_actions/delete-credential-action";
 import { showSessionExpiredToastMessage, showSuccessToastMessage, showToastErrorMessage } from "@/lib/helpers/toast";
 
-const DeleteCredential = () => {
+type DeleteCredentialProps = {
+  credentialId: string
+}
+
+const DeleteCredential = ({ credentialId }: DeleteCredentialProps) => {
   const [showModal, setShowModal] = useState(false);
 
   const closeModal = setShowModal.bind(null, false);
@@ -15,7 +19,11 @@ const DeleteCredential = () => {
 
   return (
     <>
-      <Image onClick={setShowModal.bind(null, true)} src={DeleteIcon} alt="Delete" width={20} height={20} />
+      <Image
+        onClick={setShowModal.bind(null, true)}
+        className="cursor-pointer hover:opacity-60 hover:-translate-y-1.5 transition"
+        src={DeleteIcon} alt="Delete" width={20} height={20}
+      />
       {showModal && <DeleteModal hideModal={closeModal} />}
     </>
   );

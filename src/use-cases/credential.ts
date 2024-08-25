@@ -13,7 +13,7 @@ import { Credential } from "@prisma/client";
 
 export const createCredentialUseCase = async (
   email: string,
-  credential: Omit<CreateCredential, "userId">
+  credential: Omit<CreateCredential, "sharedWith" | "userId">
 ) => {
   const userExists = await getUserByEmail(email);
 

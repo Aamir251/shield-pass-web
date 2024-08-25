@@ -9,7 +9,7 @@ export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(dbClient),
   session: { strategy: "jwt" },
 
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET as string,
 
   pages: {
     signIn: "/login",
@@ -22,7 +22,6 @@ export const authOptions: NextAuthOptions = {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
-
       async authorize(credentials, req) {
         // for login purposes
         if (!credentials || !credentials.email || !credentials.password)
@@ -32,4 +31,17 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+
+  // callbacks: {
+  //   async jwt({ token, user, account }) {
+  //     // Runs for the first time while logging in
+  //     if (user) {
+  //       token.id = user.id;
+  //     }
+  //     if (account) {
+  //       token.accessToken = account.access_token;
+  //     }
+  //     return token;
+  //   },
+  // },
 };

@@ -1,4 +1,5 @@
 import { dbClient } from "@/lib/db/client";
+import { hashPassword } from "@/lib/helpers/utils";
 import { CreateCredential } from "@/types/credentials";
 
 export const createCredential = async (credential: CreateCredential) => {
@@ -87,4 +88,56 @@ export const getMyCredentialRecipients = async (
   );
 
   return recipients;
+};
+
+/**
+ * Gets the list of credentials that was shared to a User
+ */
+export const getCredentialsSharedWithMe = async (userId: string) => {
+  const sharedCredentials = await dbClient.credential.findMany({
+    where: { sharedWith: { has: userId } },
+    select: {
+      name: true,
+      email: true,
+      password: true,
+      websiteUrl: true,
+      id: true,
+    },
+  });
+
+  const credentials = await Promise.all(
+    sharedCredentials.map(async (cred) => {
+      const hashedPassword = await hashPassword(cred.password);
+      return {
+        ...cred,
+        password: hashedPassword,
+      };
+    })
+  );
+
+  return credentials;
+};
+
+export const getSingleSharedCredential = async (
+  userId: string,
+  credentialId: string
+) => {
+  const credential = await dbClient.credential.findUnique({
+    where: { id: credentialId, sharedWith: { has: userId } },
+    select: {
+      name: true,
+      email: true,
+      password: true,
+      websiteUrl: true,
+    },
+  });
+
+  if (!credential) return null;
+
+  const hashedPassword = await hashPassword(credential?.password);
+
+  return {
+    ...credential,
+    password: hashedPassword,
+  };
 };

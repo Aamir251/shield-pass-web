@@ -1,4 +1,9 @@
-import { getMyCredentialRecipients, shareCredential } from "@/data/credential";
+import {
+  getCredentialsSharedWithMe,
+  getMyCredentialRecipients,
+  getSingleSharedCredential,
+  shareCredential,
+} from "@/data/credential";
 import { getUserByEmail } from "@/data/user";
 
 export const shareCredentialUseCase = async (
@@ -18,4 +23,22 @@ export const getMyCredentialRecipientsUseCase = async (
   currentUserEmail: string
 ) => {
   return await getMyCredentialRecipients(credentialId, currentUserEmail!);
+};
+
+export const getSharedCredentialsUseCase = async (email: string) => {
+  const userExists = await getUserByEmail(email);
+
+  if (!userExists) throw new Error("User does not exist");
+
+  return await getCredentialsSharedWithMe(userExists.id);
+};
+
+export const getSingleSharedCredentialUseCase = async (
+  email: string,
+  credentialId: string
+) => {
+  const userExists = await getUserByEmail(email);
+  if (!userExists) throw new Error("User does not exist");
+
+  return await getSingleSharedCredential(userExists.id, credentialId);
 };

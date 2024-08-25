@@ -4,6 +4,9 @@ import dynamic from "next/dynamic"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
 import useSWR from "swr"
+import ShareIcon from "@/assets/icons/share.svg"
+import Image from "next/image"
+
 const ShareCredentialPopup = dynamic(() => import("./share-credential/popup"), { ssr: false })
 
 
@@ -23,7 +26,10 @@ const ShareCredentialButton = () => {
 
   return (
     <>
-      <button onClick={setShowPopup.bind(null, true)}>Share Credential</button>
+      <button className="flex gap-1 items-center hover:opacity-70" onClick={setShowPopup.bind(null, true)}>
+        <span>Share</span>
+        <Image src={ShareIcon} alt="share credential" width={17} height={17} />
+      </button>
 
       {showPopup && <ShareCredentialPopup
         recipientsData={data}

@@ -4,10 +4,10 @@ import { usePathname } from "next/navigation";
 
 type Props = {
 
-  credentialId : string
+  credentialId: string
 };
 
-const CredentialBackground = ({ credentialId }: Props) => {
+const CredentialItemBackground = ({ credentialId }: Props) => {
 
   const pathname = usePathname();
 
@@ -18,7 +18,7 @@ const CredentialBackground = ({ credentialId }: Props) => {
   }
 
   return null;
-  
+
 };
 
-export default CredentialBackground;
+export default CredentialItemBackground;

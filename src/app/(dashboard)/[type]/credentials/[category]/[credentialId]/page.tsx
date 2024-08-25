@@ -55,7 +55,7 @@ const SingleCredential = async ({
         <CredentialField isExternalLink={true} field="Website URL" value={credential.websiteUrl} />
       </div>
 
-      <div className="mt-10">
+      <div className="mt-10 flex gap-x-4 items-center">
         <LaunchButton credentialWebsiteLink={credential.websiteUrl} />
         <ShareCredentialButton />
       </div>

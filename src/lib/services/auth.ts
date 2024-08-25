@@ -1,6 +1,8 @@
 import { getServerSession, User } from "next-auth";
 import { getCompleteUser } from "@/data/user";
 import bcrypt from "bcrypt";
+import { sign, verify } from "jsonwebtoken";
+import { NextRequest } from "next/server";
 
 export const authenticateUser = async (
   email: string,
@@ -37,3 +39,19 @@ export const checkIfSessionExists = async () => {
 
   return session.user;
 };
+
+
+export const signJWTToken = (email: string, name: string) => {
+  return sign({ name, email }, process.env.NEXTAUTH_SECRET!)
+}
+
+
+export const verifyJWTToken = (request: NextRequest) => {
+  const token = request.cookies.get("sp-auth-token")?.value
+
+  if (!token) throw Error("Unauthorized")
+
+  // Verify Token
+
+  return verify(token, process.env.NEXTAUTH_SECRET!)
+}

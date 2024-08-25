@@ -2,7 +2,7 @@ import { Credential } from "@prisma/client";
 
 export type CredentialsType = "Personal" | "Work" | "Business";
 
-export type CreateCredential = Omit<Credential, "id">;
+export type CreateCredential = Omit<Credential, "id" | "sharedWith">;
 
 export type CredentialBasic = Pick<
   Credential,

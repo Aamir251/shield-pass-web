@@ -19,7 +19,7 @@ export const addCredentialAction = async (formData: FormData) => {
     const session = await getServerSession()
     if (!session?.user?.email) throw new Error("Session Expired")
 
-    const credentialObj: Omit<CreateCredential, "userId"> = {
+    const credentialObj: Omit<CreateCredential, "userId" | "sharedWith"> = {
       ...data,
       tags
     }

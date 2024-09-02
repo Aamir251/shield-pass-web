@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     const result = await authenticateUser(email, password)
 
 
-    if (!result?.name || !result.email) throw Error("User Not FOund")
+    if (!result?.name || !result.email) throw Error("User Not Found")
 
     if (result) {
       // Return the session token
@@ -28,9 +28,9 @@ export async function POST(req: NextRequest) {
     }
 
 
-  } catch (error) {
+  } catch (error: any) {
 
     console.log({ error })
-    return NextResponse.json({ error: 'Authentication failed' }, { status: 500 });
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }

@@ -2,6 +2,7 @@ import {
   getCredentialsSharedWithMe,
   getMyCredentialRecipients,
   getSingleSharedCredential,
+  removeCredentialAccess,
   shareCredential,
 } from "@/data/credential";
 import { getUserByEmail } from "@/data/user";
@@ -42,3 +43,12 @@ export const getSingleSharedCredentialUseCase = async (
 
   return await getSingleSharedCredential(userExists.id, credentialId);
 };
+
+
+export const removeCredentialAccessUseCase = async (email: string, credentialId: string, recipientId: string) => {
+  const userExists = await getUserByEmail(email);
+  if (!userExists) throw new Error("User does not exist");
+
+  return await removeCredentialAccess(credentialId, userExists.id, recipientId);
+
+}

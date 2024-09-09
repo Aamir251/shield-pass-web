@@ -23,7 +23,7 @@ const PasswordInput = ({ inputProps, label, defaultValue }: FormInputProps) => {
 
   return (
     <div className="space-y-2.5 relative">
-      <label>{label}</label>
+      <h5>{label}</h5>
       <input name="password" defaultValue={defaultValue} type={showPassword ? "text" : "password"} className="border border-input" {...inputProps} />
 
 

@@ -16,9 +16,6 @@ const TopNav = () => {
         <Link className={`app-nav-link ${pathname.includes("work") && "active"}`} href="/work/recents">
           <span className="relative z-10">Work</span>
         </Link>
-        <Link className={`app-nav-link ${pathname.includes("business") && "active"}`} href="/business/recents">
-          <span className="relative z-10">Business</span>
-        </Link>
       </div>
 
 

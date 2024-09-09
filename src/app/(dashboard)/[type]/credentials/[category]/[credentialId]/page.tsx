@@ -19,7 +19,6 @@ const SingleCredential = async ({
   const session = await getServerSession()
   if (!session?.user?.email) throw new Error("Session Expired")
 
-
   const credential = await getCredentialByIdUseCase(credentialId, session.user.email);
 
   if (!credential)

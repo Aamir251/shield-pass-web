@@ -14,7 +14,7 @@ const ActionButtons = ({ type, category, credentialId }: ActionButtonsProps) => 
 
     <Link
       className="text-primary-blue text-sm flex gap-x-2 items-center border border-primary-blue rounded-sm px-4 py-1.5 font-medium hover:opacity-70"
-      href={`/dashboard/${type.toLowerCase()}/credentials/${category.toLowerCase()}/${credentialId}/edit`}
+      href={`/${type.toLowerCase()}/credentials/${category.toLowerCase()}/${credentialId}/edit`}
     >
       <span>Edit</span>
       <Image src={EditIcon} alt="Edit" width={14} height={14} />

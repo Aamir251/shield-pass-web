@@ -141,3 +141,35 @@ export const getSingleSharedCredential = async (
     password: hashedPassword,
   };
 };
+
+
+export const getRecentCredentials = async (userId: string) => {
+  return await dbClient.credential.findMany({
+    where: { userId },
+    orderBy: { createdAt: "asc" },
+    select: {
+      name: true,
+      email: true,
+      id: true,
+      category: true,
+      websiteUrl: true,
+      type: true,
+    }
+  })
+}
+
+
+export const removeCredentialAccess = async (credentialId: string, ownerId: string, recipientId: string) => {
+
+  const recepientsIds = await dbClient.credential.findUnique({
+    where: { id: credentialId, userId: ownerId },
+    select: { sharedWith: true }
+  })
+
+  const filteredRecipients = recepientsIds?.sharedWith.filter(id => id !== recipientId)
+
+  return await dbClient.credential.update({
+    where: { id: credentialId, userId: ownerId },
+    data: { sharedWith: { set: filteredRecipients } }
+  })
+}

@@ -77,6 +77,9 @@ model Credential {
   userId String @db.ObjectId
 
   sharedWith String[] @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 // Optional for WebAuthn support

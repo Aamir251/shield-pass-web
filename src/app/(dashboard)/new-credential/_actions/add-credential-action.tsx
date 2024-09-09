@@ -26,7 +26,6 @@ export const addCredentialAction = async (formData: FormData) => {
 
     await createCredentialUseCase(session.user.email, credentialObj)
 
-
     revalidatePath('/dashboard')
     return {
       success: true

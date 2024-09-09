@@ -32,8 +32,6 @@ const ShareCredentialPopup = ({ closePopup, credentialId, recipientsData, mutate
 
   const isLoading = !recipientsData; // if this is undefined, it means recipients have not been loaded
 
-  console.log({ recipientsData })
-
   const formAction = async (formData: FormData) => {
     const action = shareCredentialAction.bind(null, credentialId)
     const resp = await action(formData)
@@ -48,7 +46,6 @@ const ShareCredentialPopup = ({ closePopup, credentialId, recipientsData, mutate
       mutate({ ...recipientsData, recipients: [...existingRecipients, formData.get("email")] })
     }
   }
-
 
 
   return (
@@ -71,6 +68,7 @@ const ShareCredentialPopup = ({ closePopup, credentialId, recipientsData, mutate
         {
           recipientsData && recipientsData.recipients.length > 0 && <Recipients recipients={recipientsData.recipients} />
         }
+
       </div>
     </section>
   )

@@ -22,10 +22,10 @@ const MainSideBar = () => {
 
         <CredentialsTypeList pathname={pathname} credentialType={credentialType} />
       </div>
-
+      {/* 
       <SideBarLinkItem currentUrlPathname={pathname} href={`/${credentialType}/debit-cards`} title="DEBIT CARDS" />
 
-      <SideBarLinkItem currentUrlPathname={pathname} href={`/${credentialType}/credit-cards`} title="CREDIT CARDS" />
+      <SideBarLinkItem currentUrlPathname={pathname} href={`/${credentialType}/credit-cards`} title="CREDIT CARDS" /> */}
 
       <SideBarLinkItem currentUrlPathname={pathname} href={`/shared`} title="SHARED" />
 

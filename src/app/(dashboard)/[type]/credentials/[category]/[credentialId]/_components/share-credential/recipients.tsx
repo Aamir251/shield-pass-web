@@ -1,4 +1,5 @@
 import { Receipent } from "./popup"
+import RecipientItem from "./RecipientItem"
 
 type RecipientsProps = {
   recipients: Receipent[]
@@ -10,9 +11,7 @@ const Recipients = ({ recipients }: RecipientsProps) => {
       <h5 className="text-primary-gray">Shared With</h5>
       <ul className="space-y-3">
         {
-          recipients.map((recipient, index) => (
-            <li className="px-3 py-2 text-sm bg-black-one text-secondary-white rounded-md block" key={`${recipient.email}-${index}`}>{recipient.email}</li>
-          ))
+          // recipients.map(recipient => <RecipientItem userId={recipient} />)
         }
       </ul>
     </div>

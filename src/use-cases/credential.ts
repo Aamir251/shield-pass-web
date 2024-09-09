@@ -4,6 +4,7 @@ import {
   deleteCredential,
   getCredentialById,
   getCredentials,
+  getRecentCredentials,
   updateCredential,
 } from "@/data/credential";
 
@@ -89,3 +90,14 @@ export const deleteCredentialUseCase = async (
 
   return await deleteCredential(credentialId, userExists.id);
 };
+
+
+export const getRecentCredentialsUsecase = async (email: string) => {
+
+  const userExists = await getUserByEmail(email)
+  if (!userExists) throw new Error("User Not Found")
+
+
+  return await getRecentCredentials(userExists.id)
+
+}

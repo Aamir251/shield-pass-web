@@ -23,7 +23,6 @@ const ShareCredentialButton = () => {
 
   const { data, error, mutate } = useSWR(`/api/credential-recipients?credentialId=${credentialId}`, fetcher)
 
-
   return (
     <>
       <button className="flex gap-1 items-center hover:opacity-70" onClick={setShowPopup.bind(null, true)}>

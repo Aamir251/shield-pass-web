@@ -45,10 +45,10 @@ export const getSingleSharedCredentialUseCase = async (
 };
 
 
-export const removeCredentialAccessUseCase = async (email: string, credentialId: string, recipientId: string) => {
-  const userExists = await getUserByEmail(email);
-  if (!userExists) throw new Error("User does not exist");
+export const removeCredentialAccessUseCase = async (recipientId: string, credentialOwnerEmail: string, credentialId: string) => {
 
-  return await removeCredentialAccess(credentialId, userExists.id, recipientId);
+  const owner = await getUserByEmail(credentialOwnerEmail);
+
+  return await removeCredentialAccess(credentialId, owner!.id, recipientId);
 
 }

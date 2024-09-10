@@ -82,7 +82,7 @@ export const getMyCredentialRecipients = async (
     recepientsIds.sharedWith.map(async (recepientsId) =>
       dbClient.user.findUnique({
         where: { id: recepientsId },
-        select: { email: true },
+        select: { email: true, id: true },
       })
     )
   );

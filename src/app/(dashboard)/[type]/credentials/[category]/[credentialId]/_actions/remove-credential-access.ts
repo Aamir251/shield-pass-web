@@ -1,3 +1,5 @@
+"use server"
+
 import { checkIfSessionExists } from "@/lib/services/auth"
 import { removeCredentialAccessUseCase } from "@/use-cases/credential/credential.share"
 
@@ -9,7 +11,10 @@ export const removeCredentialAccessAction = async (credentialId: string, formDat
 
     if (!receipientId) throw new Error("Recipient ID Not Found")
 
-    await removeCredentialAccessUseCase(email!, credentialId, receipientId)
+    console.log({ email, receipientId });
+
+
+    await removeCredentialAccessUseCase(receipientId, email!, credentialId)
 
     return {
       success: true

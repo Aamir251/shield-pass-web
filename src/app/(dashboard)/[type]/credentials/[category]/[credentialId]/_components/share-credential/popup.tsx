@@ -18,6 +18,7 @@ type ShareCredentialPopupProps = {
 
 export type Receipent = {
   email: string
+  id: string
 }
 
 type CredentialRecipientsResponse = {
@@ -47,6 +48,12 @@ const ShareCredentialPopup = ({ closePopup, credentialId, recipientsData, mutate
     }
   }
 
+  const onRemoveAccess = (removedRecipientId: string) => {
+    const existingRecipients = recipientsData?.recipients ?? []
+    const newRecipients = existingRecipients.filter(recipient => recipient.id !== removedRecipientId)
+    mutate({ ...recipientsData, recipients: [...newRecipients] })
+  }
+
 
   return (
     <section className="fixed top-0 left-0 h-screen w-screen bg-black/70 flex-center">
@@ -66,7 +73,7 @@ const ShareCredentialPopup = ({ closePopup, credentialId, recipientsData, mutate
         }
 
         {
-          recipientsData && recipientsData.recipients.length > 0 && <Recipients recipients={recipientsData.recipients} />
+          recipientsData && recipientsData.recipients.length > 0 && <Recipients onRemoveAccess={onRemoveAccess} credentialId={credentialId} recipients={recipientsData.recipients} />
         }
 
       </div>

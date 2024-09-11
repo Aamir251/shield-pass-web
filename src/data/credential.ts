@@ -1,6 +1,7 @@
 import { dbClient } from "@/lib/db/client";
 import { hashPassword } from "@/lib/helpers/utils";
 import { CreateCredential } from "@/types/credentials";
+import { ObjectId } from "mongodb";
 
 export const createCredential = async (credential: CreateCredential) => {
   return await dbClient.credential.create({ data: { ...credential } });
@@ -172,4 +173,59 @@ export const removeCredentialAccess = async (credentialId: string, ownerId: stri
     where: { id: credentialId, userId: ownerId },
     data: { sharedWith: { set: filteredRecipients } }
   })
+}
+
+
+export const getSearchResults = async (userId : string, searchString : string) => {
+
+  return await dbClient.credential.findMany({
+    where : {
+      OR : [
+        { name : { contains : searchString, mode : "insensitive"} },
+        { websiteUrl : { contains : searchString, mode : "insensitive" } },
+        { username : { contains : searchString, mode : "insensitive" } },
+        { email : { contains : searchString, mode : "insensitive" } },
+        { tags : { contains : searchString, mode : "insensitive"  } }
+      ],
+      
+      AND : {
+        userId
+      }
+    },
+
+    select : {
+      websiteUrl : true,
+      name : true,
+      email : true,
+      id : true
+    }
+  })
+
+
+  // try {
+  //   if (!ObjectId.isValid(userId)) {
+  //     throw new Error('Invalid userId format');
+  //   }
+
+  //   // Create ObjectId instance
+  //   const ownerId = new ObjectId(userId);
+
+
+  //   const creds = await dbClient.credential.findRaw({
+  //     filter: { 
+  //       userId: { $eq: ownerId.toString() } // Pass userId directly if it's a string
+  //     }
+  //   })
+
+  //   return creds
+  // } catch (error) {
+    
+  //   console.log({ error });
+    
+  // }
+
+  // return []
+
+
+  
 }

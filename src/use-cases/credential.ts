@@ -5,6 +5,7 @@ import {
   getCredentialById,
   getCredentials,
   getRecentCredentials,
+  getSearchResults,
   updateCredential,
 } from "@/data/credential";
 
@@ -100,4 +101,12 @@ export const getRecentCredentialsUsecase = async (email: string) => {
 
   return await getRecentCredentials(userExists.id)
 
+}
+
+export const searchCredentialUseCase = async (email : string, searchString : string) =>
+{
+  const userExists = await getUserByEmail(email)
+  if (!userExists) throw new Error("User Not Found")
+  
+  return await getSearchResults(userExists.id, searchString)
 }

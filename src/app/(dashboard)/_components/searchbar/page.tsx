@@ -1,7 +1,7 @@
 
 const SearchBar = () => {
   return (
-    <form className="py-7 w-full max-w-sm ml-auto translate-x-11">
+    <form className="py-7 w-full max-w-sm ml-auto -translate-x-11">
       <div className="search-input-container relative">
         <input className="search-input pl-11 outline-none" placeholder="search" type="text" name="" id="" />
         <svg className="search-icon absolute top-1/2 left-4 -translate-y-1/2" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">

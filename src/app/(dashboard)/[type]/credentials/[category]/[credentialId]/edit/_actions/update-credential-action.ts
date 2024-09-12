@@ -1,7 +1,7 @@
 "use server";
 
 import { extractFormData } from "@/lib/helpers/form";
-import { extractProperties, getFieldsThatHaveChanged, haveSameStringElements } from "@/lib/helpers/utils";
+import { extractProperties, getFieldsThatHaveChanged } from "@/lib/helpers/utils";
 import { updateCredentialUseCase } from "@/use-cases/credential";
 import { Credential } from "@prisma/client";
 import { getServerSession } from "next-auth";
@@ -16,9 +16,10 @@ export const updateCredentialAction = async (formData: FormData, credential : Cr
 
     const propertiesToUpdate = extractProperties(newData, changedFields)
 
-    const newTags = formData.getAll("tags") as string[]
+    const newTagsArray = formData.getAll("tags") as string[]
+    const newTagsString = newTagsArray.join("≅")
 
-    const areTagsSame = haveSameStringElements(newTags, credential.tags)
+    const areTagsSame = newTagsString === credential.tags
 
     let dataToUpdate : Partial<Credential> = {
       ...propertiesToUpdate
@@ -26,7 +27,7 @@ export const updateCredentialAction = async (formData: FormData, credential : Cr
 
 
     if (!areTagsSame) {
-      dataToUpdate.tags = newTags
+      dataToUpdate.tags = newTagsString
     }
 
 

@@ -1,6 +1,7 @@
 import { checkIfSessionExists } from "@/lib/services/auth"
 import { getSharedCredentialsUseCase } from "@/use-cases/credential/credential.share"
 import SharedCredentialItem from "./_components/shared-credential-item"
+import NoCredentialsFound from "@/components/ui/no-items-found"
 
 const SharedCredentialPage = async () => {
 
@@ -19,6 +20,11 @@ const SharedCredentialPage = async () => {
 
   } catch (error) {
     console.log({ error })
+  }
+
+
+  if (!sharedCredentials.length) {
+    return <NoCredentialsFound />
   }
 
   return (

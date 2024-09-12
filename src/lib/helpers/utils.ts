@@ -27,16 +27,7 @@ export const extractProperties = <T extends object, K extends keyof T>(
   }, {} as Partial<T>);
 };
 
-export const haveSameStringElements = <T extends string[]>(
-  arrOne: T,
-  arrTwo: T
-) => {
-  function sortedStringify(arr: T): string {
-    return arr.slice().sort().join(",");
-  }
 
-  return sortedStringify(arrOne) === sortedStringify(arrTwo);
-};
 
 export const hashPassword = async (password: string) => {
   const secret = process.env.NEXTINNERPASS_SECRET as string;

@@ -13,7 +13,7 @@ const MainSideBar = () => {
   credentialType = CREDENTIAL_TYPES.includes(credentialType) ? credentialType : "personal"
 
   return (
-    <aside className="mt-40 space-y-6 text-secondary-white font-medium flex-grow min-w-44">
+    <aside className="mt-40 space-y-6 text-secondary-white font-medium min-w-44">
 
       <SideBarLinkItem currentUrlPathname={pathname} href={`/${credentialType}/recents`} title="RECENTS" />
 

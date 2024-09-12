@@ -20,7 +20,7 @@ const Layout = ({ children, params }: PropsWithChildren<DashboardLayoutProps>) =
         <AddNewButton />
       </div>
 
-      <section className="flex gap-x-4">
+      <section style={{ maxHeight : "calc(100vh - 245px)"}} className="flex gap-x-4 h-full">
         {/* <MainSideBar credentialType={params.type} /> */}
         {children}
 

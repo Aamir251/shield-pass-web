@@ -10,12 +10,14 @@ type Tag = string
 
 
 type TagsDropdownProps = {
-  existingTags?: Tag[]
+  existingTags?: Tag
 }
 
-const TagsDropdown = ({ existingTags = [] }: TagsDropdownProps) => {
+const TagsDropdown = ({ existingTags = "" }: TagsDropdownProps) => {
 
-  const [tags, setTags] = useState<Tag[]>(existingTags)
+  const tagsArray = existingTags.split("≅")
+
+  const [tags, setTags] = useState<Tag[]>(tagsArray)
 
   let wrapperRef = useRef<HTMLDivElement>(null)
   let inputRef = useRef<HTMLInputElement>(null)

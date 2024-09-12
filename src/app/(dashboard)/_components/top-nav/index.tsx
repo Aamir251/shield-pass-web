@@ -7,9 +7,9 @@ import LogOutButton from "./logout-button"
 const TopNav = () => {
   const pathname = usePathname()
   return (
-    <nav className="flex justify-center relative w-11/12 mx-auto">
+    <nav className="flex justify-center relative ">
 
-      <div className="bg-black-one h-10 flex items-center rounded-sm overflow-hidden">
+      <div className="bg-black-one h-10 flex items-center rounded-sm overflow-hidden translate-x-8">
         <Link className={`app-nav-link ${pathname.includes("personal") && "active"}`} href="/personal/recents">
           <span className="relative z-10">Personal</span>
         </Link>

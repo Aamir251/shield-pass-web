@@ -12,7 +12,7 @@ const CredentialItem = ({ credential }: CredentialItemProps) => {
   return (
     <Link
       href={`${process.env.NEXTAUTH_URL}/${credential.type.toLowerCase()}/credentials/${credential.category.toLowerCase()}/${credential.id}`}
-      className="flex items-center gap-x-3 rounded-md relative py-4 px-2"
+      className="flex items-center gap-x-3 rounded-md relative py-4 px-2 hover:bg-secondary-dark"
     >
       <figure className="h-10 w-10 bg-[#22222A] text-white rounded-md flex-center">
         <Image alt={credential.name} height="16" width="16" src={`http://www.google.com/s2/favicons?domain=${credential.websiteUrl}`} />

@@ -12,7 +12,9 @@ export const addCredentialAction = async (formData: FormData) => {
 
   const data = extractFormData(formData, formFields)
 
-  const tags = formData.getAll("tags") as string[]
+  const tagsArray = formData.getAll("tags") as string[]
+
+  const tagsString = tagsArray.join("≅")
 
 
   try {
@@ -21,7 +23,7 @@ export const addCredentialAction = async (formData: FormData) => {
 
     const credentialObj: Omit<CreateCredential, "userId" | "sharedWith"> = {
       ...data,
-      tags
+      tags : tagsString
     }
 
     await createCredentialUseCase(session.user.email, credentialObj)

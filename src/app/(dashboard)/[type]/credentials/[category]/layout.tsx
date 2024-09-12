@@ -30,7 +30,7 @@ const CredentialsLayout = async ({ params: { category, type }, children }: Crede
 
   return (
     <>
-      <section className="py-8 flex-grow-0 ">
+      <section className=" flex-grow-0 px-2 py-2 border border-gray-800/40 rounded-md h-full overflow-y-auto">
         {
           credentials.map(credential => <CredentialItem key={credential.id} credential={credential} />)
         }

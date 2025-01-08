@@ -1,14 +1,10 @@
 import { authenticateUser, signJWTToken } from '@/lib/services/auth';
 import { NextRequest, NextResponse } from 'next/server';
-import { sign } from "jsonwebtoken"
 import { cookies } from "next/headers"
 
 
 export async function POST(req: NextRequest) {
   const { email, password } = await req.json();
-
-
-  console.log({ email, password });
 
   try {
     const result = await authenticateUser(email, password)

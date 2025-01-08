@@ -6,8 +6,10 @@ import TagsDropdown from "@/components/inputs/tags-dropdown"
 import { addCredentialAction } from "../_actions/add-credential-action"
 import { useRef } from "react"
 import toast from "react-hot-toast";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { showSessionExpiredToastMessage, showSuccessToastMessage } from "@/lib/helpers/toast";
+import { capitalizeFirstLetter } from "@/lib/helpers/utils";
+import { CredentialsType } from "@/types/credentials";
 
 const CreateCredentialForm = () => {
 
@@ -17,7 +19,17 @@ const CreateCredentialForm = () => {
 
   const router = useRouter()
 
-  const pathname = usePathname()
+  const params = useParams()
+
+  
+  const credentialType = capitalizeFirstLetter(params.type as string) as CredentialsType
+  
+  
+
+  
+  
+  
+  
 
   const formAction = async (formData: FormData) => {
 
@@ -63,8 +75,9 @@ const CreateCredentialForm = () => {
         <SelectField
           selectProps={{ name: "type" }}
           label=""
+          defaultValue={credentialType}
           options={[
-            "Personal", "Work", "Business"
+            "Personal", "Work"
           ]}
         />
         <FormInput

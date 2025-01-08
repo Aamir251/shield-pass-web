@@ -32,6 +32,39 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
 
+  callbacks : {
+    async jwt({ account, token, user }) {
+      
+      if (token && user) {
+        token.email = user.email
+        token.name = user.name
+        token.id = user.id
+      }
+
+      return token
+    },
+
+
+    async session({ session, token }) {
+      
+      session.user!.email = token.email
+      session.user!.name = token.name
+      session.id = token.id as string
+      return session
+    },
+
+
+    async redirect({ url, baseUrl }) {
+
+      if (url === baseUrl + "/login") {
+        // means no redirect is present
+        return baseUrl + "/recents"
+      }
+
+      return url
+    }
+  }
+
   // callbacks: {
   //   async jwt({ token, user, account }) {
   //     // Runs for the first time while logging in

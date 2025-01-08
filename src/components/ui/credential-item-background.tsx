@@ -13,7 +13,7 @@ const CredentialItemBackground = ({ credentialId }: Props) => {
 
   if (pathname.includes(credentialId)) {
     return (
-      <div className="bg-black-one rounded-md absolute top-0 left-0 w-full h-full -z-10"></div>
+      <div className="rounded-md absolute top-0 left-0 w-full h-full -z-10"></div>
     );
   }
 

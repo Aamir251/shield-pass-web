@@ -59,3 +59,24 @@ export const formatWebsiteUrl = (url: string) => {
 function getKey(secret: string) {
   return crypto.createHash('sha256').update(secret).digest(); // 32-byte key for AES-256
 }
+
+export const capitalizeFirstLetter = (str : string) => {
+  return str.charAt(0).toUpperCase() + str.slice(1)
+}
+
+
+export const debouncer = (callback : (...args : any[]) => void, delay : number) => {
+
+  let timeoutId : NodeJS.Timeout | null = null
+
+
+  return (...args : any[]) => {
+    if (timeoutId !== null) {
+      clearTimeout(timeoutId)
+    }
+    
+    timeoutId = setTimeout(() => {
+      callback(...args)
+    }, delay)
+  }
+}

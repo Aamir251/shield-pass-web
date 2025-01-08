@@ -67,7 +67,6 @@ model Credential {
   name       String
   username   String
   password   String
-  type       String
   email      String
   category   String
   websiteUrl String

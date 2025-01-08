@@ -1,19 +1,15 @@
-import { NextRequest } from "next/server";
-import { verifyJWTToken } from "@/lib/services/auth";
+import { getToken } from "next-auth/jwt";
+import { NextApiRequest, NextApiResponse } from "next";
 
-export async function GET(request: NextRequest) {
+export async function GET(req: NextApiRequest, res : NextApiResponse) {
 
-  try {
-    // Verify Token
-    const isTokenValid = verifyJWTToken(request)
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET as string })
 
-    if (!isTokenValid) throw new Error("Invalid Token")
-
-    if (isTokenValid)
-      return Response.json({ message: "authorized" }, { status: 200 })
-
-  } catch (error: any) {
-    return Response.json({ authorized: error.message }, { status: 404 })
+  if (token) {
+    return Response.json({ token, message : "authorized" }, { status : 200 })
 
   }
+
+  return Response.json({  message : "unauthorized" }, { status : 404 })
+
 }

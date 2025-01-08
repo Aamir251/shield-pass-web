@@ -2,15 +2,18 @@ import { PropsWithChildren } from "react"
 import TopNav from "./_components/top-nav"
 import MainSideBar from "./_components/main-side-bar"
 
-const DashboardLayout = ({ children }: PropsWithChildren) => {
+const DashboardLayout = ({ children }: PropsWithChildren<{ params: any }>) => {
 
 
-  return <main className="pt-10 flex flex-col min-h-dvh w-11/12 mx-auto pt-10">
+  return <main className="h-dvh mx-auto">
     <TopNav />
-    <section className="flex gap-x-4">
+    <section className="flex gap-x-4 h-dvh">
 
       <MainSideBar />
-      {children}
+
+      <div style={{ height: "calc(100dvh - 180px)" }} className="mt-auto w-full">
+        {children}
+      </div>
 
     </section>
   </main>

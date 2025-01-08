@@ -1,9 +1,14 @@
+import { CredentialsType } from "@/types/credentials";
 import Link from "next/link";
 
-const AddNewButton = () => {
+type AddNewButtonProps = {
+  credentialsType : CredentialsType
+}
+
+const AddNewButton = ({ credentialsType } : AddNewButtonProps) => {
   return (
     <Link
-      href={"/new-credential"}
+      href={`/${credentialsType}/new-credential`}
       className="btn-primary px-8 py-2 rounded-sm ml-auto"
     >
       Add

@@ -18,13 +18,13 @@ const Form = ({ isSignUpForm = false }: FormProps) => {
       <h5 className="text-lg">Email</h5>
       <input placeholder="robert@gmail.com" type="email" name="email" />
     </div>
-    <PasswordInput label="Password" inputProps={{ name: "password" }} />
+    <PasswordInput label="Password" inputProps={{ name: "password", placeholder : "Password"}} />
 
     {
-      isSignUpForm && <div className="space-y-2.5">
-        <h5 className="text-lg">Confirm Password</h5>
-        <input placeholder="confirm password" type="text" name="confirmPassword" />
-      </div>
+      isSignUpForm && <PasswordInput 
+        label="Confirm Password" 
+        inputProps={{ name : "confirmPassword", placeholder : "Confirm Password"}} 
+      />
     }
   </>
 }

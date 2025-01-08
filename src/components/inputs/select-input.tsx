@@ -49,7 +49,7 @@ const SelectField = ({ label, selectProps, options, defaultValue }: SelectFieldP
         <span>{selected}</span>
         <Image src={DropdownArrow} width={12} height={12} alt="dropdown arrow" />
       </div>
-      {showDropdown && <ul className="absolute top-22 left-0 z-10 bg-black-one w-full border border-primary rounded-md">
+      {showDropdown && <ul className="absolute top-22 left-0 z-30 bg-black-one w-full border border-primary rounded-md">
         {
           options.map(option => <li
             key={option}

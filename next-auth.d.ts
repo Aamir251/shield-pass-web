@@ -7,5 +7,10 @@ declare module "next-auth" {
 
   interface Session extends DefaultSession {
     id: string | null;
+    user : {
+      id : string | null | undefined
+      email : string | null | undefined
+      name : string | null | undefined
+    }
   }
 }

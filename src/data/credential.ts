@@ -1,6 +1,6 @@
 import { dbClient } from "@/lib/db/client";
 import { hashPassword } from "@/lib/helpers/utils";
-import { CreateCredential } from "@/types/credentials";
+import { CreateCredential, CredentialsType } from "@/types/credentials";
 import { ObjectId } from "mongodb";
 
 export const createCredential = async (credential: CreateCredential) => {
@@ -10,10 +10,9 @@ export const createCredential = async (credential: CreateCredential) => {
 export const getCredentials = async (
   userId: string,
   category: string,
-  type: string
 ) => {
   return await dbClient.credential.findMany({
-    where: { userId, category, type },
+    where: { userId, category },
     select: {
       name: true,
       email: true,
@@ -21,6 +20,7 @@ export const getCredentials = async (
       category: true,
       websiteUrl: true,
       type: true,
+      updatedAt : true
     },
   });
 };
@@ -102,6 +102,7 @@ export const getCredentialsSharedWithMe = async (userId: string) => {
       email: true,
       password: true,
       websiteUrl: true,
+      username : true,
       id: true,
     },
   });
@@ -155,6 +156,7 @@ export const getRecentCredentials = async (userId: string) => {
       category: true,
       websiteUrl: true,
       type: true,
+      updatedAt : true
     }
   })
 }
@@ -176,7 +178,7 @@ export const removeCredentialAccess = async (credentialId: string, ownerId: stri
 }
 
 
-export const getSearchResults = async (userId : string, searchString : string) => {
+export const getSearchResults = async (userId : string, searchString : string ) => {
 
   return await dbClient.credential.findMany({
     where : {
@@ -189,7 +191,7 @@ export const getSearchResults = async (userId : string, searchString : string) =
       ],
       
       AND : {
-        userId
+        userId,
       }
     },
 
@@ -197,7 +199,8 @@ export const getSearchResults = async (userId : string, searchString : string) =
       websiteUrl : true,
       name : true,
       email : true,
-      id : true
+      id : true,
+      category : true
     }
   })
 

@@ -8,12 +8,8 @@ export const authenticateUser = async (
   email: string,
   password: string
 ): Promise<User | null> => {
-  console.log({ email, password });
-
   try {
     const userExists = await getCompleteUser(email);
-
-    console.log({ userExists });
 
     if (!userExists) throw new Error("Invalid Email");
 

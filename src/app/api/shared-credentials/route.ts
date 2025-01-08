@@ -11,17 +11,12 @@ export async function GET(request: NextRequest) {
 
     if (!isTokenValid) throw new Error("Invalid Token");
 
-    console.log({ isTokenValid })
-
     const credentials = await getSharedCredentialsUseCase(isTokenValid.email as string)
-
-    console.log({ credentials })
 
     return Response.json({ credentials }, { status: 200 })
 
 
   } catch (error: any) {
-    console.log({ error })
     return Response.json({ success: false, error: error.message }, { status: 404 })
 
   }

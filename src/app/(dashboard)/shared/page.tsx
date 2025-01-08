@@ -29,7 +29,7 @@ const SharedCredentialPage = async () => {
 
   return (
     <div className="mt-12 border border-input p-7 grow rounded-md">
-      <ul className="flex flex-wrap">
+      <ul className="flex flex-wrap gap-5">
         {
           sharedCredentials.map(credential => <SharedCredentialItem key={credential.id} credential={credential} />)
         }

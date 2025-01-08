@@ -1,21 +1,20 @@
 "use client";
 
-
+import { LucideIcon } from "lucide-react";
 import Link from "next/link"
-
-
-type LinkTypes = `/credentials/${string}` | `debitcards/${string}`
 
 export type SideBarLinkItemType = {
   title: string
   href: string
-  currentUrlPathname: string
+  currentPageUrl : string
+  Icon : LucideIcon
 }
 
-const SideBarLinkItem = ({ title, href, currentUrlPathname }: SideBarLinkItemType) => {
+const SideBarLinkItem = ({ title, href, Icon }: SideBarLinkItemType) => {
 
   return (
-    <Link href={href} className={`block sidebar-link ${currentUrlPathname.includes(href) ? "active" : ""}`}>
+    <Link href={href} className={`flex gap-x-3 py-2.5 rounded-sm items-center w-full px-5 text-sm hover:bg-secondary`}>
+      <Icon size={18} />
       {title}
     </Link>
   )

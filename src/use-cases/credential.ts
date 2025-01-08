@@ -1,4 +1,4 @@
-import { CREDENTIAL_CATEGORIES } from "@/constants";
+import { CREDENTIAL_CATEGORIES, CredentialCategory } from "@/constants";
 import {
   createCredential,
   deleteCredential,
@@ -10,7 +10,7 @@ import {
 } from "@/data/credential";
 
 import { getUserByEmail } from "@/data/user";
-import { CreateCredential } from "@/types/credentials";
+import { CreateCredential, CredentialsType } from "@/types/credentials";
 import { Credential } from "@prisma/client";
 
 export const createCredentialUseCase = async (
@@ -24,10 +24,9 @@ export const createCredentialUseCase = async (
   await createCredential({ ...credential, userId: userExists.id });
 };
 
-export const getAllCredentialUseCase = async (
+export const getCredentialsByCategoryUseCase = async (
   email: string,
-  category: string,
-  type: string
+  category: CredentialCategory,
 ) => {
   const userExists = await getUserByEmail(email);
 
@@ -39,12 +38,10 @@ export const getAllCredentialUseCase = async (
 
   const credentialCategory =
     category.charAt(0).toUpperCase() + category.slice(1);
-  const credentialType = type.charAt(0).toUpperCase() + type.slice(1);
 
   return await getCredentials(
     userExists.id,
     credentialCategory,
-    credentialType
   );
 };
 

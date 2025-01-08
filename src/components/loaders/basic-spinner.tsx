@@ -1,6 +1,6 @@
 
 type BasicCircularLoaderProps = {
-  className: string
+  className?: string
 }
 
 const BasicSpinnerLoader = ({ className }: BasicCircularLoaderProps) => {

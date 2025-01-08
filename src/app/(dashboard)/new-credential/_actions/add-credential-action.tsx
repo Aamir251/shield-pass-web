@@ -14,7 +14,7 @@ export const addCredentialAction = async (formData: FormData) => {
 
   const tagsArray = formData.getAll("tags") as string[]
 
-  const tagsString = tagsArray.join("≅")
+  const tagsString = tagsArray?.length ? tagsArray.join("≅") : ""
 
 
   try {

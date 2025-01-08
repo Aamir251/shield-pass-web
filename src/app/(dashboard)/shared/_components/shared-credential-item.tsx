@@ -1,3 +1,4 @@
+import CredentialThumbnail from "@/components/ui/credential-thumbnail"
 import { formatWebsiteUrl } from "@/lib/helpers/utils"
 import Image from "next/image"
 import Link from "next/link"
@@ -19,9 +20,10 @@ const SharedCredentialItem = ({ credential }: CredentialListItemProps) => {
       className="flex-center flex-col bg-secondary-dark py-3 px-5 rounded-md"
     >
       <div className="flex items-center gap-x-3 rounded-md relative">
-        <figure className="h-10 w-10 bg-[#22222A] text-white rounded-md flex-center">
-          <Image alt={credential.name} height="16" width="16" src={`http://www.google.com/s2/favicons?domain=${credential.websiteUrl}`} />
-        </figure>
+        <CredentialThumbnail
+          credentialName={credential.name}
+          websiteUrl={credential.websiteUrl}
+        />
       </div>
 
       <div className="text-center space-y-2">

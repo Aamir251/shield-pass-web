@@ -2,32 +2,47 @@
 
 import { usePathname } from "next/navigation";
 import SideBarLinkItem from "./sidebar-link-item"
-import { CREDENTIAL_TYPES } from "@/constants";
+import { 
+  CloudCog,
+  EarthLock,
+  Landmark, Mails,
+  MessageSquareLock,
+  Share2,
+  Shield,
+  ShoppingCart,
+  SmartphoneNfc 
+} from "lucide-react";
+
 
 const MainSideBar = () => {
 
+  const items = [
+    { title: "Recents", href: `/recents`, icon: Shield },
+    { title: "Websites", href: `/websites`, icon: EarthLock },
+    { title: "Applications", href: `/applications`, icon: SmartphoneNfc },
+    { title: "Email Accounts", href: `/emails`, icon: Mails },
+    { title: "Social Media", href: `/socials`, icon: MessageSquareLock },
+    { title: "Cloud Storage", href: `/cloud`, icon: CloudCog },
+    { title: "Finance", href: `/finance`, icon: Landmark },
+    { title: "Ecommerce", href: `/ecommerce`, icon: ShoppingCart },
+    { title: "Shared", href: `/shared`, icon: Share2 },
+  ]
+
+
+
   const pathname = usePathname()
 
-  let credentialType = pathname.split("/")[1]
-
-  credentialType = CREDENTIAL_TYPES.includes(credentialType) ? credentialType : "personal"
-
   return (
-    <aside className="mt-40 space-y-6 text-secondary-white font-medium min-w-44">
+    <aside className="sidebar-border w-72 px-2">
 
-      <SideBarLinkItem currentUrlPathname={pathname} href={`/${credentialType}/recents`} title="RECENTS" />
-
-      <div className="space-y-4">
-        <p className={`${pathname.includes("credentials") && "text-primary-blue"}`}>CREDENTIALS</p>
-
-        <CredentialsTypeList pathname={pathname} credentialType={credentialType} />
-      </div>
-      {/* 
-      <SideBarLinkItem currentUrlPathname={pathname} href={`/${credentialType}/debit-cards`} title="DEBIT CARDS" />
-
-      <SideBarLinkItem currentUrlPathname={pathname} href={`/${credentialType}/credit-cards`} title="CREDIT CARDS" /> */}
-
-      <SideBarLinkItem currentUrlPathname={pathname} href={`/shared`} title="SHARED" />
+      <ul 
+        
+        className="flex flex-col gap-y-2  pl-1 mt-44"
+      >
+        {
+          items.map(item => <SideBarLinkItem Icon={item.icon} currentPageUrl={pathname} key={item.href} href={item.href} title={item.title} />)
+        }
+      </ul>
 
     </aside>
   )
@@ -35,17 +50,3 @@ const MainSideBar = () => {
 
 export default MainSideBar
 
-const CredentialsTypeList = ({ credentialType, pathname }: { credentialType: string, pathname: string }) => {
-
-  const items = [
-    { title: "Logins", href: `/${credentialType}/credentials/logins` },
-    { title: "Websites", href: `/${credentialType}/credentials/websites` },
-    { title: "Apps", href: `/${credentialType}/credentials/apps` },
-    { title: "Socials", href: `/${credentialType}/credentials/socials` },
-  ]
-  return <ul className="flex flex-col gap-y-3 pl-3">
-    {
-      items.map(item => <SideBarLinkItem currentUrlPathname={pathname} key={item.href} href={item.href} title={item.title} />)
-    }
-  </ul>
-}

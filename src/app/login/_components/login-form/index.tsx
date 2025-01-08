@@ -13,7 +13,10 @@ const LoginForm = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
 
+  const callbackUrl = searchParams.get("callbackUrl") ?? undefined ;
 
+
+  
 
   const formAction = async (formData: FormData) => {
 
@@ -24,15 +27,15 @@ const LoginForm = () => {
 
       const { email, password } = extractFormData(formData, formFields)
 
-      const resp = await signIn("credentials", { email, password, redirect: false })
+      const resp = await signIn("credentials", { email, password, callbackUrl })
 
       if (resp?.error) throw new Error("Invalid Credentials")
 
       // resp?.error && handleAuthError(resp.error)
 
-      const callbackUrl = searchParams.get("callbackUrl")
+      // const callbackUrl = searchParams.get("callbackUrl")
 
-      router.push(callbackUrl ?? BASE_URL)
+      // router.push(callbackUrl ?? BASE_URL)
 
     } catch (error: any) {
 

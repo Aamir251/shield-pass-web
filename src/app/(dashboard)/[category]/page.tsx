@@ -1,8 +1,6 @@
 import { CREDENTIAL_PAGE_CATEGORIES, CredentialCategory, CredentialCategoryPageType } from "@/constants"
-import CredentialsList from "./_components/category-credentials-list"
 import { checkIfSessionExists } from "@/lib/services/auth"
 import { getCredentialsByCategoryUseCase, getRecentCredentialsUsecase } from "@/use-cases/credential"
-import { getSharedCredentialsUseCase } from "@/use-cases/credential/credential.share"
 import CategoryCredentialsList from "./_components/category-credentials-list"
 import RecentCredentialsList from "./_components/recent-credentials-list"
 import SharedCredentialsList from "./_components/shared-credentials-list"

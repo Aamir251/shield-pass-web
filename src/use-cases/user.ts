@@ -1,4 +1,5 @@
 import { createNewUser, getUserByEmail } from "@/data/user";
+import { authenticateUser } from "@/lib/services/auth";
 import bcrypt from "bcrypt";
 
 export const createUserUseCase = async (
@@ -20,3 +21,4 @@ export const createUserUseCase = async (
   };
   await createNewUser(userToCreate);
 };
+

@@ -4,6 +4,7 @@ import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTit
 import { Input } from "../ui/input"
 import { Label } from "../ui/label"
 import { PropsWithChildren } from "react"
+import LabelInputWrapper from "../forms/label-input-wrapper"
 
 type EditCredentialFormProps = {
   credential: CredentialUpdate | null
@@ -65,15 +66,3 @@ export default EditCredentialForm
 
 
 
-type LabelInputWrapperProps = PropsWithChildren<{
-  labelTitle: string
-}>
-
-const LabelInputWrapper = ({ children, labelTitle }: LabelInputWrapperProps) => {
-  return <div className="flex flex-col gap-y-3 items-left">
-    <Label className="">
-      {labelTitle}
-    </Label>
-    {children}
-  </div>
-}

@@ -4,19 +4,19 @@ import LoginButton from "./login-button";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { extractFormData, handleAuthError, validateFormFields } from "@/lib/helpers/form";
-import Form from "@/components/auth-form/Form";
-import { BASE_URL } from "@/constants";
+import Form from "@/components/forms/auth-form";
 import { showToastErrorMessage } from "@/lib/helpers/toast";
+import { generatePublicEncryptionKey, storeKeyLocally } from "@/lib/helpers/encryption-decryption";
+import { BASE_URL } from "@/constants";
+
+
+
 
 const LoginForm = () => {
 
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  const callbackUrl = searchParams.get("callbackUrl") ?? undefined ;
-
-
-  
 
   const formAction = async (formData: FormData) => {
 
@@ -26,16 +26,18 @@ const LoginForm = () => {
       validateFormFields(formData, formFields);
 
       const { email, password } = extractFormData(formData, formFields)
+      
+      const resp = await signIn("credentials", { email, password, redirect : false })
+      resp?.error && handleAuthError(resp.error)
+      
+      
+      const key = await generatePublicEncryptionKey(email, password)
 
-      const resp = await signIn("credentials", { email, password, callbackUrl })
+      await storeKeyLocally(key) // stores it to local storage
 
-      if (resp?.error) throw new Error("Invalid Credentials")
+      const callbackUrl = searchParams.get("callbackUrl")
 
-      // resp?.error && handleAuthError(resp.error)
-
-      // const callbackUrl = searchParams.get("callbackUrl")
-
-      // router.push(callbackUrl ?? BASE_URL)
+      router.push(callbackUrl ?? BASE_URL)
 
     } catch (error: any) {
 

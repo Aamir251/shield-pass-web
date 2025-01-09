@@ -1,8 +1,6 @@
 import { dbClient } from "@/lib/db/client";
 import { hashPassword } from "@/lib/helpers/utils";
 import { CreateCredential, CredentialsType } from "@/types/credentials";
-import { ObjectId } from "mongodb";
-
 export const createCredential = async (credential: CreateCredential) => {
   return await dbClient.credential.create({ data: { ...credential } });
 };
@@ -19,7 +17,6 @@ export const getCredentials = async (
       id: true,
       category: true,
       websiteUrl: true,
-      type: true,
       updatedAt : true
     },
   });
@@ -155,7 +152,6 @@ export const getRecentCredentials = async (userId: string) => {
       id: true,
       category: true,
       websiteUrl: true,
-      type: true,
       updatedAt : true
     }
   })

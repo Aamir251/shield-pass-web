@@ -107,3 +107,4 @@ export const searchCredentialUseCase = async (email : string, searchString : str
   
   return await getSearchResults(userExists.id, searchString)
 }
+

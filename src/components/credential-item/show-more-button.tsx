@@ -8,8 +8,7 @@ import {
 
 import { EllipsisVertical } from "lucide-react";
 import { DialogTrigger } from "../ui/dialog";
-import { Button } from "../ui/button";
-import CredentialActionContextProvider from "@/providers/credential-context-provider";
+import CredentialActionContextProvider from "@/providers/credential-actions-context";
 
 type ShowMoreActionsButtonProps = {
 

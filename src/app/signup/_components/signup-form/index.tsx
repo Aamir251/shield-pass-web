@@ -5,7 +5,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { extractFormData, validateFormFields } from "@/lib/helpers/form";
-import Form from "@/components/auth-form/Form";
+import Form from "@/components/forms/auth-form";
 import { signUpAction } from "../../_actions/signup-action";
 import { BASE_URL } from "@/constants";
 

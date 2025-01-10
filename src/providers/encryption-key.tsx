@@ -1,29 +1,21 @@
 "use client";
 
 
-import { getKeyFromLocalStorage } from "@/lib/helpers/encryption-decryption";
+import { getKeyFromLocalStorage } from "@/lib/helpers/cipher";
 import { createContext, PropsWithChildren, useContext, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button"
 import {
   Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
 import MasterPasswordPopupForm from "@/components/forms/master-password-popup-form";
 
 
-type CreateContextProps = {
+type EncryptionKeyContextType = {
   encryptionKey: CryptoKey | null
 }
 
-export const EncryptionKeyContext = createContext<CreateContextProps>({
-  encryptionKey: null,
-})
+export const EncryptionKeyContext = createContext<EncryptionKeyContextType | null>(null)
 
 
 const EncryptionKeyContextProvider = ({ children }: PropsWithChildren) => {
@@ -47,6 +39,11 @@ const EncryptionKeyContextProvider = ({ children }: PropsWithChildren) => {
 
         // show the popup to enter master password 
       }
+
+      setEncryptionKey(key)
+
+      console.log("From Context Key ", key);
+      
     }
 
 
@@ -65,7 +62,7 @@ const EncryptionKeyContextProvider = ({ children }: PropsWithChildren) => {
     {children}
 
     <Drawer open={isDrawerOpen} onOpenChange={handleChange} >
-      <DrawerTrigger  className="hidden" asChild>
+      <DrawerTrigger aria-hidden  className="hidden" asChild>
         <Button  variant="outline">Open Drawer</Button>
       </DrawerTrigger>
       <MasterPasswordPopupForm 
@@ -79,9 +76,11 @@ export default EncryptionKeyContextProvider;
 
 
 export const useEncryptionKeyContext = () => {
-  const context = useContext(EncryptionKeyContext)
+  const context = useContext(EncryptionKeyContext) as EncryptionKeyContextType
 
   if (!context) {
     throw new Error('useEncryptionKeyContext must be used within a EncryptionKeyContextProvider');
   }
+
+  return context
 }

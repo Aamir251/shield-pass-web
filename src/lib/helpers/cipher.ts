@@ -61,3 +61,22 @@ export const getKeyFromLocalStorage = async () => {
   console.log("Key retrieved from localStorage");
   return key;
 }
+
+
+export const encryptPassword = async (password : string, key : CryptoKey ) => {
+  const iv = window.crypto.getRandomValues(new Uint8Array(16)); // Random IV
+  const encoder = new TextEncoder();
+  const encrypted = await window.crypto.subtle.encrypt(
+    {
+      name: "AES-CBC",
+      iv: iv,
+    },
+    key,
+    encoder.encode(password)
+  );
+
+  return {
+    encryptedPassword: Buffer.from(encrypted).toString("base64"),
+    iv: Buffer.from(iv).toString("base64"),
+  };
+}

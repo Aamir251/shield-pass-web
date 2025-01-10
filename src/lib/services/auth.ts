@@ -3,6 +3,7 @@ import { getCompleteUser } from "@/data/user";
 import bcrypt from "bcrypt";
 import { sign, verify } from "jsonwebtoken";
 import { NextRequest } from "next/server";
+import { ERRORS } from "@/constants";
 
 export const authenticateUser = async (
   email: string,
@@ -31,7 +32,7 @@ export const authenticateUser = async (
 export const checkIfSessionExists = async () => {
   const session = await getServerSession();
 
-  if (!session?.user?.email) throw new Error("Session Expired");
+  if (!session?.user?.email) throw new Error(ERRORS.SESSION_EXPIRED);
 
   return session.user;
 };

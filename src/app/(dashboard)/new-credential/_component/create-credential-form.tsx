@@ -1,60 +1,65 @@
 "use client";
 
-import FormInput from "@/components/inputs/default-input"
-import SelectField from "@/components/inputs/select-input"
-import TagsDropdown from "@/components/inputs/tags-dropdown"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { addCredentialAction } from "../_actions/add-credential-action"
 import { useRef } from "react"
-import toast from "react-hot-toast";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { showSessionExpiredToastMessage, showSuccessToastMessage } from "@/lib/helpers/toast";
-import { capitalizeFirstLetter } from "@/lib/helpers/utils";
-import { CredentialsType } from "@/types/credentials";
+import { CREDENTIAL_CATEGORIES, ERRORS } from "@/constants";
+import { PropsWithChildren } from "react";
+
+import { Button } from "@/components/ui/button";
+
+import { Input } from "@/components/ui/input";
+import LabelInputWrapper from "@/components/forms/label-input-wrapper";
+import { useEncryptionKeyContext } from "@/providers/encryption-key";
+import { encryptPassword } from "@/lib/helpers/cipher";
+
 
 const CreateCredentialForm = () => {
 
-  let formRef = useRef<HTMLFormElement>(null)
+  const { encryptionKey } = useEncryptionKeyContext()
 
-  let timeoutId: NodeJS.Timeout
+  let formRef = useRef<HTMLFormElement>(null)
 
   const router = useRouter()
 
-  const params = useParams()
-
+  let timeoutId: NodeJS.Timeout
   
-  const credentialType = capitalizeFirstLetter(params.type as string) as CredentialsType
-  
-  
-
-  
-  
-  
-  
-
   const formAction = async (formData: FormData) => {
 
-    const resp = await addCredentialAction(formData)
+    const password = formData.get("password") as string
+    // Encrypt Password
+    const passwordObject = await encryptPassword(password, encryptionKey!)
 
+
+    formData.set("iv", passwordObject.iv)
+    formData.set("password", passwordObject.encryptedPassword)
+    
+    const resp = await addCredentialAction(formData)
 
     if (!resp.success) {
       // Failure
-      if (resp.message === "Session Expired") {
+      if (resp.message === ERRORS.SESSION_EXPIRED) {
 
         showSessionExpiredToastMessage()
 
-        clearTimeout(timeoutId)
+        timeoutId && clearTimeout(timeoutId)
 
         timeoutId = setTimeout(() => {
           const currentUrl = window.location.href
           router.push(`/login?callbackUrl=${currentUrl}`)
         })
-
-
       }
 
       // show a toast
     } else {
-      // Success
 
       showSuccessToastMessage("Credential Added!")
       formRef?.current?.reset()
@@ -62,73 +67,66 @@ const CreateCredentialForm = () => {
   }
 
   return (
-    <form ref={formRef} action={formAction} className="py-4 mt-5 overflow-y-auto">
-      <div className="grid grid-cols-2 gap-x-10 gap-y-8 ">
-        <FormInput
-          label="Name"
-          inputProps={{
-            placeholder: "Name",
-            name: "name",
-            type: "text"
-          }}
-        />
-        <SelectField
-          selectProps={{ name: "type" }}
-          label=""
-          defaultValue={credentialType}
-          options={[
-            "Personal", "Work"
-          ]}
-        />
-        <FormInput
-          label="Username"
-          inputProps={{
-            placeholder: "Username",
-            name: "username",
-            type: "text"
-          }}
-        />
 
-        <FormInput
-          label="Email"
-          inputProps={{
-            placeholder: "youremail@example.com",
-            name: "email",
-            type: "email",
-          }}
-        />
+    <form ref={formRef} action={formAction} className="mt-8 space-y-6">
+      <TwoCols>
+        <LabelInputWrapper labelTitle="Credential Name">
+          <Input required placeholder="Credential name" name="name" />
+        </LabelInputWrapper>
 
-        <FormInput
-          label="Password"
-          inputProps={{
-            placeholder: "Password",
-            name: "password",
-            type: "password"
-          }}
-        />
-        <SelectField
-          selectProps={{ name: "category" }}
-          label="Category"
-          options={["Logins", "Apps", "Websites", "Socials"]}
-        />
-        <FormInput
-          label="Website URL"
-          inputProps={{
-            placeholder: "marklibrary.com",
-            name: "websiteUrl",
-            type: "text"
-          }}
-        />
+        <LabelInputWrapper labelTitle="Username">
+          <Input placeholder="Username" name="username" />
+        </LabelInputWrapper>
+      </TwoCols>
 
-        <TagsDropdown />
-      </div>
+      <TwoCols>
+        <LabelInputWrapper labelTitle="Email">
+          <Input placeholder="email" name="email" />
+        </LabelInputWrapper>
+
+        <LabelInputWrapper labelTitle="Password">
+          <Input placeholder="*******" name="password" />
+        </LabelInputWrapper>
+      </TwoCols>
+
+
+      <TwoCols>
+        <LabelInputWrapper labelTitle="Website URL">
+          <Input placeholder="https://gmail.com" name="websiteUrl" />
+        </LabelInputWrapper>
+
+        <LabelInputWrapper labelTitle="Category">
+          <Select defaultValue="applications" name="category">
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="applications" />
+            </SelectTrigger>
+            <SelectContent>
+              {
+                CREDENTIAL_CATEGORIES.map(category => (
+                  <SelectItem key={category} value={`${category}`}>{category}</SelectItem>
+                ))
+              }
+            </SelectContent>
+          </Select>
+        </LabelInputWrapper>
+      </TwoCols>
 
       <div className="flex justify-center">
-        <button className="btn-primary px-10 py-2 mt-10 rounded-md">SUBMIT</button>
+        <Button type="submit">
+          Create Credential
+        </Button>
       </div>
-
     </form>
   )
 }
 
-export default CreateCredentialForm
+export default CreateCredentialForm;
+
+
+const TwoCols = ({ children }: PropsWithChildren) => {
+
+
+  return <div className="grid grid-cols-2 gap-x-6">
+    {children}
+  </div>
+}

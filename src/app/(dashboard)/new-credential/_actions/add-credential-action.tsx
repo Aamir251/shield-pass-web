@@ -1,32 +1,30 @@
 "use server"
 
 import { extractFormData } from "@/lib/helpers/form"
+import { checkIfSessionExists } from "@/lib/services/auth"
 import { CreateCredential } from "@/types/credentials"
 import { createCredentialUseCase } from "@/use-cases/credential"
-import { getServerSession } from "next-auth"
 import { revalidatePath } from "next/cache"
 
 export const addCredentialAction = async (formData: FormData) => {
 
-  const formFields = ["name", "username", "type", "email", "category", "password", "websiteUrl"] as const
+  const formFields = ["name", "username", "email", "category", "iv", "password", "websiteUrl"] as const
 
   const data = extractFormData(formData, formFields)
 
-  const tagsArray = formData.getAll("tags") as string[]
 
-  const tagsString = tagsArray?.length ? tagsArray.join("≅") : ""
+  // const tagsArray = formData.getAll("tags") as string[]
 
+  // const tagsString = tagsArray?.length ? tagsArray.join("≅") : ""
 
   try {
-    const session = await getServerSession()
-    if (!session?.user?.email) throw new Error("Session Expired")
+    const { email } = await checkIfSessionExists()
 
     const credentialObj: Omit<CreateCredential, "userId" | "sharedWith"> = {
       ...data,
-      tags : tagsString
     }
 
-    await createCredentialUseCase(session.user.email, credentialObj)
+    await createCredentialUseCase(email!, credentialObj)
 
     revalidatePath('/dashboard')
     return {

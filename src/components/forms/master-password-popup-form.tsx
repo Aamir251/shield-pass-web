@@ -5,7 +5,7 @@ import { Input } from "../ui/input"
 import LabelInputWrapper from "./label-input-wrapper"
 import toast from "react-hot-toast"
 import { masterPasswordFormAction } from "@/actions/master-password-action"
-import { generatePublicEncryptionKey, storeKeyLocally } from "@/lib/helpers/encryption-decryption"
+import { generatePublicEncryptionKey, storeKeyLocally } from "@/lib/helpers/cipher"
 
 
 type Props = {

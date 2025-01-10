@@ -10,3 +10,8 @@ export const CREDENTIAL_PAGE_CATEGORIES = [...CREDENTIAL_CATEGORIES, "recents", 
 export type CredentialCategory = typeof CREDENTIAL_CATEGORIES[number]
 
 export type CredentialCategoryPageType = typeof CREDENTIAL_PAGE_CATEGORIES[number]
+
+
+export enum ERRORS {
+  SESSION_EXPIRED = "Session Expired"
+}

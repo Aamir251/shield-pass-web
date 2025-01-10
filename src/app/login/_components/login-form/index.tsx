@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { extractFormData, handleAuthError, validateFormFields } from "@/lib/helpers/form";
 import Form from "@/components/forms/auth-form";
 import { showToastErrorMessage } from "@/lib/helpers/toast";
-import { generatePublicEncryptionKey, storeKeyLocally } from "@/lib/helpers/encryption-decryption";
+import { generatePublicEncryptionKey, storeKeyLocally } from "@/lib/helpers/cipher";
 import { BASE_URL } from "@/constants";
 
 

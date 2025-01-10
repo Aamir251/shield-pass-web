@@ -6,7 +6,7 @@ export type CreateCredential = Omit<Credential, "id" | "sharedWith" | "createdAt
 
 export type CredentialBasic = Pick<
   Credential,
-  "email" | "name" | "category" | "id" | "websiteUrl" | "updatedAt"
+  "email" | "name" | "category" | "id" | "websiteUrl" | "updatedAt" | "iv" | "password"
 >;
 
 

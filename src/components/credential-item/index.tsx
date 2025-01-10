@@ -1,9 +1,7 @@
 import { CredentialBasic } from "@/types/credentials"
-import Link from "next/link"
-import Image from "next/image"
-import CredentialItemBackground from "@/components/ui/credential-item-background"
 import ShowMoreActionsButton from "./show-more-button"
 import CredentialOverview from "./credential-overview"
+import CopyPasswordButton from "./copy-password-btn"
 
 type CredentialItemProps = {
   credential: CredentialBasic
@@ -11,17 +9,18 @@ type CredentialItemProps = {
 
 
 const CredentialItem = ({ credential }: CredentialItemProps) => {
-  
+
   return (
     <article
       className="relative p-6 border text-sm rounded-md overflow-hidden transition bg-card hover:bg-accent "
     >
-      
+
       <CredentialOverview credential={credential} />
       <ShowMoreActionsButton />
-      <CredentialItemBackground credentialId={credential.id} />
-
-    </article>  
+      <div  className="absolute bottom-5 right-3">
+        <CopyPasswordButton iv={credential.iv} password={credential.password} />
+      </div>
+    </article>
   )
 }
 

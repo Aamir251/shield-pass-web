@@ -7,18 +7,18 @@ const DashboardLayout = ({ children }: PropsWithChildren<{ params: any }>) => {
 
 
   return <EncryptionKeyContextProvider>
-  <main className="h-dvh mx-auto">
-    <TopNav />
-    <section className="flex gap-x-4 h-dvh">
+    <main className="h-dvh mx-auto">
+      <TopNav />
+      <section className="flex gap-x-4 h-dvh">
 
-      <MainSideBar />
+        <MainSideBar />
 
-      <div style={{ height: "calc(100dvh - 180px)" }} className="mt-auto w-full">
-        {children}
-      </div>
-
-    </section>
-  </main>
+        <div style={{ height: "calc(100dvh - 180px)" }} className="mt-auto w-full">
+          {children}
+        </div>
+        
+      </section>
+    </main>
   
   </EncryptionKeyContextProvider>
 }

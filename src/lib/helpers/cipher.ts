@@ -80,3 +80,18 @@ export const encryptPassword = async (password : string, key : CryptoKey ) => {
     iv: Buffer.from(iv).toString("base64"),
   };
 }
+
+
+export const decryptPassword = async (encryptedPassword : string, iv : string, key : CryptoKey) => {
+  const decoder = new TextDecoder();
+  const decrypted = await window.crypto.subtle.decrypt(
+    {
+      name: "AES-CBC",
+      iv: Buffer.from(iv, "base64"),
+    },
+    key,
+    Buffer.from(encryptedPassword, "base64")
+  );
+
+  return decoder.decode(decrypted);
+}

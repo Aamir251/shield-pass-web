@@ -28,6 +28,8 @@ export const getCredentialsByCategoryUseCase = async (
   email: string,
   category: CredentialCategory,
 ) => {
+
+  console.log({ email, category })
   const userExists = await getUserByEmail(email);
 
   if (!userExists) throw new Error("User Does not Exist");
@@ -36,12 +38,10 @@ export const getCredentialsByCategoryUseCase = async (
     throw new Error("Invalid Category");
   }
 
-  const credentialCategory =
-    category.charAt(0).toUpperCase() + category.slice(1);
 
   return await getCredentials(
     userExists.id,
-    credentialCategory,
+    category,
   );
 };
 

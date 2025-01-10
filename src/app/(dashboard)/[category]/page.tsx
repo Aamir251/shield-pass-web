@@ -28,7 +28,7 @@ const CredentialCategoryPage = async ({ params: { category } } : Props) => {
   let credentials : CredentialBasic[];
 
 
-
+  
   
 
   if (category === "recents") {

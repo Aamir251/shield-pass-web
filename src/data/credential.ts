@@ -17,7 +17,9 @@ export const getCredentials = async (
       id: true,
       category: true,
       websiteUrl: true,
-      updatedAt : true
+      updatedAt : true,
+      iv : true,
+      password : true
     },
   });
 };
@@ -152,7 +154,9 @@ export const getRecentCredentials = async (userId: string) => {
       id: true,
       category: true,
       websiteUrl: true,
-      updatedAt : true
+      updatedAt : true,
+      iv : true,
+      password : true
     }
   })
 }
@@ -183,7 +187,6 @@ export const getSearchResults = async (userId : string, searchString : string ) 
         { websiteUrl : { contains : searchString, mode : "insensitive" } },
         { username : { contains : searchString, mode : "insensitive" } },
         { email : { contains : searchString, mode : "insensitive" } },
-        { tags : { contains : searchString, mode : "insensitive"  } }
       ],
       
       AND : {

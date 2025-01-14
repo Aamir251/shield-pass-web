@@ -1,4 +1,5 @@
-import PasswordInput from "../inputs/password-input"
+import { Input } from "../ui/input"
+import LabelInputWrapper from "./label-input-wrapper"
 
 type FormProps = {
   isSignUpForm?: boolean
@@ -8,23 +9,24 @@ const Form = ({ isSignUpForm = false }: FormProps) => {
 
   return <>
     {
-      isSignUpForm && <div className="space-y-2.5">
-        <h5 className="text-lg">Username</h5>
-        <input placeholder="Robert Smith" type="text" name="username" />
-
-      </div>
+      isSignUpForm && <LabelInputWrapper labelTitle="Username">
+        <Input placeholder="username" name="username" required />
+      </LabelInputWrapper>
     }
-    <div className="space-y-2.5">
-      <h5 className="text-lg">Email</h5>
-      <input placeholder="robert@gmail.com" type="email" name="email" />
-    </div>
-    <PasswordInput label="Password" inputProps={{ name: "password", placeholder : "Password"}} />
+    <LabelInputWrapper labelTitle="Email">
+      <Input placeholder="email" type="email" name="email" required />
+    </LabelInputWrapper>
+
+    <LabelInputWrapper labelTitle="Password">
+      <Input placeholder="password" name="password" required type="password" />
+
+    </LabelInputWrapper>
 
     {
-      isSignUpForm && <PasswordInput 
-        label="Confirm Password" 
-        inputProps={{ name : "confirmPassword", placeholder : "Confirm Password"}} 
-      />
+      isSignUpForm && <LabelInputWrapper labelTitle="Confirm Password">
+        <Input placeholder="password" name="confirmPassword" required type="password" />
+
+      </LabelInputWrapper>
     }
   </>
 }

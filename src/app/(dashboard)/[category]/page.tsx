@@ -27,24 +27,19 @@ const CredentialCategoryPage = async ({ params: { category } } : Props) => {
   
   let credentials : CredentialBasic[];
 
-
-  
-  
-
   if (category === "recents") {
     credentials = await getRecentCredentialsUsecase(email!)
+
+    console.log({ credentials });
+    
     return <>
       <RecentCredentialsList credentials={credentials} />
-      
-
-      
     </>
   }
   
   if (category === "shared") {
     return <>
       <SharedCredentialsList />
-      
     </>
   }
 
@@ -52,7 +47,6 @@ const CredentialCategoryPage = async ({ params: { category } } : Props) => {
 
   return <>
     <CategoryCredentialsList credentials={credentials} />
-    
   </>
 
 

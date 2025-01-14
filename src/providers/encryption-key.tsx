@@ -41,8 +41,6 @@ const EncryptionKeyContextProvider = ({ children }: PropsWithChildren) => {
       }
 
       setEncryptionKey(key)
-
-      console.log("From Context Key ", key);
       
     }
 

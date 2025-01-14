@@ -1,19 +1,22 @@
-import { CredentialUpdate } from "@/types/credentials"
+import { CredentialBasic, CredentialUpdate } from "@/types/credentials"
 import { Button } from "../ui/button"
-import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog"
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog"
 import { Input } from "../ui/input"
-import { Label } from "../ui/label"
-import { PropsWithChildren } from "react"
 import LabelInputWrapper from "../forms/label-input-wrapper"
 
 type EditCredentialFormProps = {
-  credential: CredentialUpdate | null
+  credential: CredentialBasic | null
+
+  open : boolean
+  closeCallback : () => void
+
 }
 
-const EditCredentialForm = ({ credential }: EditCredentialFormProps) => {
+const EditCredentialForm = ({ open, closeCallback, credential }: EditCredentialFormProps) => {
 
 
   return (
+    <Dialog open={open} onOpenChange={closeCallback} >
     <DialogContent className="sm:max-w-[680px]">
       <DialogHeader>
         <DialogTitle>Edit Credential</DialogTitle>
@@ -58,6 +61,7 @@ const EditCredentialForm = ({ credential }: EditCredentialFormProps) => {
         <Button type="submit">Save changes</Button>
       </DialogFooter>
     </DialogContent>
+    </Dialog>
   )
 }
 

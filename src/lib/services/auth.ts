@@ -34,6 +34,7 @@ export const checkIfSessionExists = async () => {
 
   if (!session?.user?.email) throw new Error(ERRORS.SESSION_EXPIRED);
 
+  console.log({ session })
   return session.user;
 };
 

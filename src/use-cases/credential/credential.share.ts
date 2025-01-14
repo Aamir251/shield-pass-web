@@ -10,13 +10,16 @@ import { getUserByEmail } from "@/data/user";
 export const shareCredentialUseCase = async (
   ownerEmail: string,
   receiverEmail: string,
-  credentialId: string
+  credentialId: string,
+  password : string
 ) => {
+
   const receiverExists = await getUserByEmail(receiverEmail);
+  const owner = await getUserByEmail(ownerEmail);
 
   if (!receiverExists) throw new Error("User does not exist");
 
-  return await shareCredential(ownerEmail, receiverExists.id, credentialId);
+  return await shareCredential(owner?.id!, receiverExists.id, credentialId, password);
 };
 
 export const getMyCredentialRecipientsUseCase = async (

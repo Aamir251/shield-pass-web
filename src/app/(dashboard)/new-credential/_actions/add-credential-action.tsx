@@ -4,7 +4,6 @@ import { extractFormData } from "@/lib/helpers/form"
 import { checkIfSessionExists } from "@/lib/services/auth"
 import { CreateCredential } from "@/types/credentials"
 import { createCredentialUseCase } from "@/use-cases/credential"
-import { revalidatePath } from "next/cache"
 
 export const addCredentialAction = async (formData: FormData) => {
 
@@ -26,7 +25,6 @@ export const addCredentialAction = async (formData: FormData) => {
 
     await createCredentialUseCase(email!, credentialObj)
 
-    revalidatePath('/dashboard')
     return {
       success: true
     }

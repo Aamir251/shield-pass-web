@@ -8,12 +8,16 @@ export const shareCredentialAction = async (credentialId: string, formData: Form
 
   try {
 
-    const { email } = await checkIfSessionExists()
-    const targetEmail = formData.get("email") as string
+    const { email } = await checkIfSessionExists() // ID of the owner
 
-    if (!targetEmail) throw new Error("Please Enter Email")
+    // console.log({ ownerId : id, credentialId  })
+    const recipientEmail = formData.get("email") as string
 
-    await shareCredentialUseCase(email!, targetEmail, credentialId)
+    const encryptedPassword = formData.get("password") as string
+
+    if (!encryptedPassword) throw new Error("Password Not Found")
+    
+    await shareCredentialUseCase(email!, recipientEmail, credentialId, encryptedPassword)
 
     return {
       success: true

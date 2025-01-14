@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { extractFormData, handleAuthError, validateFormFields } from "@/lib/helpers/form";
 import Form from "@/components/forms/auth-form";
 import { showToastErrorMessage } from "@/lib/helpers/toast";
-import { generatePublicEncryptionKey, storeKeyLocally } from "@/lib/helpers/cipher";
+import {  generatePrivateEncryptionKey, storeKeyLocally } from "@/lib/helpers/cipher";
 import { BASE_URL } from "@/constants";
 
 
@@ -29,11 +29,13 @@ const LoginForm = () => {
       
       const resp = await signIn("credentials", { email, password, redirect : false })
       resp?.error && handleAuthError(resp.error)
-      
-      
-      const key = await generatePublicEncryptionKey(email, password)
 
-      await storeKeyLocally(key) // stores it to local storage
+
+      
+      
+      const encryptionKey = await generatePrivateEncryptionKey(password)
+
+      await storeKeyLocally(encryptionKey) // stores it to local storage
 
       const callbackUrl = searchParams.get("callbackUrl")
 

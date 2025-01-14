@@ -20,9 +20,12 @@ import { Input } from "@/components/ui/input";
 import LabelInputWrapper from "@/components/forms/label-input-wrapper";
 import { useEncryptionKeyContext } from "@/providers/encryption-key";
 import { encryptPassword } from "@/lib/helpers/cipher";
+import { useToast } from "@/hooks/use-toast";
 
 
 const CreateCredentialForm = () => {
+
+  const { toast } = useToast()
 
   const { encryptionKey } = useEncryptionKeyContext()
 
@@ -61,7 +64,9 @@ const CreateCredentialForm = () => {
       // show a toast
     } else {
 
-      showSuccessToastMessage("Credential Added!")
+      toast({
+        title : "Credential Created 🎉"
+      })
       formRef?.current?.reset()
     }
   }

@@ -5,7 +5,7 @@ import { Input } from "../ui/input"
 import LabelInputWrapper from "./label-input-wrapper"
 import toast from "react-hot-toast"
 import { masterPasswordFormAction } from "@/actions/master-password-action"
-import { generatePublicEncryptionKey, storeKeyLocally } from "@/lib/helpers/cipher"
+import { generatePrivateEncryptionKey, storeKeyLocally } from "@/lib/helpers/cipher"
 
 
 type Props = {
@@ -53,7 +53,7 @@ const Form = ({ children, successEncryptionCallback }: PropsWithChildren<Props>)
       if (!email) throw new Error("Invalid Password")
 
       // generate encryption key
-      const key = await generatePublicEncryptionKey(email, password);
+      const key = await generatePrivateEncryptionKey(email, password);
 
       await storeKeyLocally(key)
 

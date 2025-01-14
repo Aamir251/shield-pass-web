@@ -14,15 +14,20 @@ export const getUserByEmail = async (email: string) => {
   return user ? userDtoMapper(user) : null;
 };
 
-type NewUser = {
+export type NewUser = {
   name: string;
   email: string;
   password: string;
+  publicKey : string
 };
 
-export const createNewUser = async ({ name, email, password }: NewUser) => {
-  return await dbClient.user.create({ data: { name, email, password } });
+export const createNewUser = async ({ name, email, password, publicKey }: NewUser) => {
+  return await dbClient.user.create({ data: { name, email, password, publicKey } });
 };
 
 export const getCompleteUser = async (email: string) =>
   await dbClient.user.findUnique({ where: { email } });
+
+
+export const getRecipientPublicKey = async(email : string) =>
+  await dbClient.user.findUnique({ where : { email }, select : { publicKey : true, id : true } })

@@ -15,3 +15,9 @@ export type CredentialCategoryPageType = typeof CREDENTIAL_PAGE_CATEGORIES[numbe
 export enum ERRORS {
   SESSION_EXPIRED = "Session Expired"
 }
+
+
+export enum LOCALSTORAGE_KEYS {
+  PRIVATE_KEY = "sp-private-key",
+  ENCRYPTION_KEY = "sp-encryption-key"
+}

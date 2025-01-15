@@ -1,7 +1,19 @@
+import ErrorMessage from "@/components/ErrorMessage"
+import { CredentialSharedWithMe } from "@/constants"
+import SharedCredentialItem from "./shared-credential-item"
 
-const SharedCredentialsList = () => {
+type Props = {
+  credentials : CredentialSharedWithMe[]
+}
+
+
+const SharedCredentialsList = ({ credentials } : Props) => {
+
+  if (!credentials.length) {
+    return <ErrorMessage message="No Shared Credentials" />
+  }
   return (
-    <div>RecentCredentialsList</div>
+    credentials.map(credential => <SharedCredentialItem credential={credential} key={credential.id} />)
   )
 }
 

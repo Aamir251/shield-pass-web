@@ -104,10 +104,29 @@ export const getMyCredentialRecipients = async (
 /**
  * Gets the list of credentials that was shared to a User
  */
+
 export const getCredentialsSharedWithMe = async (userId: string) => {
 
-
-  return [];
+  return await dbClient.sharedCredential.findMany({
+    where : {
+      recipientId : userId,
+      
+    },
+    select : {
+      password : true,
+      id : true,
+      credential : {
+        select : {
+          name : true,
+          email : true,
+          websiteUrl : true,
+          category : true,
+          username : true,
+          updatedAt : true
+        }
+      }
+    },
+  })
 
 };
 

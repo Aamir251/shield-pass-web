@@ -1,10 +1,11 @@
-import { CREDENTIAL_PAGE_CATEGORIES, CredentialCategory, CredentialCategoryPageType } from "@/constants"
+import { CREDENTIAL_PAGE_CATEGORIES, CredentialCategory, CredentialCategoryPageType, CredentialSharedWithMe } from "@/constants"
 import { checkIfSessionExists } from "@/lib/services/auth"
 import { getCredentialsByCategoryUseCase, getRecentCredentialsUsecase } from "@/use-cases/credential"
 import CategoryCredentialsList from "./_components/category-credentials-list"
 import RecentCredentialsList from "./_components/recent-credentials-list"
 import SharedCredentialsList from "./_components/shared-credentials-list"
 import { CredentialBasic } from "@/types/credentials"
+import { getSharedCredentialsUseCase } from "@/use-cases/credential/credential.share"
 
 
 type Props = {
@@ -38,8 +39,9 @@ const CredentialCategoryPage = async ({ params: { category } } : Props) => {
   }
   
   if (category === "shared") {
+    const sharedCredentials : CredentialSharedWithMe[] = await getSharedCredentialsUseCase(email!)
     return <>
-      <SharedCredentialsList />
+      <SharedCredentialsList credentials={sharedCredentials} />
     </>
   }
 

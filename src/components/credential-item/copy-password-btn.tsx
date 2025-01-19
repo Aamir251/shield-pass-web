@@ -1,6 +1,6 @@
 "use client";
 
-import { decryptPassword } from "@/lib/helpers/cipher";
+import { decryptCredentialPassword } from "@/lib/helpers/cipher";
 import { Button } from "../ui/button";
 import { useEncryptionKeyContext } from "@/providers/encryption-key";
 import { useToast } from "@/hooks/use-toast";
@@ -12,12 +12,14 @@ import { useToast } from "@/hooks/use-toast";
 
 
 type CopyPasswordButtonProps = {
-  iv: string
-  password: string
+  password : {
+    data : string
+    iv : string
+  }
 }
 
 
-const CopyPasswordButton = ({ iv, password }: CopyPasswordButtonProps) => {
+const CopyPasswordButton = ({ password }: CopyPasswordButtonProps) => {
 
   const { encryptionKey } = useEncryptionKeyContext()
   const { toast } = useToast()
@@ -25,7 +27,7 @@ const CopyPasswordButton = ({ iv, password }: CopyPasswordButtonProps) => {
 
   const handleClick = async () => {
 
-    await navigator.clipboard.writeText(await decryptPassword(password, iv, encryptionKey!))
+    await navigator.clipboard.writeText(await decryptCredentialPassword(password.data, password.iv, encryptionKey!))
     toast({
       title: "Password Copied! 🎉"
     })

@@ -13,6 +13,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+type SharedPrivateKey {
+  data   String
+  salt  String
+  iv    String
+}
+
 model User {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
   name          String?
@@ -22,20 +28,23 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  publicKey String
 
-  password         String
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @updatedAt
+  password      String
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
 
-  
   SharedCredential SharedCredential[]
   Credential       Credential[]
+
+  sharedPublicKey     String
+
+  sharedPrivateKey   SharedPrivateKey   // This encrypted format is created client using algorithm depended on privateKeyPair & Master Password
+
 }
 
 type CredentialPassword {
-  iv                String
-  encryptedPassword String
+  iv    String
+  data  String
 }
 
 model Account {
@@ -72,17 +81,19 @@ model Session {
 }
 
 model SharedCredential {
-  id           String     @id @default(auto()) @map("_id") @db.ObjectId
-  credential   Credential @relation(fields: [credentialId], references: [id])
-  credentialId String     @db.ObjectId
+  id            String     @id @default(auto()) @map("_id") @db.ObjectId
+  credential    Credential @relation(fields: [credentialId], references: [id])
+  credentialId  String     @db.ObjectId
 
-  ownerId String @db.ObjectId
+  ownerId       String @db.ObjectId
 
-  recipient   User   @relation(fields: [recipientId], references: [id])
-  recipientId String @db.ObjectId
+  recipient     User   @relation(fields: [recipientId], references: [id])
+  recipientId   String @db.ObjectId
 
   password String
 }
+
+
 
 model Credential {
   id         String @id @default(auto()) @map("_id") @db.ObjectId
@@ -92,8 +103,7 @@ model Credential {
   category   String
   websiteUrl String
 
-  iv       String
-  password String
+  password   CredentialPassword
 
   user   User   @relation(fields: [userId], references: [id])
   userId String @db.ObjectId

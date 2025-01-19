@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import LabelInputWrapper from "@/components/forms/label-input-wrapper";
 import { useEncryptionKeyContext } from "@/providers/encryption-key";
-import { encryptPassword } from "@/lib/helpers/cipher";
+import { encryptCredentialPassword } from "@/lib/helpers/cipher";
 import { useToast } from "@/hooks/use-toast";
 
 
@@ -39,11 +39,11 @@ const CreateCredentialForm = () => {
 
     const password = formData.get("password") as string
     // Encrypt Password
-    const passwordObject = await encryptPassword(password, encryptionKey!)
+    const passwordObject = await encryptCredentialPassword(password, encryptionKey!)
 
 
-    formData.set("iv", passwordObject.iv)
-    formData.set("password", passwordObject.encryptedPassword)
+    formData.set("passwordIV", passwordObject.iv)
+    formData.set("passwordData", passwordObject.data)
     
     const resp = await addCredentialAction(formData)
 

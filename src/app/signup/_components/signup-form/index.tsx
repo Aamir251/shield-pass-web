@@ -8,7 +8,7 @@ import { extractFormData, validateFormFields } from "@/lib/helpers/form";
 import Form from "@/components/forms/auth-form";
 import { signUpAction } from "../../_actions/signup-action";
 import { BASE_URL, LOCALSTORAGE_KEYS } from "@/constants";
-import { convertPublickKeytoBase64, generateKeyPair, generatePrivateEncryptionKey, storeKeyLocally } from "@/lib/helpers/cipher";
+import { convertCryptoKeyToString, encryptSharedPrivateKey, generateEncryptionKey, generateKeyPair, storeEncryptionKeyLocally } from "@/lib/helpers/cipher";
 import { saveDataToLocalStorage } from "@/lib/helpers/utils";
 import { useToast } from "@/hooks/use-toast";
 
@@ -31,31 +31,33 @@ const SignUpForm = () => {
 
       // store this public as a field in User Details  
       const { publicKey, privateKey } = await generateKeyPair()
-      // the publicKey key is BufferArray format which needs to converted into string format for storing it in database
-      const publicKeyInStringFormat: string = convertPublickKeytoBase64(publicKey)
-      const privateKeyInStringFormat: string = convertPublickKeytoBase64(privateKey)
+      // the publicKey key is CryptoKey format which needs to converted into string format for storing it in database
 
-      // save the private key in local storage
-      saveDataToLocalStorage(LOCALSTORAGE_KEYS.PRIVATE_KEY, privateKeyInStringFormat)
+      const publicKeyInStringFormat: string = await convertCryptoKeyToString(publicKey)
+
+      // const privateKeyInStringFormat = convertArrayBuffertoBase64(privateKey)
+
+      const sharedPrivateKey = await encryptSharedPrivateKey(privateKey, password)
 
       // the public key is stored in database
-      formData.set("publicKey", publicKeyInStringFormat)
+      formData.set("sharedPublicKey", publicKeyInStringFormat)
+
+      formData.set("sharedPrivateKey", JSON.stringify(sharedPrivateKey))
 
       const resp = await signUpAction({ error: "" }, formData)
 
       if (resp?.error) throw Error(resp.error)
 
 
-      // Create a private encryption key for encrypting my credentials and save it
+      // // Create a private encryption key for encrypting my credentials and save it
+      const encryptionKey = await generateEncryptionKey(email, password)
 
-      const encryptionKey = await generatePrivateEncryptionKey(email, password)
-
-      await storeKeyLocally(encryptionKey)
-
+      await storeEncryptionKeyLocally(encryptionKey)
 
 
 
-      // Loggin In at the same time
+
+      // // Loggin In at the same time
       const signInResp = await signIn("credentials", { email, password, redirect: false })
 
       if (!signInResp?.ok) throw new Error(`${signInResp?.error}`)

@@ -49,20 +49,16 @@ const ShareCredentialForm = ({ credential, recipientsData, mutate }: ShareCreden
 
       if (!credential?.id) throw new Error("Credential Not Selected! ")
 
-      const credentialHash = {
-        iv: credential.iv,
-        password: credential.password,
-        secretKey: encryptionKey!
-      }
-
-      console.log({ credentialHash  });
+      
       
 
-      const { error, finalPasswordInString } = await shareCredentialMiddleware({
-        credentialHash: {
-          iv: credential.iv,
-          password: credential.password,
-          secretKey: encryptionKey!
+      const { error, finalPassword } = await shareCredentialMiddleware({
+        passwordEncryption: {
+          password : {
+            data : credential.password.data,
+            iv : credential.password.iv
+          },
+          secretKey : encryptionKey!
         },
         recipientEmail
       })
@@ -71,10 +67,10 @@ const ShareCredentialForm = ({ credential, recipientsData, mutate }: ShareCreden
 
       
 
-      console.log({ finalPasswordInString });
+      console.log({ finalPassword });
       
 
-      formData.set("password", finalPasswordInString!)
+      formData.set("password", finalPassword!)
       formData.set("credentialId", credentialId)
 
       const resp = await shareCredentialAction(credentialId, formData)

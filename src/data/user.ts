@@ -18,11 +18,16 @@ export type NewUser = {
   name: string;
   email: string;
   password: string;
-  publicKey : string
+  sharedPublicKey : string
+  sharedPrivateKey : {
+    iv : string
+    salt : string
+    data : string
+  }
 };
 
-export const createNewUser = async ({ name, email, password, publicKey }: NewUser) => {
-  return await dbClient.user.create({ data: { name, email, password, publicKey } });
+export const createNewUser = async ({ name, email, password, sharedPublicKey, sharedPrivateKey }: NewUser) => {
+  return await dbClient.user.create({ data: { name, email, password, sharedPublicKey, sharedPrivateKey } });
 };
 
 export const getCompleteUser = async (email: string) =>
@@ -30,4 +35,4 @@ export const getCompleteUser = async (email: string) =>
 
 
 export const getRecipientPublicKey = async(email : string) =>
-  await dbClient.user.findUnique({ where : { email }, select : { publicKey : true, id : true } })
+  await dbClient.user.findUnique({ where : { email }, select : { sharedPublicKey : true, id : true } })

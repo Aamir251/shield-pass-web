@@ -7,7 +7,15 @@ import { createCredentialUseCase } from "@/use-cases/credential"
 
 export const addCredentialAction = async (formData: FormData) => {
 
-  const formFields = ["name", "username", "email", "category", "iv", "password", "websiteUrl"] as const
+  const createCredentialDto = (credential :  Omit<CreateCredential, "userId" | "sharedWith">) => {
+    const { category, email, name, password, username, websiteUrl } = credential;
+
+    return {
+      category, email, name, password, username, websiteUrl
+    }
+  }
+
+  const formFields = ["name", "username", "email", "category", "passwordIV", "passwordData", "websiteUrl"] as const
 
   const data = extractFormData(formData, formFields)
 
@@ -21,9 +29,16 @@ export const addCredentialAction = async (formData: FormData) => {
 
     const credentialObj: Omit<CreateCredential, "userId" | "sharedWith"> = {
       ...data,
+      password : {
+        iv : data.passwordIV,
+        data : data.passwordData
+      }
     }
 
-    await createCredentialUseCase(email!, credentialObj)
+
+    const credentialToCreate = createCredentialDto(credentialObj)
+
+    await createCredentialUseCase(email!, credentialToCreate)
 
     return {
       success: true

@@ -6,28 +6,29 @@
  */
 
 import { getRecipientPublicKey } from "@/data/user"
-import { convertPublickKeytoBase64, decryptPassword, encryptCredentialForSharing } from "@/lib/helpers/cipher"
+import { decryptCredentialPassword, encryptSharedCredentialPassword } from "@/lib/helpers/cipher"
 import { CredentialBasic } from "@/types/credentials"
 
 
-type CredentialHash = Pick<CredentialBasic, "iv" | "password"> & {
+type CredentialPasswordEncryption = Pick<CredentialBasic, "password"> & {
   secretKey: CryptoKey // Owner's secret key that is used to encrypt and decrypt his credential's password
 }
 
 type ShareCredentialMiddlewareProps = {
-  credentialHash: CredentialHash,
+  passwordEncryption: CredentialPasswordEncryption,
   recipientEmail: string
 }
 
 
 export const shareCredentialMiddleware = async ({
-  credentialHash,
+  passwordEncryption,
   recipientEmail
 }: ShareCredentialMiddlewareProps) => {
 
   try {
 
-    const plainPassword = await decryptPassword(credentialHash.password, credentialHash.iv, credentialHash.secretKey)
+    const { password, secretKey } = passwordEncryption
+    const plainPassword = await decryptCredentialPassword(password.data, password.iv, secretKey)
 
     /**
      * decrypt the actual password and encrypt it using recipient's public key
@@ -36,14 +37,14 @@ export const shareCredentialMiddleware = async ({
 
     if (error) throw new Error(error)
 
-    const finalPassword = await encryptCredentialForSharing(plainPassword, recipientPublicKey)
-
-    // convert the passwordToShare (Array Buffer Format) into string format
-    const finalPasswordInString = convertPublickKeytoBase64(finalPassword)
+    /**
+     * Encrypt the password using recipient public key which can be shared with the Recipient
+    */
+    const finalPassword = await encryptSharedCredentialPassword(plainPassword, recipientPublicKey)
 
 
     return {
-      finalPasswordInString
+      finalPassword
     }
   } catch (error : any ) {
 

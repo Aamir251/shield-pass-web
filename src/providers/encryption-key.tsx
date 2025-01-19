@@ -1,7 +1,7 @@
 "use client";
 
 
-import { getKeyFromLocalStorage } from "@/lib/helpers/cipher";
+import { getEncryptionKeyFromLocalStorage } from "@/lib/helpers/cipher";
 import { createContext, PropsWithChildren, useContext, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button"
 import {
@@ -33,7 +33,7 @@ const EncryptionKeyContextProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
 
     const init = async () => {
-      const key = await getKeyFromLocalStorage()
+      const key = await getEncryptionKeyFromLocalStorage()
       if (!key?.extractable) {
         setIsDrawerOpen(true)
 

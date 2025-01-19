@@ -23,7 +23,6 @@ export const getCredentials = async (
       category: true,
       websiteUrl: true,
       updatedAt : true,
-      iv : true,
       password : true
     },
   });
@@ -166,7 +165,6 @@ export const getRecentCredentials = async (userId: string) => {
       category: true,
       websiteUrl: true,
       updatedAt : true,
-      iv : true,
       password : true
     }
   })

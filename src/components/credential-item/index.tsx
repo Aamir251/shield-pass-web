@@ -18,7 +18,7 @@ const CredentialItem = ({ credential }: CredentialItemProps) => {
       <CredentialOverview credential={credential} />
       <ShowMoreActionsButton credential={credential} />
       <div  className="absolute bottom-5 right-3">
-        <CopyPasswordButton iv={credential.iv} password={credential.password} />
+        <CopyPasswordButton password={credential.password} />
       </div>
     </article>
   )

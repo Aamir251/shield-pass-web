@@ -21,6 +21,7 @@ export const createCredentialUseCase = async (
 
   if (!userExists) throw new Error("Invalid User");
 
+
   await createCredential({ ...credential, userId: userExists.id });
 };
 
@@ -95,9 +96,7 @@ export const getRecentCredentialsUsecase = async (email: string) => {
   const userExists = await getUserByEmail(email)
   if (!userExists) throw new Error("User Not Found")
 
-
   return await getRecentCredentials(userExists.id)
-
 }
 
 export const searchCredentialUseCase = async (email : string, searchString : string) =>

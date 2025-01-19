@@ -36,7 +36,7 @@ enum KnownErrorMessages {
 
 export const handleAuthError = (errorMessage: KnownErrorMessages | string) => {
   if (errorMessage === KnownErrorMessages.CredentialsSignin)
-    throw new Error("User Not found");
+    throw new Error("Incorrect Email or Password");
   if (errorMessage === KnownErrorMessages.InvalidPassword)
     throw new Error("Incorrect Password");
 };

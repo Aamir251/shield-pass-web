@@ -5,14 +5,20 @@ import { createUserUseCase } from "@/use-cases/user";
 
 export const signUpAction = async (prevState: any, formData: FormData) => {
   try {
-    const formFields = ["username", "email", "password", "publicKey"] as const;
+    const formFields = ["username", "email", "password", "sharedPublicKey", "sharedPrivateKey"] as const;
 
-    const { username, email, password, publicKey } = extractFormData(formData, formFields);
-
-   
+    let { username, email, password, sharedPublicKey, sharedPrivateKey : privateKey  } = extractFormData(formData, formFields);
     
 
-    await createUserUseCase({ name : username, email, password, publicKey });
+    const sharedPrivateKey = JSON.parse(privateKey) as {
+      iv : string
+      salt : string
+      data : string
+    };
+
+
+
+    await createUserUseCase({ name : username, email, password, sharedPublicKey, sharedPrivateKey });
   } catch (error: any) {
     return {
       error: error.message,

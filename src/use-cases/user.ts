@@ -1,8 +1,7 @@
 import { createNewUser, getUserByEmail, NewUser } from "@/data/user";
-import { authenticateUser } from "@/lib/services/auth";
 import bcrypt from "bcrypt";
 
-export const createUserUseCase = async ({ email, password, publicKey, name } : NewUser) => {
+export const createUserUseCase = async ({ name, email, password, sharedPublicKey, sharedPrivateKey } : NewUser) => {
 
 
   const SALT_ROUNDS = 10;
@@ -16,7 +15,8 @@ export const createUserUseCase = async ({ email, password, publicKey, name } : N
     name,
     email,
     password: hashedPassword,
-    publicKey
+    sharedPublicKey,
+    sharedPrivateKey
   };
   
   await createNewUser(userToCreate);

@@ -11,13 +11,13 @@ export async function GET(req: NextApiRequest) {
 
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET as string })
 
-    if (token) {
-      const credentials = await getSharedCredentialsUseCase(token.email as string)
 
-      console.log({ credentials })
-      return Response.json({ credentials }, { status: 200 })
+    if (!token) throw new Error("unauthorized")
+    const { credentials, sharedPrivateKey } = await getSharedCredentialsUseCase(token.email as string)
 
-    }
+    console.log({ credentials })
+    return Response.json({ success : true, credentials, sharedPrivateKey }, { status: 200 })
+
 
 
 

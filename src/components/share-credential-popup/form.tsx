@@ -48,7 +48,6 @@ const ShareCredentialForm = ({ credential, recipientsData, mutate }: ShareCreden
       if (!recipientEmail) throw new Error("Please Enter Email")
 
       if (!credential?.id) throw new Error("Credential Not Selected! ")
-
       
       
 
@@ -65,9 +64,6 @@ const ShareCredentialForm = ({ credential, recipientsData, mutate }: ShareCreden
 
       if (error) throw new Error(error)
 
-      
-
-      console.log({ finalPassword });
       
 
       formData.set("password", finalPassword!)
@@ -89,7 +85,6 @@ const ShareCredentialForm = ({ credential, recipientsData, mutate }: ShareCreden
         toast({
           title: "Credential Shared 🥳"
         })
-        // show toast success message
 
         // const existingRecipients = recipientsData?.recipients ?? []
         // mutate({ ...recipientsData, recipients: [...existingRecipients, formData.get("email")] })

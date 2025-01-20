@@ -22,8 +22,8 @@ export const getCredentials = async (
       id: true,
       category: true,
       websiteUrl: true,
-      updatedAt : true,
-      password : true
+      updatedAt: true,
+      password: true
     },
   });
 };
@@ -61,11 +61,11 @@ export const shareCredential = async (
   ownerId: string,
   recipientId: string,
   credentialId: string,
-  password : string
+  password: string
 ) => {
-  
+
   await dbClient.sharedCredential.create({
-    data : {
+    data: {
       credentialId,
       password,
       ownerId,
@@ -83,49 +83,91 @@ export const getMyCredentialRecipients = async (
 ) => {
 
   const resp = await dbClient.user.findMany({
-    where : {
-      SharedCredential : {
-        every : {
-          credentialId : credentialId,
-          AND : {
-            ownerId : ownerId
+    where: {
+      SharedCredential: {
+        every: {
+          credentialId: credentialId,
+          AND: {
+            ownerId: ownerId
           },
         },
       }
     },
-    select : {
-      email : true
+    select: {
+      email: true
     }
   })
-  
+
 };
 
 /**
  * Gets the list of credentials that was shared to a User
  */
 
+type SharedCredentialRaw = {
+  credential: {
+    name: string;
+    username: string;
+    email: string;
+    category: string;
+    websiteUrl: string;
+    updatedAt: Date;
+  };
+  password: string;
+  id: string;
+}
+
+
+function sharedCredentialDto(credentials:SharedCredentialRaw[] ) {
+
+  return credentials.map(({ id, password, credential: { email, category, name, updatedAt, username, websiteUrl } }) => ({
+    id,
+    name,
+    email,
+    websiteUrl,
+    category,
+    username,
+    updatedAt,
+    password 
+  }))
+
+}
 export const getCredentialsSharedWithMe = async (userId: string) => {
 
-  return await dbClient.sharedCredential.findMany({
-    where : {
-      recipientId : userId,
-      
+  const credentials =  await dbClient.sharedCredential.findMany({
+    where: {
+      recipientId: userId,
+
     },
-    select : {
-      password : true,
-      id : true,
-      credential : {
-        select : {
-          name : true,
-          email : true,
-          websiteUrl : true,
-          category : true,
-          username : true,
-          updatedAt : true
+    select: {
+      password: true,
+      id: true,
+      credential: {
+        select: {
+          name: true,
+          email: true,
+          websiteUrl: true,
+          category: true,
+          username: true,
+          updatedAt: true
         }
       }
     },
   })
+
+  const sharedPrivateKey = await dbClient.user.findUnique({
+    where : {
+      id : userId,
+    },
+    select : {
+      sharedPrivateKey : true
+    }
+  })
+
+  return {
+    credentials : sharedCredentialDto(credentials),
+    sharedPrivateKey : sharedPrivateKey?.sharedPrivateKey
+  }
 
 };
 
@@ -164,8 +206,8 @@ export const getRecentCredentials = async (userId: string) => {
       id: true,
       category: true,
       websiteUrl: true,
-      updatedAt : true,
-      password : true
+      updatedAt: true,
+      password: true
     }
   })
 }
@@ -187,28 +229,28 @@ export const removeCredentialAccess = async (credentialId: string, ownerId: stri
 }
 
 
-export const getSearchResults = async (userId : string, searchString : string ) => {
+export const getSearchResults = async (userId: string, searchString: string) => {
 
   return await dbClient.credential.findMany({
-    where : {
-      OR : [
-        { name : { contains : searchString, mode : "insensitive"} },
-        { websiteUrl : { contains : searchString, mode : "insensitive" } },
-        { username : { contains : searchString, mode : "insensitive" } },
-        { email : { contains : searchString, mode : "insensitive" } },
+    where: {
+      OR: [
+        { name: { contains: searchString, mode: "insensitive" } },
+        { websiteUrl: { contains: searchString, mode: "insensitive" } },
+        { username: { contains: searchString, mode: "insensitive" } },
+        { email: { contains: searchString, mode: "insensitive" } },
       ],
-      
-      AND : {
+
+      AND: {
         userId,
       }
     },
 
-    select : {
-      websiteUrl : true,
-      name : true,
-      email : true,
-      id : true,
-      category : true
+    select: {
+      websiteUrl: true,
+      name: true,
+      email: true,
+      id: true,
+      category: true
     }
   })
 
@@ -230,13 +272,13 @@ export const getSearchResults = async (userId : string, searchString : string ) 
 
   //   return creds
   // } catch (error) {
-    
+
   //   console.log({ error });
-    
+
   // }
 
   // return []
 
 
-  
+
 }

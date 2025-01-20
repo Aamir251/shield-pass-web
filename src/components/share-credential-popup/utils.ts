@@ -6,7 +6,7 @@
  */
 
 import { getRecipientPublicKey } from "@/data/user"
-import { decryptCredentialPassword, encryptSharedCredentialPassword } from "@/lib/helpers/cipher"
+import { convertStringToCryptoKey, decryptCredentialPassword, encryptSharedCredentialPassword } from "@/lib/helpers/cipher"
 import { CredentialBasic } from "@/types/credentials"
 
 
@@ -27,7 +27,9 @@ export const shareCredentialMiddleware = async ({
 
   try {
 
+
     const { password, secretKey } = passwordEncryption
+
     const plainPassword = await decryptCredentialPassword(password.data, password.iv, secretKey)
 
     /**
@@ -35,19 +37,23 @@ export const shareCredentialMiddleware = async ({
     */
     const { recipientPublicKey, error } = await fetchRecipientPublicKey(recipientEmail)
 
-    if (error) throw new Error(error)
+    if (error || !recipientPublicKey) throw new Error(error)
 
+
+    console.log({ recipientPublicKey })
     /**
      * Encrypt the password using recipient public key which can be shared with the Recipient
     */
     const finalPassword = await encryptSharedCredentialPassword(plainPassword, recipientPublicKey)
 
-
+    console.log({ finalPassword })
     return {
       finalPassword
     }
   } catch (error : any ) {
 
+
+    console.log("ERROR ", error)
 
     return {
       error : error.message
@@ -69,9 +75,18 @@ async function fetchRecipientPublicKey(recipientEmail: string) {
     const data = await resp.json()
     if (!data.success) throw new Error(data.message)
 
+    console.log({ data })
+    
+    const key = data.recipientPublicKey as string // this is in string format
+
+    // convert key (string) to CryptoKey format
+
+    console.log({ key })
+
+    const recipientPublicKey = await convertStringToCryptoKey(key)
 
     return {
-      recipientPublicKey : data.recipientPublicKey
+      recipientPublicKey
     }
 
   } catch (error: any) {

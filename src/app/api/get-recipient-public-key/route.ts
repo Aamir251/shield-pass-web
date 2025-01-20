@@ -15,7 +15,7 @@ export const GET = async (req: NextRequest) => {
 
     if (!data) throw new Error("User does not Exist")
 
-    return Response.json({ success : true, recipientPublicKey : data?.publicKey  }, { status: 200 })
+    return Response.json({ success : true, recipientPublicKey : data?.sharedPublicKey  }, { status: 200 })
   } catch (error : any) {
 
     return Response.json({ success : false, message : error.message }, { status: 404 })

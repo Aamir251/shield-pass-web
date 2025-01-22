@@ -152,6 +152,12 @@
   .tags-input:focus + .tags-list {
     display: none;
   }
+
+
+  .recipient-tooltip {
+    @apply absolute z-10 -top-5 bg-black px-2 py-1 text-xs left-0 hidden
+  }
+  
 }
 
 
@@ -171,4 +177,9 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+
+.recipient-item:hover .recipient-tooltip {
+  display: block;
 }

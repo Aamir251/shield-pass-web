@@ -1,5 +1,9 @@
 "use server";
 
+
+/**
+ * Checks if the password is valid or not
+ */
 import { authenticateUser, checkIfSessionExists } from "@/lib/services/auth";
 
 

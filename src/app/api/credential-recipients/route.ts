@@ -17,6 +17,8 @@ const handler = async (req: NextRequest) => {
       session.email!
     );
 
+    console.log({ response })
+
     return Response.json({ success: true, recipients: response });
   } catch (error: any) {
     console.log({ error });

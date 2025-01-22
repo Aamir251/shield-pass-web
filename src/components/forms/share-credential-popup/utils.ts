@@ -5,7 +5,6 @@
  * and returns this new encrypted password created explicitly for the recipient
  */
 
-import { getRecipientPublicKey } from "@/data/user"
 import { convertStringToCryptoKey, decryptCredentialPassword, encryptSharedCredentialPassword } from "@/lib/helpers/cipher"
 import { CredentialBasic } from "@/types/credentials"
 

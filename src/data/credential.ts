@@ -82,21 +82,23 @@ export const getMyCredentialRecipients = async (
   ownerId: string
 ) => {
 
-  const resp = await dbClient.user.findMany({
-    where: {
-      SharedCredential: {
-        every: {
-          credentialId: credentialId,
-          AND: {
-            ownerId: ownerId
-          },
-        },
-      }
+
+  const resp = await dbClient.sharedCredential.findMany({
+    where : {
+      credentialId,
+      ownerId
     },
-    select: {
-      email: true
+    select : {
+      recipient : {
+        select : {
+          email : true
+        }
+      }
     }
   })
+
+  return resp.map(el => ({ email : el.recipient.email }))
+  
 
 };
 
@@ -132,6 +134,8 @@ function sharedCredentialDto(credentials:SharedCredentialRaw[] ) {
   }))
 
 }
+
+
 export const getCredentialsSharedWithMe = async (userId: string) => {
 
   const credentials =  await dbClient.sharedCredential.findMany({
@@ -213,18 +217,13 @@ export const getRecentCredentials = async (userId: string) => {
 }
 
 
-export const removeCredentialAccess = async (credentialId: string, ownerId: string, recipientId: string) => {
+export const removeCredentialAccess = async (ownerId: string, recipientId: string) => {
 
-  const recepientsIds = await dbClient.credential.findUnique({
-    where: { id: credentialId, userId: ownerId },
-    select: { sharedWith: true }
-  })
-
-  const filteredRecipients = recepientsIds?.sharedWith.filter(id => id !== recipientId)
-
-  return await dbClient.credential.update({
-    where: { id: credentialId, userId: ownerId },
-    data: { sharedWith: { set: filteredRecipients } }
+  return await dbClient.sharedCredential.delete({
+    where : {
+      ownerId,
+      recipientId,
+    }
   })
 }
 

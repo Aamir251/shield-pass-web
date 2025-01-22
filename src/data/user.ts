@@ -5,7 +5,7 @@ const userDtoMapper = (user: User) => {
   return {
     id: user.id,
     username: user.name,
-    email: user.password,
+    email: user.email,
   };
 };
 

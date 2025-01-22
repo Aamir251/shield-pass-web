@@ -24,9 +24,11 @@ export const shareCredentialUseCase = async (
 
 export const getMyCredentialRecipientsUseCase = async (
   credentialId: string,
-  currentUserEmail: string
+  ownerEmail: string
 ) => {
-  return await getMyCredentialRecipients(credentialId, currentUserEmail!);
+  const owner = await getUserByEmail(ownerEmail)
+
+  return await getMyCredentialRecipients(credentialId, owner?.id!);
 };
 
 export const getSharedCredentialsUseCase = async (email: string) => {
@@ -48,10 +50,13 @@ export const getSingleSharedCredentialUseCase = async (
 };
 
 
-export const removeCredentialAccessUseCase = async (recipientId: string, credentialOwnerEmail: string, credentialId: string) => {
+export const removeCredentialAccessUseCase = async (recipientEmail: string, credentialOwnerEmail: string) => {
 
   const owner = await getUserByEmail(credentialOwnerEmail);
 
-  return await removeCredentialAccess(credentialId, owner!.id, recipientId);
+  const recipient = await getUserByEmail(recipientEmail)
+
+  console.log({ owner, recipient})
+  return await removeCredentialAccess( owner!.id, recipient?.id!);
 
 }

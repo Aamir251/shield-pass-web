@@ -1,16 +1,18 @@
 "use client";
 
 import { KeyedMutator } from "swr"
-import { shareCredentialAction } from "./share-credential-action"
-import { LoadingSpinner } from "../ui/loading-spinner"
-import { Input } from "../ui/input"
-import LabelInputWrapper from "../forms/label-input-wrapper"
-import { Button } from "../ui/button"
+import { shareCredentialAction } from "../actions/share-credential-action"
+import { LoadingSpinner } from "../../ui/loading-spinner"
+import { Input } from "../../ui/input"
+import LabelInputWrapper from "../label-input-wrapper"
+import { Button } from "../../ui/button"
 import { useToast } from "@/hooks/use-toast"
 import { CredentialBasic } from "@/types/credentials"
 import { getRecipientPublicKey } from "@/data/user"
 import { useEncryptionKeyContext } from "@/providers/encryption-key"
 import { shareCredentialMiddleware } from "./utils"
+import CredentialRecipients from "./credential-recipients";
+import { removeRecipientAction } from "../actions/remove-recipient-action";
 
 type Receipent = {
   email: string
@@ -86,8 +88,8 @@ const ShareCredentialForm = ({ credential, recipientsData, mutate }: ShareCreden
           title: "Credential Shared 🥳"
         })
 
-        // const existingRecipients = recipientsData?.recipients ?? []
-        // mutate({ ...recipientsData, recipients: [...existingRecipients, formData.get("email")] })
+        const existingRecipients = recipientsData?.recipients ?? []
+        mutate({ ...recipientsData, recipients: [...existingRecipients, { email : formData.get("email")} ] })
       }
 
    
@@ -100,9 +102,27 @@ const ShareCredentialForm = ({ credential, recipientsData, mutate }: ShareCreden
     }
   }
 
+  const handleRemoveRecipient = async (recipientEmail : string) => {
+
+    const { success, message } = await removeRecipientAction(recipientEmail)
+
+    if (success) {
+
+      toast({
+        title : "Removed Access!"
+      })
+
+      const finalRecipients = recipientsData.recipients.filter(el => el.email !== recipientEmail)
+      mutate({ ...recipientsData, recipients: [...finalRecipients] })
 
 
-
+      // handle 
+    } else {
+      toast({
+        title : message
+      })
+    }
+  }
 
   // if (isLoading) {
   //   return (
@@ -132,6 +152,10 @@ const ShareCredentialForm = ({ credential, recipientsData, mutate }: ShareCreden
         <Button className="mt-3">Share 🚀</Button>
       </form>
 
+      {
+        recipientsData ? <CredentialRecipients removeAccessCallback={handleRemoveRecipient} recipients={recipientsData.recipients} />
+        : <LoadingSpinner />
+      }
     </div>
   )
 }

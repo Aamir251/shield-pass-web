@@ -12,9 +12,8 @@ import { createContext, Dispatch, PropsWithChildren, SetStateAction, useContext,
 import { Dialog } from "@/components/ui/dialog"
 
 import { CredentialBasic, CredentialUpdate } from "@/types/credentials";
-import EditCredentialForm from "@/components/credential-item/edit-credential-form";
-import ShareCredentialPopup from "@/components/share-credential-popup";
-import { Sheet } from "@/components/ui/sheet";
+import EditCredentialForm from "@/components/forms/edit-credential-form";
+import ShareCredentialPopup from "@/components/forms/share-credential-popup";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 
@@ -42,17 +41,20 @@ const CredentialActionContextProvider = ({ children }: CredentialsActionProvider
 
   const [selectedCredential, setSelectedCredential] = useState<CredentialBasic | null>(null)
 
-  const shouldShowSharePopup = searchParams.has("share") ? true : false
+  const shouldShowSharePopup = searchParams.has("share") && selectedCredential ? true : false
 
-  console.log({ shouldShowSharePopup: searchParams.has("share") });
-
-  const handleChange = () => {
+  const removequeryParams = () => {
     const nextSearchParams = new URLSearchParams(searchParams.toString())
-
+  
     nextSearchParams.delete("share")
     nextSearchParams.delete("edit")
-
+  
     router.replace(`${pathname}`)
+
+  }
+
+  if (!selectedCredential) {
+    removequeryParams()
   }
 
 
@@ -65,9 +67,9 @@ const CredentialActionContextProvider = ({ children }: CredentialsActionProvider
       selectedCredential
     }}>
       <Dialog>
-        <EditCredentialForm open={shouldShowEditPopup} closeCallback={handleChange} credential={selectedCredential} />
+        <EditCredentialForm open={shouldShowEditPopup} closeCallback={removequeryParams} credential={selectedCredential} />
       </Dialog>
-      <ShareCredentialPopup isOpen={shouldShowSharePopup} closeCallback={handleChange} />
+      <ShareCredentialPopup isOpen={shouldShowSharePopup} closeCallback={removequeryParams} />
 
       {children}
 

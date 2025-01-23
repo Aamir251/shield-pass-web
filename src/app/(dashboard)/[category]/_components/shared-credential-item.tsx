@@ -15,7 +15,7 @@ function getCredentialDate(date : Date) {
 const SharedCredentialItem = ({ credential }: Props) => {
 
 
-  const { password,  credential : { websiteUrl, category, email, username, name, updatedAt } } = credential
+  const { websiteUrl, email, name, id, updatedAt, username } = credential
 
 
 

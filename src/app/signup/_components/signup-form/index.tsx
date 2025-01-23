@@ -1,16 +1,13 @@
 "use client";
 
 import SignUpButton from "./signup-button"
-import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { extractFormData, validateFormFields } from "@/lib/helpers/form";
 import Form from "@/components/forms/auth-form";
 import { signUpAction } from "../../_actions/signup-action";
-import { BASE_URL, LOCALSTORAGE_KEYS } from "@/constants";
-import { convertCryptoKeyToString, encryptSharedPrivateKey, generateEncryptionKey, generateKeyPair, storeEncryptionKeyLocally } from "@/lib/helpers/cipher";
-import { saveDataToLocalStorage } from "@/lib/helpers/utils";
+import { BASE_URL, } from "@/constants";
 import { useToast } from "@/hooks/use-toast";
+import { signUpMiddleware } from "../../_utils/signup-middleware";
 
 const SignUpForm = () => {
   const router = useRouter()
@@ -21,41 +18,11 @@ const SignUpForm = () => {
   const formAction = async (formData: FormData) => {
     try {
 
-      const formFields = ["username", "email", "password", "confirmPassword"] as const
+      const { email, formData : finalFormData, password} = await signUpMiddleware(formData)
 
-      validateFormFields(formData, formFields);
-
-      // email & password used to login & encryption Key generation on successful sign up
-      const { email, password } = extractFormData(formData, formFields)
-
-
-      // store this public as a field in User Details  
-      const { publicKey, privateKey } = await generateKeyPair()
-      // the publicKey key is CryptoKey format which needs to converted into string format for storing it in database
-
-      const publicKeyInStringFormat: string = await convertCryptoKeyToString(publicKey)
-
-      // const privateKeyInStringFormat = convertArrayBuffertoBase64(privateKey)
-
-      const sharedPrivateKey = await encryptSharedPrivateKey(privateKey, password)
-
-      // the public key is stored in database
-      formData.set("sharedPublicKey", publicKeyInStringFormat)
-
-      formData.set("sharedPrivateKey", JSON.stringify(sharedPrivateKey))
-
-      const resp = await signUpAction({ error: "" }, formData)
+      const resp = await signUpAction({ error: "" }, finalFormData)
 
       if (resp?.error) throw Error(resp.error)
-
-
-      // // Create a private encryption key for encrypting my credentials and save it
-      const encryptionKey = await generateEncryptionKey(email, password)
-
-      await storeEncryptionKeyLocally(encryptionKey)
-
-
-
 
       // // Loggin In at the same time
       const signInResp = await signIn("credentials", { email, password, redirect: false })
@@ -79,8 +46,10 @@ const SignUpForm = () => {
   }
 
   return (
-    <form action={formAction} className="space-y-6">
-      <Form isSignUpForm={true} />
+    <form action={formAction} className="space-y-10">
+      <div className="space-y-5">
+        <Form isSignUpForm={true} />
+      </div>
       <SignUpButton />
     </form>
 

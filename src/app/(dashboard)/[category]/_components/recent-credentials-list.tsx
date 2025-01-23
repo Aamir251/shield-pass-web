@@ -11,7 +11,7 @@ const RecentCredentialsList = ({ credentials } : RecentCredentialsListProps) => 
   return (
     <div className="grid grid-cols-3 gap-x-3">
       {
-        credentials.map(credential => <CredentialItem credential={credential} />)
+        credentials.map(credential => <CredentialItem key={credential.id} credential={credential} />)
       }
     </div>
   )

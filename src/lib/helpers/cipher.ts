@@ -4,6 +4,7 @@
 
 import { LOCALSTORAGE_KEYS } from "@/constants";
 import { getDataFromLocalStorage, saveDataToLocalStorage } from "./utils";
+import { EncryptedKey } from "@prisma/client";
 
 
 /**
@@ -75,12 +76,12 @@ export const convertStringToCryptoKey = async (base64Key: string): Promise<Crypt
   return publicKey;
 };
 
-export const convertArrayBuffertoString = (publicKey : ArrayBuffer) => {
+export const convertArrayBuffertoString = (publicKey: ArrayBuffer) => {
   const binary = String.fromCharCode(...new Uint8Array(publicKey));
   return btoa(binary); // Converts binary to Base64
 }
 
-export const convertStringToArrayBuffer = (base64 : string) => {
+export const convertStringToArrayBuffer = (base64: string) => {
   const binary = atob(base64); // Decodes Base64 back to binary
   const buffer = new Uint8Array(binary.length);
   for (let i = 0; i < binary.length; i++) {
@@ -92,22 +93,36 @@ export const convertStringToArrayBuffer = (base64 : string) => {
 
 /**
  * 
- * @param email 
- * @param masterPassword 
  * @returns encrypion key that is used to encrypt & decrypt user's credentials
  */
-export const generateEncryptionKey = async (email: string, masterPassword: string) => {
+export const generateMainEncryptionKey = async () => {
+  return window.crypto.subtle.generateKey(
+    { name: "AES-CBC", length: 256 },
+    true,
+    ["encrypt", "decrypt"]
+  );
+}
+
+/**
+ * This is used to encrypt the Main Encryption Key of the user using a master password or a recovery key
+ * @param mainKey 
+ * @param masterPasswordOrRecoveryAnswer 
+ * @returns an object containing salt, iv and data.
+ */
+
+
+export const encryptMainEncrytionKey = async (mainKey: CryptoKey, masterPasswordOrRecoveryAnswer: string) => {
   const encoder = new TextEncoder();
-  const salt = encoder.encode(email);
   const keyMaterial = await window.crypto.subtle.importKey(
     "raw",
-    encoder.encode(masterPassword),
+    encoder.encode(masterPasswordOrRecoveryAnswer),
     "PBKDF2",
     false,
     ["deriveKey"]
   );
 
-  const key = await window.crypto.subtle.deriveKey(
+  const salt = window.crypto.getRandomValues(new Uint8Array(16)); // Generate a random salt
+  const derivedKey = await window.crypto.subtle.deriveKey(
     {
       name: "PBKDF2",
       salt,
@@ -120,8 +135,64 @@ export const generateEncryptionKey = async (email: string, masterPassword: strin
     ["encrypt", "decrypt"]
   );
 
-  return key;
+  const exportedMainKey = await window.crypto.subtle.exportKey("raw", mainKey);
+  const iv = window.crypto.getRandomValues(new Uint8Array(16));
+
+  const encryptedMainKey = await window.crypto.subtle.encrypt(
+    { name: "AES-CBC", iv },
+    derivedKey,
+    exportedMainKey
+  );
+
+  return {
+    salt: Buffer.from(salt).toString("base64"),
+    iv: Buffer.from(iv).toString("base64"),
+    data: Buffer.from(encryptedMainKey).toString("base64"),
+  };
 }
+
+export const decryptMainKey = async (
+  encryptionKey : EncryptedKey,
+  passwordOrRecoveryKey: string
+) => {
+
+  const { data, salt, iv } = encryptionKey
+  const encoder = new TextEncoder();
+  const keyMaterial = await window.crypto.subtle.importKey(
+    "raw",
+    encoder.encode(passwordOrRecoveryKey),
+    "PBKDF2",
+    false,
+    ["deriveKey"]
+  );
+
+  const derivedKey = await window.crypto.subtle.deriveKey(
+    {
+      name: "PBKDF2",
+      salt: Buffer.from(salt, "base64"),
+      iterations: 100000,
+      hash: "SHA-256",
+    },
+    keyMaterial,
+    { name: "AES-CBC", length: 256 },
+    true,
+    ["decrypt"]
+  );
+
+  const decryptedMainKeyRaw = await window.crypto.subtle.decrypt(
+    { name: "AES-CBC", iv: Buffer.from(iv, "base64") },
+    derivedKey,
+    Buffer.from(data, "base64")
+  );
+
+  return await window.crypto.subtle.importKey(
+    "raw",
+    decryptedMainKeyRaw,
+    { name: "AES-CBC", length: 256 },
+    true,
+    ["encrypt", "decrypt"]
+  );
+};
 
 
 export const storeEncryptionKeyLocally = async (key: CryptoKey) => {
@@ -263,9 +334,9 @@ export const encryptSharedPrivateKey = async (privateKey: CryptoKey, masterPassw
 
 
 type EncrytedSharedPrivateKey = {
-  salt : string
-  iv : string
-  data : string
+  salt: string
+  iv: string
+  data: string
 }
 
 
@@ -333,7 +404,7 @@ export const decryptSharedPrivateKey = async (
 };
 
 
-export const encryptSharedCredentialPassword = async (password : string, recipientPublicKey : CryptoKey) => {
+export const encryptSharedCredentialPassword = async (password: string, recipientPublicKey: CryptoKey) => {
 
 
   const recipientKey = await crypto.subtle.exportKey("spki", recipientPublicKey)
@@ -357,7 +428,7 @@ export const encryptSharedCredentialPassword = async (password : string, recipie
 }
 
 
-export const decryptSharedCredentialPassword = async (password : string, recipientPrivateKey : CryptoKey) => {
+export const decryptSharedCredentialPassword = async (password: string, recipientPrivateKey: CryptoKey) => {
 
   const privateRecipientKey = await crypto.subtle.exportKey("pkcs8", recipientPrivateKey)
 

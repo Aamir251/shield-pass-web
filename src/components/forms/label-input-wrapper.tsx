@@ -6,7 +6,7 @@ type LabelInputWrapperProps = PropsWithChildren<{
 }>
 
 const LabelInputWrapper = ({ children, labelTitle }: LabelInputWrapperProps) => {
-  return <div className="flex flex-col gap-y-3 items-left">
+  return <div className="flex flex-col gap-y-3 items-left relative">
     <Label className="">
       {labelTitle}
     </Label>

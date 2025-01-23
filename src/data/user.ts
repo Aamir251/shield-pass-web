@@ -14,20 +14,26 @@ export const getUserByEmail = async (email: string) => {
   return user ? userDtoMapper(user) : null;
 };
 
+
+type EncryptedKey = {
+  iv : string
+  salt : string
+  data : string
+}
 export type NewUser = {
   name: string;
   email: string;
   password: string;
   sharedPublicKey : string
-  sharedPrivateKey : {
-    iv : string
-    salt : string
-    data : string
-  }
+  sharedPrivateKey : EncryptedKey
+
+  encryptionKeyMain : EncryptedKey
+
+  encryptionKeyRecovery : EncryptedKey
 };
 
-export const createNewUser = async ({ name, email, password, sharedPublicKey, sharedPrivateKey }: NewUser) => {
-  return await dbClient.user.create({ data: { name, email, password, sharedPublicKey, sharedPrivateKey } });
+export const createNewUser = async (user: NewUser) => {
+  return await dbClient.user.create({ data: { ...user  } });
 };
 
 export const getCompleteUser = async (email: string) =>
@@ -36,3 +42,6 @@ export const getCompleteUser = async (email: string) =>
 
 export const getRecipientPublicKey = async(email : string) =>
   await dbClient.user.findUnique({ where : { email }, select : { sharedPublicKey : true, id : true } })
+
+export const getMainEncryptionKey = async (email : string) =>
+  await dbClient.user.findUnique({ where : { email }, select : { encryptionKeyMain : true} })

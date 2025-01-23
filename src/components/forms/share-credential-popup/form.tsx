@@ -8,7 +8,6 @@ import LabelInputWrapper from "../label-input-wrapper"
 import { Button } from "../../ui/button"
 import { useToast } from "@/hooks/use-toast"
 import { CredentialBasic } from "@/types/credentials"
-import { getRecipientPublicKey } from "@/data/user"
 import { useEncryptionKeyContext } from "@/providers/encryption-key"
 import { shareCredentialMiddleware } from "./utils"
 import CredentialRecipients from "./credential-recipients";

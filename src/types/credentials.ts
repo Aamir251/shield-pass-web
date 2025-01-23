@@ -10,4 +10,7 @@ export type CredentialBasic = Pick<
 >;
 
 
+export type UpdateCredential = Partial<CreateCredential>
+
+
 export type CredentialUpdate = CreateCredential

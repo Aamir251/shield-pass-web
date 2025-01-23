@@ -3,9 +3,9 @@ import { Button } from "../ui/button"
 import { DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from "../ui/drawer"
 import { Input } from "../ui/input"
 import LabelInputWrapper from "./label-input-wrapper"
-import toast from "react-hot-toast"
-import { masterPasswordFormAction } from "@/actions/master-password-action"
-import { generateEncryptionKey, storeEncryptionKeyLocally } from "@/lib/helpers/cipher"
+import { encryptionKeyAction } from "@/actions/encryption-key-action"
+import { decryptMainKey, storeEncryptionKeyLocally } from "@/lib/helpers/cipher"
+import { useToast } from "@/hooks/use-toast"
 
 
 type Props = {
@@ -40,6 +40,7 @@ export default MasterPasswordPopupForm
 
 const Form = ({ children, successEncryptionCallback }: PropsWithChildren<Props>) => {
 
+  const { toast } = useToast()
   const formAction = async (formData: FormData) => {
 
     try {
@@ -48,20 +49,20 @@ const Form = ({ children, successEncryptionCallback }: PropsWithChildren<Props>)
       if (!password) throw new Error("Please Enter Password!")
 
       // checking if user is valid or not
-      const { email } = await masterPasswordFormAction({ password })
+      const { encryptionKeyMain } = await encryptionKeyAction({ password })
 
-      if (!email) throw new Error("Invalid Password")
 
-      // generate encryption key
-      const key = await generateEncryptionKey(email, password);
+      const encryptionKey = await decryptMainKey(encryptionKeyMain, password)
 
-      await storeEncryptionKeyLocally(key)
+      await storeEncryptionKeyLocally(encryptionKey)
 
-      successEncryptionCallback(key)
+      successEncryptionCallback(encryptionKey)
 
     } catch (error: any) {
 
-      toast.error(error.message)
+      toast({
+        title : error.message
+      })
     }
 
   }

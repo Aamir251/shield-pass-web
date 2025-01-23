@@ -21,7 +21,6 @@ const ShowMoreActionsButton = ({ credential }: ShowMoreActionsButtonProps) => {
   const { setSelectedCredential } = useCredentialActionContext()
 
   const setCredentialCallback = setSelectedCredential.bind(null, credential)
-
   
   return (
     <Popover>

@@ -1,6 +1,7 @@
 import { dbClient } from "@/lib/db/client";
 import { hashPassword } from "@/lib/helpers/utils";
 import { CreateCredential, CredentialsType } from "@/types/credentials";
+import { Credential } from "@prisma/client";
 
 
 
@@ -23,7 +24,8 @@ export const getCredentials = async (
       category: true,
       websiteUrl: true,
       updatedAt: true,
-      password: true
+      password: true,
+      username : true
     },
   });
 };
@@ -153,7 +155,7 @@ export const getCredentialsSharedWithMe = async (userId: string) => {
           websiteUrl: true,
           category: true,
           username: true,
-          updatedAt: true
+          updatedAt: true,
         }
       }
     },
@@ -175,29 +177,6 @@ export const getCredentialsSharedWithMe = async (userId: string) => {
 
 };
 
-export const getSingleSharedCredential = async (
-  userId: string,
-  credentialId: string
-) => {
-  const credential = await dbClient.credential.findUnique({
-    where: { id: credentialId, sharedWith: { has: userId } },
-    select: {
-      name: true,
-      email: true,
-      password: true,
-      websiteUrl: true,
-    },
-  });
-
-  if (!credential) return null;
-
-  const hashedPassword = await hashPassword(credential?.password);
-
-  return {
-    ...credential,
-    password: hashedPassword,
-  };
-};
 
 
 export const getRecentCredentials = async (userId: string) => {
@@ -211,7 +190,8 @@ export const getRecentCredentials = async (userId: string) => {
       category: true,
       websiteUrl: true,
       updatedAt: true,
-      password: true
+      password: true,
+      username : true
     }
   })
 }

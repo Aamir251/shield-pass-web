@@ -6,8 +6,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { extractFormData, handleAuthError, validateFormFields } from "@/lib/helpers/form";
 import Form from "@/components/forms/auth-form";
 import { BASE_URL } from "@/constants";
-import { generateEncryptionKey, getEncryptionKeyFromLocalStorage, storeEncryptionKeyLocally } from "@/lib/helpers/cipher";
+import { decryptMainKey, getEncryptionKeyFromLocalStorage, storeEncryptionKeyLocally } from "@/lib/helpers/cipher";
 import { useToast } from "@/hooks/use-toast";
+import { getMainEncryptionKey } from "@/data/user";
 
 
 
@@ -38,7 +39,11 @@ const LoginForm = () => {
       let encryptionKey =  await getEncryptionKeyFromLocalStorage()
 
       if (!encryptionKey) {
-        encryptionKey = await generateEncryptionKey(email, password)
+        const resp = await getMainEncryptionKey(email)
+
+        if (!resp) throw new Error("Something went wrong!")
+
+        encryptionKey = await decryptMainKey(resp.encryptionKeyMain, password)
       }
       
 

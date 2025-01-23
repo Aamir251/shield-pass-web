@@ -15,14 +15,13 @@ export type CredentialCategoryPageType = typeof CREDENTIAL_PAGE_CATEGORIES[numbe
 export type CredentialSharedWithMe = {
   id : string
   password: string;
-  credential: {
-      name : string
-      email: string;
-      username: string;
-      category: string;
-      websiteUrl: string;
-      updatedAt : Date
-  };
+  name : string
+  email: string;
+  username: string;
+  category: string;
+  websiteUrl: string;
+  updatedAt : Date
+ 
 }
 
 

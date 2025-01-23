@@ -70,6 +70,7 @@ export const updateCredentialUseCase = async (
 
   if (!userExists) throw new Error("User Not Found");
 
+
   return await updateCredential(
     propertiesToUpdate,
     userExists.id,

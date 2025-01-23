@@ -22,12 +22,20 @@ const Form = ({ isSignUpForm = false }: FormProps) => {
 
     </LabelInputWrapper>
 
-    {
-      isSignUpForm && <LabelInputWrapper labelTitle="Confirm Password">
-        <Input placeholder="password" name="confirmPassword" required type="password" />
 
-      </LabelInputWrapper>
+    {
+      isSignUpForm && <>
+        <LabelInputWrapper labelTitle="Confirm Password">
+          <Input placeholder="password" name="confirmPassword" required type="password" />
+
+        </LabelInputWrapper>
+        <LabelInputWrapper labelTitle="What was your First School?">
+          <Input placeholder="School Name" name="schoolName" required type="text" />
+          <span className="text-xs opacity-50 absolute -bottom-5">This is used for recovering your account</span>
+        </LabelInputWrapper>
+      </>
     }
+
   </>
 }
 

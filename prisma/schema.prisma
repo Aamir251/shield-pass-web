@@ -13,32 +13,36 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-type SharedPrivateKey {
+type EncryptedKey {
   data   String
   salt  String
   iv    String
 }
 
 model User {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  name          String?
-  email         String    @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
+  id                String    @id @default(auto()) @map("_id") @db.ObjectId
+  name              String?
+  email             String    @unique
+  emailVerified     DateTime?
+  image             String?
+  accounts          Account[]
+  sessions          Session[]
 
 
-  password      String
-  createdAt     DateTime           @default(now())
-  updatedAt     DateTime           @updatedAt
+  password          String
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
 
-  SharedCredential SharedCredential[]
-  Credential       Credential[]
+  SharedCredential    SharedCredential[]
+  Credential          Credential[]
 
   sharedPublicKey     String
 
-  sharedPrivateKey   SharedPrivateKey   // This encrypted format is created client using algorithm depended on privateKeyPair & Master Password
+  sharedPrivateKey    EncryptedKey   // This encrypted format is created client-side using algorithm depended on privateKeyPair & Master Password
+
+  encryptionKeyMain   EncryptedKey
+
+  encryptionKeyRecovery EncryptedKey
 
 }
 

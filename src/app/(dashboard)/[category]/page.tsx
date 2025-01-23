@@ -39,7 +39,7 @@ const CredentialCategoryPage = async ({ params: { category } } : Props) => {
   }
   
   if (category === "shared") {
-    const sharedCredentials : CredentialSharedWithMe[] = await getSharedCredentialsUseCase(email!)
+    const { credentials : sharedCredentials }  = await getSharedCredentialsUseCase(email!)
     return <>
       <SharedCredentialsList credentials={sharedCredentials} />
     </>

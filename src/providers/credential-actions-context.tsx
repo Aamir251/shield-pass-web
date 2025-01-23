@@ -41,24 +41,25 @@ const CredentialActionContextProvider = ({ children }: CredentialsActionProvider
 
   const [selectedCredential, setSelectedCredential] = useState<CredentialBasic | null>(null)
 
-  const shouldShowSharePopup = searchParams.has("share") && selectedCredential ? true : false
-
+  
   const removequeryParams = () => {
     const nextSearchParams = new URLSearchParams(searchParams.toString())
-  
+    
     nextSearchParams.delete("share")
     nextSearchParams.delete("edit")
-  
+    
     router.replace(`${pathname}`)
-
+    
   }
-
+  
   if (!selectedCredential) {
     removequeryParams()
   }
+  
+  
+  const shouldShowSharePopup = searchParams.has("share") && selectedCredential ? true : false
+  const shouldShowEditPopup = searchParams.has("edit") && selectedCredential ? true : false
 
-
-  const shouldShowEditPopup = searchParams.has("edit") ? true : false
 
 
   return (

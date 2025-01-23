@@ -2,6 +2,10 @@ import { checkIfSessionExists } from "@/lib/services/auth";
 import { getMyCredentialRecipientsUseCase } from "@/use-cases/credential/credential.share";
 import { NextRequest } from "next/server";
 
+
+export const dynamic = "force-dynamic"
+
+
 const handler = async (req: NextRequest) => {
   try {
     const searchParams = req.nextUrl.searchParams;

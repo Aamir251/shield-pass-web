@@ -1,17 +1,18 @@
 import { CredentialBasic } from "@/types/credentials"
 import Image from "next/image"
+import CopyButton from "./copy-btn"
 
 type CredentialOverviewProps = {
-  credential : CredentialBasic
+  credential: CredentialBasic
 }
 
-function getCredentialDate(date : Date) {
-  return new Intl.DateTimeFormat("en-IN", { dateStyle : "medium"}).format(date)
+function getCredentialDate(date: Date) {
+  return new Intl.DateTimeFormat("en-IN", { dateStyle: "medium" }).format(date)
 }
 
 
 const CredentialOverview = (
-  { credential : { websiteUrl, name, updatedAt, email } } : CredentialOverviewProps
+  { credential: { websiteUrl, name, updatedAt, email, username } }: CredentialOverviewProps
 ) => {
   return (
     <>
@@ -30,9 +31,15 @@ const CredentialOverview = (
 
 
       <div className="mt-4">
-        <h5 className="">{email}</h5>
-
-        <p className="text-xs text-primary-gray mt-4">Last Updated : {getCredentialDate(updatedAt)}</p>
+        {email && <div className="flex  items-center justify-between">
+          <h5 className="">{email}</h5>
+          <CopyButton textToCopy={email} />
+        </div>}
+        {username && <div className="flex  items-center justify-between">
+          <h5 className="">{username}</h5>
+          <CopyButton textToCopy={username} />
+        </div>}
+        <p className="text-xs text-primary-gray mt-8">Last Updated : {getCredentialDate(updatedAt)}</p>
       </div>
     </>
   )

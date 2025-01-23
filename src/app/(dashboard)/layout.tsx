@@ -17,7 +17,7 @@ const DashboardLayout = ({ children }: PropsWithChildren<{ params: any }>) => {
 
             <MainSideBar />
 
-            <div style={{ height: "calc(100dvh - 180px)" }} className="mt-auto w-full">
+            <div style={{ height: "calc(100dvh - 180px)" }} className="mt-auto w-full px-5 lg:px-0">
               {children}
             </div>
 

@@ -6,6 +6,7 @@ import RecentCredentialsList from "./_components/recent-credentials-list"
 import SharedCredentialsList from "./_components/shared-credentials-list"
 import { CredentialBasic } from "@/types/credentials"
 import { getSharedCredentialsUseCase } from "@/use-cases/credential/credential.share"
+import { PropsWithChildren } from "react"
 
 
 type Props = {
@@ -33,26 +34,36 @@ const CredentialCategoryPage = async ({ params: { category } } : Props) => {
 
     console.log({ credentials });
     
-    return <>
+    return <CredentialsListWrapper>
       <RecentCredentialsList credentials={credentials} />
-    </>
+    </CredentialsListWrapper>
   }
   
   if (category === "shared") {
     const { credentials : sharedCredentials }  = await getSharedCredentialsUseCase(email!)
-    return <>
+    return <CredentialsListWrapper>
       <SharedCredentialsList credentials={sharedCredentials} />
-    </>
+    </CredentialsListWrapper>
   }
 
   credentials = await getCredentialsByCategoryUseCase(email!, category)
 
-  return <>
+  return <CredentialsListWrapper>
     <CategoryCredentialsList credentials={credentials} />
-  </>
+  </CredentialsListWrapper>
 
 
 }
 
 
 export default CredentialCategoryPage
+
+
+const CredentialsListWrapper = ({ children } : PropsWithChildren) => {
+
+  return (
+    <div className="grid lg:grid-cols-3 gap-x-3">
+      {children}
+    </div>
+  )
+}

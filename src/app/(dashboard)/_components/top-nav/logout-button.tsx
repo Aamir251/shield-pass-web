@@ -1,10 +1,9 @@
 "use client";
 
 import { signOut } from "next-auth/react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import LogoutIcon from "@/assets/icons/logout.svg"
+import { Button } from "@/components/ui/button";
 
 const LogOutButton = () => {
 
@@ -24,11 +23,35 @@ const LogOutButton = () => {
   }
 
   return (
-    <div className={`absolute right-0 flex gap-x-2 text-sm border border-gray-500 px-3 py-1.5 rounded-sm text-gray-300 hover:opacity-70 cursor-pointer ${isLoading && " cursor-wait"}`}>
-      <button onClick={onClick} aria-disabled={isLoading} disabled={isLoading} className={` `} >Logout</button>
-      <Image src={LogoutIcon} alt="logout" width={22} height={22} />
+    <div className={`absolute right-5 lg:right-10 top-5 `}>
+      <Button onClick={onClick} variant="outline" className={`inline-flex items-center space-x-2 cursor-pointer ${isLoading && " cursor-wait"}`}>
+        <LogOutIcon className="h-6 w-6" />
+        <span>Logout</span>
+      </Button>
     </div>
   )
 }
 
 export default LogOutButton
+
+
+function LogOutIcon(props : any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+      <polyline points="16 17 21 12 16 7" />
+      <line x1="21" x2="9" y1="12" y2="12" />
+    </svg>
+  )
+}

@@ -85,7 +85,7 @@ const EditCredentialForm = ({ open, closeCallback, credential }: EditCredentialF
 
   return (
     <Dialog open={open} onOpenChange={closeCallback} >
-      <DialogContent className="sm:max-w-[680px]">
+      <DialogContent className=" w-11/12 lg:w-full sm:max-w-[680px] px-3 lg:px-8">
         <DialogHeader>
           <DialogTitle>Edit Credential</DialogTitle>
           <DialogDescription>
@@ -97,7 +97,7 @@ const EditCredentialForm = ({ open, closeCallback, credential }: EditCredentialF
 
         <form action={formAction}>
           <div className="space-y-6">
-            <div className="grid grid-cols-2 gap-x-6">
+            <div className="grid grid-cols-2 gap-x-3 lg:gap-x-6">
               <Input className="hidden" aria-hidden defaultValue={credential?.id!} readOnly aria-readonly name="credentialId" />
               <LabelInputWrapper labelTitle="Credential Name">
                 <Input id="credential-name" name="name" defaultValue={credential?.name} className="col-span-3" />
@@ -107,7 +107,7 @@ const EditCredentialForm = ({ open, closeCallback, credential }: EditCredentialF
               </LabelInputWrapper>
             </div>
 
-            <div className="grid grid-cols-2 gap-x-6">
+            <div className="grid grid-cols-2 gap-x-3 lg:gap-x-6">
               <LabelInputWrapper labelTitle="Email">
                 <Input id="email" name="email" defaultValue={credential?.email} className="col-span-3" />
               </LabelInputWrapper>
@@ -116,7 +116,7 @@ const EditCredentialForm = ({ open, closeCallback, credential }: EditCredentialF
               </LabelInputWrapper>
             </div>
 
-            <div className="grid grid-cols-2 gap-x-6">
+            <div className="grid grid-cols-2 gap-x-3 lg:gap-x-6">
               <LabelInputWrapper labelTitle="Website Url ">
                 <Input id="website-url" name="websiteUrl" defaultValue={credential?.websiteUrl} className="col-span-3" />
               </LabelInputWrapper>
@@ -141,7 +141,7 @@ const EditCredentialForm = ({ open, closeCallback, credential }: EditCredentialF
           </div>
 
           {/* ------------- Main Form Content Ends ------------- */}
-          <DialogFooter>
+          <DialogFooter className="mt-6">
             <Button type="submit">Save changes</Button>
           </DialogFooter>
         </form>

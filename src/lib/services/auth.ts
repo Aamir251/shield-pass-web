@@ -1,8 +1,6 @@
 import { getServerSession, User } from "next-auth";
 import { getCompleteUser } from "@/data/user";
 import bcrypt from "bcrypt";
-import { sign, verify } from "jsonwebtoken";
-import { NextRequest } from "next/server";
 import { ERRORS } from "@/constants";
 
 export const authenticateUser = async (
@@ -34,6 +32,5 @@ export const checkIfSessionExists = async () => {
 
   if (!session?.user?.email) throw new Error(ERRORS.SESSION_EXPIRED);
 
-  console.log({ session })
   return session.user;
 };

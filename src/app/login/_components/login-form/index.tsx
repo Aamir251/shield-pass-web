@@ -34,21 +34,6 @@ const LoginForm = () => {
       resp?.error && handleAuthError(resp.error)
 
 
-
-
-      let encryptionKey =  await getEncryptionKeyFromLocalStorage()
-
-      if (!encryptionKey) {
-        const resp = await getMainEncryptionKey(email)
-
-        if (!resp) throw new Error("Something went wrong!")
-
-        encryptionKey = await decryptMainKey(resp.encryptionKeyMain, password)
-      }
-      
-
-      await storeEncryptionKeyLocally(encryptionKey) // stores it to local storage
-
       const callbackUrl = searchParams.get("callbackUrl")
 
       router.push(callbackUrl ?? BASE_URL)

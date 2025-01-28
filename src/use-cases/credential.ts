@@ -2,6 +2,7 @@ import { CREDENTIAL_CATEGORIES, CredentialCategory } from "@/constants";
 import {
   createCredential,
   deleteCredential,
+  deletedSharedCredential,
   getCredentialById,
   getCredentials,
   getRecentCredentials,
@@ -70,8 +71,8 @@ export const updateCredentialUseCase = async (
 
   if (!userExists) throw new Error("User Not Found");
 
-  console.log("propertiesToUpdate ", propertiesToUpdate);
-  
+  await deletedSharedCredential(credentialId, userExists.id)
+
   return await updateCredential(
     propertiesToUpdate,
     userExists.id,

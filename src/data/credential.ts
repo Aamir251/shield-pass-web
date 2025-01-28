@@ -50,6 +50,15 @@ export const updateCredential = async (
   });
 };
 
+export const deletedSharedCredential= async (originalCredentialId : string, ownerId : string) => {
+  return await dbClient.sharedCredential.delete({
+    where : {
+      credentialId : originalCredentialId,
+      ownerId
+    }
+  })
+}
+
 export const deleteCredential = async (
   credentialId: string,
   userId: string

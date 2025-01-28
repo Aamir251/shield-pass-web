@@ -40,7 +40,6 @@ export const editCredentialAction = async (formData: FormData, targetFields: str
     
     await updateCredentialUseCase(email!, fieldsToUpdate, formData.get("credentialId") as string)
 
-
     revalidatePath("/recents")
     revalidatePath(`/${formData.get("category")}`)
 

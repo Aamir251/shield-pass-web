@@ -12,25 +12,33 @@ export const editCredentialAction = async (formData: FormData, targetFields: str
 
   const formFields = [...targetFields] as const
 
-
+  
   const data = extractFormData(formData, formFields)
 
+
+  
   try {
     const { email } = await checkIfSessionExists()
 
-    const credentialObj: Omit<UpdateCredential, "userId" | "sharedWith"> = {
+    const fieldsToUpdate: Omit<UpdateCredential, "userId" | "sharedWith"> = {
       ...data,
 
     }
 
-    if (Object.keys(data).includes("passwordIV")) {
-      credentialObj["password"] = {
-        iv: data.passwordIV,
-        data: data.passwordData
+    if (Object.keys(data).includes("password")) {
+
+      const encryptedPassword = JSON.parse(data.password)
+      fieldsToUpdate["password"] = {
+        iv: encryptedPassword.iv,
+        data: encryptedPassword.data
       }
     }
 
-    await updateCredentialUseCase(email!, data, formData.get("credentialId") as string)
+
+
+    console.log(fieldsToUpdate);
+    
+    await updateCredentialUseCase(email!, fieldsToUpdate, formData.get("credentialId") as string)
 
 
     revalidatePath("/recents")

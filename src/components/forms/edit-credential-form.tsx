@@ -55,17 +55,23 @@ const EditCredentialForm = ({ open, closeCallback, credential }: EditCredentialF
 
     const fieldsThatHaveChanged = getFieldsThatHaveChanged(credential!, formData)
 
+    console.log({ fieldsThatHaveChanged });
+    
 
     if (fieldsThatHaveChanged.includes("password")) {
       const newPassword = formData.get("password") as string
 
+      
       if (newPassword.length) {
         // encrypt this password using the secret encryption key
         const { data, iv } = await encryptCredentialPassword(newPassword, encryptionKey!)
-
-        formData.set("passwordIV", iv)
-        formData.set("passwordData", data)
+        formData.set("password", JSON.stringify({
+          iv,
+          data
+        }))
       }
+
+      
 
     }
 

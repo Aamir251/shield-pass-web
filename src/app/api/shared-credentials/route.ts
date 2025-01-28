@@ -1,30 +1,39 @@
+import { authenticateUser } from "@/lib/services/auth";
 import { getSharedCredentialsUseCase } from "@/use-cases/credential/credential.share";
-import { User } from "@prisma/client";
-import { NextApiRequest } from "next";
-import { getToken } from "next-auth/jwt";
-import { NextRequest } from "next/server";
+import jwt from "jsonwebtoken"
 
-export async function GET(req: NextRequest) {
+export async function POST(req: Request) {
 
 
   try {
+    const data = await req.json()
 
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET as string })
+    const { email, password } = data
+
+    if (!email || !password) throw new Error("Email / Password is missing")
+
+    const user = await authenticateUser(email, password)
+
+    if (!user) throw new Error("Invalid Email or Password")
 
 
-    if (!token) throw new Error("unauthorized")
-    const { credentials, sharedPrivateKey } = await getSharedCredentialsUseCase(token.email as string)
+    // if (!tokenValue) throw new Error("UnAuthorized")
 
-    console.log({ credentials })
-    return Response.json({ success : true, credentials, sharedPrivateKey }, { status: 200 })
+    // const token = jwt.verify(tokenValue, process.env.NEXTAUTH_SECRET as string) as {
+    //   email: string,
+    //   iat: number
+    // }
 
+    const { credentials, sharedPrivateKey } = await getSharedCredentialsUseCase(email as string)
 
-
+    return Response.json({
+      success: true,
+      credentials,
+      sharedPrivateKey
+    }, { status: 200 })
 
   } catch (error: any) {
     return Response.json({ success: false, error: error.message }, { status: 404 })
-
   }
-
 
 }

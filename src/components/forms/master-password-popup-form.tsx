@@ -6,10 +6,13 @@ import LabelInputWrapper from "./label-input-wrapper"
 import { encryptionKeyAction } from "@/actions/encryption-key-action"
 import { decryptMainKey, storeEncryptionKeyLocally } from "@/lib/helpers/cipher"
 import { useToast } from "@/hooks/use-toast"
+import { saveDataToLocalStorage } from "@/lib/helpers/utils"
+import { LOCALSTORAGE_KEYS } from "@/constants"
 
 
 type Props = {
   successEncryptionCallback : (key : CryptoKey) => void
+  email : string
 }
 
 const MasterPasswordPopupForm = (props : Props) => {
@@ -20,7 +23,7 @@ const MasterPasswordPopupForm = (props : Props) => {
           <DrawerTitle>Enter Master Password</DrawerTitle>
           <DrawerDescription>Please enter your Password to continue</DrawerDescription>
         </DrawerHeader>
-        <Form successEncryptionCallback={props.successEncryptionCallback} >
+        <Form successEncryptionCallback={props.successEncryptionCallback} email={props.email} >
 
           <DrawerFooter>
             <Button type="submit">Submit</Button>
@@ -38,7 +41,7 @@ export default MasterPasswordPopupForm
 
 
 
-const Form = ({ children, successEncryptionCallback }: PropsWithChildren<Props>) => {
+const Form = ({ children, successEncryptionCallback, email }: PropsWithChildren<Props>) => {
 
   const { toast } = useToast()
   const formAction = async (formData: FormData) => {
@@ -55,6 +58,8 @@ const Form = ({ children, successEncryptionCallback }: PropsWithChildren<Props>)
       const encryptionKey = await decryptMainKey(encryptionKeyMain, password)
 
       await storeEncryptionKeyLocally(encryptionKey)
+
+      saveDataToLocalStorage(LOCALSTORAGE_KEYS.USER_EMAIL, email)
 
       successEncryptionCallback(encryptionKey)
 

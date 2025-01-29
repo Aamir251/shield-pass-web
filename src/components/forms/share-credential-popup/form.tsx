@@ -123,13 +123,13 @@ const ShareCredentialForm = ({ credential, recipientsData, mutate }: ShareCreden
     }
   }
 
-  // if (isLoading) {
-  //   return (
-  //     <div className="h-44 flex-center">
-  //       <LoadingSpinner  />
-  //     </div>
-  //   )
-  // }
+  if (isLoading) {
+    return (
+      <div className="h-44 flex-center">
+        <LoadingSpinner  />
+      </div>
+    )
+  }
 
 
 

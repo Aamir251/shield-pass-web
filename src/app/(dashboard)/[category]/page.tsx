@@ -33,7 +33,6 @@ const CredentialCategoryPage = async ({ params: { category } } : Props) => {
   if (category === "recents") {
     credentials = await getRecentCredentialsUsecase(email!)
 
-    console.log({ credentials });
     
     return <CredentialsListWrapper>
       <RecentCredentialsList credentials={credentials} />

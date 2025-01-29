@@ -34,9 +34,6 @@ export const editCredentialAction = async (formData: FormData, targetFields: str
       }
     }
 
-
-
-    console.log(fieldsToUpdate);
     
     await updateCredentialUseCase(email!, fieldsToUpdate, formData.get("credentialId") as string)
 

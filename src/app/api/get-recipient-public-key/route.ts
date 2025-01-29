@@ -6,8 +6,6 @@ export const GET = async (req: NextRequest) => {
   try {
     const email = req?.nextUrl.searchParams.get("email");
 
-    console.log({ email })
-
     if (!email) throw new Error("Email not provided")
     
     const data = await getRecipientPublicKey(email)

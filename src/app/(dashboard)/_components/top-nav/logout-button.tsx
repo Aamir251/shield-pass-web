@@ -4,6 +4,8 @@ import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { removeDataFromLocalStorage } from "@/lib/helpers/utils";
+import { LOCALSTORAGE_KEYS } from "@/constants";
 
 const LogOutButton = () => {
 
@@ -13,6 +15,9 @@ const LogOutButton = () => {
   const onClick = async () => {
     try {
       setIsLoading(true)
+      removeDataFromLocalStorage(LOCALSTORAGE_KEYS.ENCRYPTION_KEY)
+      removeDataFromLocalStorage(LOCALSTORAGE_KEYS.PRIVATE_KEY)
+      removeDataFromLocalStorage(LOCALSTORAGE_KEYS.USER_EMAIL)
       await signOut({ redirect: false })
 
       router.push("/login")

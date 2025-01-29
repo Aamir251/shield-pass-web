@@ -30,7 +30,6 @@ const LoginForm = () => {
       
       const resp = await signIn("credentials", { email, password, redirect : false })
 
-      console.log({ resp })
       resp?.error && handleAuthError(resp.error)
 
 

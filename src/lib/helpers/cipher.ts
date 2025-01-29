@@ -204,8 +204,12 @@ export const storeEncryptionKeyLocally = async (key: CryptoKey) => {
   console.log("Key stored in localStorage");
 }
 
-export const getEncryptionKeyFromLocalStorage = async () => {
+export const getEncryptionKeyFromLocalStorage = async (currentUserEmail : string ) => {
   // Get the JSON string from localStorage
+
+  const emailOfStoredUser = getDataFromLocalStorage(LOCALSTORAGE_KEYS.USER_EMAIL)
+
+  if (!emailOfStoredUser || emailOfStoredUser !== emailOfStoredUser ) return null
   const importedKeyData = getDataFromLocalStorage(LOCALSTORAGE_KEYS.ENCRYPTION_KEY);
 
   if (!importedKeyData) {

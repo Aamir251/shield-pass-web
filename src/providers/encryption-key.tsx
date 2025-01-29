@@ -9,6 +9,9 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer"
 import MasterPasswordPopupForm from "@/components/forms/master-password-popup-form";
+import { useSession } from "next-auth/react";
+import { removeDataFromLocalStorage } from "@/lib/helpers/utils";
+import { LOCALSTORAGE_KEYS } from "@/constants";
 
 
 type EncryptionKeyContextType = {
@@ -19,6 +22,9 @@ export const EncryptionKeyContext = createContext<EncryptionKeyContextType | nul
 
 
 const EncryptionKeyContextProvider = ({ children }: PropsWithChildren) => {
+
+
+  const session = useSession()
 
   const [ isDrawerOpen, setIsDrawerOpen ] = useState(false)
 
@@ -33,9 +39,13 @@ const EncryptionKeyContextProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
 
     const init = async () => {
-      const key = await getEncryptionKeyFromLocalStorage()
+      const key = await getEncryptionKeyFromLocalStorage(session.data?.user.email!)
       if (!key?.extractable) {
         setIsDrawerOpen(true)
+
+        removeDataFromLocalStorage(LOCALSTORAGE_KEYS.ENCRYPTION_KEY)
+        removeDataFromLocalStorage(LOCALSTORAGE_KEYS.PRIVATE_KEY)
+        removeDataFromLocalStorage(LOCALSTORAGE_KEYS.USER_EMAIL)
 
         // show the popup to enter master password 
       }
@@ -50,7 +60,7 @@ const EncryptionKeyContextProvider = ({ children }: PropsWithChildren) => {
   }, [])
 
   const handleChange = () => {
-    console.log({ isDrawerOpen });
+    setIsDrawerOpen(false)
   }
 
 
@@ -64,7 +74,8 @@ const EncryptionKeyContextProvider = ({ children }: PropsWithChildren) => {
         <Button  variant="outline">Open Drawer</Button>
       </DrawerTrigger>
       <MasterPasswordPopupForm 
-        successEncryptionCallback={successEncryptionCallback} 
+        successEncryptionCallback={successEncryptionCallback}
+        email={session.data?.user.email!}
       />
     </Drawer>
   </EncryptionKeyContext.Provider>

@@ -76,6 +76,9 @@ export const saveDataToLocalStorage = (key : string, data : any) => {
 }
 
 
+export const removeDataFromLocalStorage = (key : string) => {
+  localStorage.removeItem(key)
+}
 
 export const debouncer = (callback : (...args : any[]) => void, delay : number) => {
 

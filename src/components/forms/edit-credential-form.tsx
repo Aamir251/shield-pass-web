@@ -55,9 +55,6 @@ const EditCredentialForm = ({ open, closeCallback, credential }: EditCredentialF
 
     const fieldsThatHaveChanged = getFieldsThatHaveChanged(credential!, formData)
 
-    console.log({ fieldsThatHaveChanged });
-    
-
     if (fieldsThatHaveChanged.includes("password")) {
       const newPassword = formData.get("password") as string
 

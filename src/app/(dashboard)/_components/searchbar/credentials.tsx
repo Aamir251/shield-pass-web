@@ -12,9 +12,6 @@ type CredentialsProps = {
 const Credentials = ({ credentials, credentialType }: CredentialsProps) => {
 
 
-  console.log({ credentials });
-
-
   if (!credentials.length) {
     return <p className="text-sm">No Credentials Found</p>
   }

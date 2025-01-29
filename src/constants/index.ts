@@ -34,5 +34,6 @@ export enum ERRORS {
 
 export enum LOCALSTORAGE_KEYS {
   PRIVATE_KEY = "sp-private-key",
-  ENCRYPTION_KEY = "sp-encryption-key"
+  ENCRYPTION_KEY = "sp-encryption-key",
+  USER_EMAIL = "sp-user"
 }

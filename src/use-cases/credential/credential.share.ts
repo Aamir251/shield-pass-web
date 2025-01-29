@@ -46,13 +46,13 @@ export const getSharedCredentialsUseCase = async (email: string) => {
 
 
 
-export const removeCredentialAccessUseCase = async (recipientEmail: string, credentialOwnerEmail: string) => {
+export const removeCredentialAccessUseCase = async (recipientEmail: string, credentialOwnerEmail: string, credentialId : string) => {
 
   const owner = await getUserByEmail(credentialOwnerEmail);
 
   const recipient = await getUserByEmail(recipientEmail)
 
   console.log({ owner, recipient})
-  return await removeCredentialAccess( owner!.id, recipient?.id!);
+  return await removeCredentialAccess( owner!.id, recipient?.id!, credentialId);
 
 }

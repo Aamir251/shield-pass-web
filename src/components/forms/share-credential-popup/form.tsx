@@ -103,7 +103,7 @@ const ShareCredentialForm = ({ credential, recipientsData, mutate }: ShareCreden
 
   const handleRemoveRecipient = async (recipientEmail : string) => {
 
-    const { success, message } = await removeRecipientAction(recipientEmail)
+    const { success, message } = await removeRecipientAction(recipientEmail, credential?.id!)
 
     if (success) {
 

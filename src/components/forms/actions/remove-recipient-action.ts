@@ -3,13 +3,13 @@
 import { checkIfSessionExists } from "@/lib/services/auth";
 import { removeCredentialAccessUseCase } from "@/use-cases/credential/credential.share";
 
-export const removeRecipientAction = async (recipientEmail : string) => {
+export const removeRecipientAction = async (recipientEmail : string, credentialId : string) => {
 
   try {
     const { email } = await checkIfSessionExists()
   
     
-    await removeCredentialAccessUseCase(recipientEmail, email!)
+    await removeCredentialAccessUseCase(recipientEmail, email!, credentialId)
 
     return {
       success : true

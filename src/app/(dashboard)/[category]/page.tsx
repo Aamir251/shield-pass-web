@@ -7,6 +7,7 @@ import SharedCredentialsList from "./_components/shared-credentials-list"
 import { CredentialBasic } from "@/types/credentials"
 import { getSharedCredentialsUseCase } from "@/use-cases/credential/credential.share"
 import { PropsWithChildren } from "react"
+import { Metadata } from "next"
 
 
 type Props = {
@@ -66,4 +67,23 @@ const CredentialsListWrapper = ({ children } : PropsWithChildren) => {
       {children}
     </div>
   )
+}
+
+
+
+
+type MetaDataProps = {
+  params: Promise<{ category: string }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
+
+export async function generateMetadata({ params } : MetaDataProps ) : Promise<Metadata>  {
+  const category = (await params).category;
+
+
+  const title = category.charAt(0).toUpperCase() + category.slice(1) + " Credentials"
+
+  return {
+    title
+  }
 }

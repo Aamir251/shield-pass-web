@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import CreateCredentialForm from "./_component/create-credential-form";
 
 
@@ -17,5 +18,10 @@ const NewCredentialPage = () => {
 
 export default NewCredentialPage;
 
+
+
+export const metadata : Metadata = {
+  title : "Create Credential"
+}
 
 

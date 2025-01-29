@@ -2,11 +2,13 @@ import HeroImage from "@/assets/hero.jpg";
 import Image from "next/image";
 import { Genos } from "next/font/google";
 import Link from "next/link";
+import { Metadata } from "next";
 
 
 const genos = Genos({ subsets : ["latin"]})
 
 export default function HomePage() {
+
 
   return <>
     <main className="bg-black h-screen flex justify-center items-center">
@@ -34,4 +36,10 @@ export default function HomePage() {
       </article>
     </main>
   </>
+}
+
+
+
+export const metadata : Metadata = {
+  title : "Shield Pass | Credential sharing made easy"
 }

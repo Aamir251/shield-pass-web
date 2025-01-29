@@ -2,6 +2,7 @@ import Image from "next/image"
 import LoginImage from "@/assets/login-image.jpg";
 import LoginForm from "./_components/login-form";
 import { Suspense } from "react";
+import { Metadata } from "next";
 
 
 const LoginPage = () => {
@@ -29,7 +30,16 @@ const LoginPage = () => {
   )
 }
 
-export default LoginPage
+export default LoginPage;
+
+
+
+
+export const metadata : Metadata = {
+  title : "Login"
+}
+
+
 
 
 // /* Rectangle 12 */

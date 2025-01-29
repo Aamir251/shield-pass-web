@@ -2,6 +2,7 @@ import Image from "next/image"
 import LoginImage from "@/assets/login-image.jpg";
 import SignUpForm from "./_components/signup-form";
 import { Suspense } from "react";
+import { Metadata } from "next";
 
 
 const SignUpPage = () => {
@@ -31,4 +32,11 @@ const SignUpPage = () => {
   )
 }
 
-export default SignUpPage
+export default SignUpPage;
+
+
+
+
+export const metadata : Metadata = {
+  title : "Sign Up | Create Account"
+}

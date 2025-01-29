@@ -87,14 +87,16 @@ model Session {
 model SharedCredential {
   id            String     @id @default(auto()) @map("_id") @db.ObjectId
   credential    Credential @relation(fields: [credentialId], references: [id])
-  credentialId  String     @db.ObjectId 
+  credentialId  String     @db.ObjectId
 
-  ownerId       String @db.ObjectId @unique
+  ownerId       String @db.ObjectId
 
   recipient     User   @relation(fields: [recipientId], references: [id])
-  recipientId   String @db.ObjectId @unique
+  recipientId   String @db.ObjectId
 
-  password String
+  password      String
+
+  @@unique([ ownerId, recipientId, credentialId ])
 }
 
 

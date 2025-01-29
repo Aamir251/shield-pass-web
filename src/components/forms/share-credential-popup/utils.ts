@@ -40,12 +40,12 @@ export const shareCredentialMiddleware = async ({
     if (error || !recipientPublicKey) throw new Error(error)
 
 
-    console.log({ recipientPublicKey })
     /**
      * Encrypt the password using recipient public key which can be shared with the Recipient
     */
     const finalPassword = await encryptSharedCredentialPassword(plainPassword, recipientPublicKey)
-
+    
+    
     return {
       finalPassword
     }

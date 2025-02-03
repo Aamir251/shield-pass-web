@@ -90,7 +90,7 @@ const CreateCredentialForm = () => {
         </LabelInputWrapper>
 
         <LabelInputWrapper labelTitle="Password">
-          <Input placeholder="*******" name="password" />
+          <Input placeholder="*******" type="password" name="password" />
         </LabelInputWrapper>
       </TwoCols>
 

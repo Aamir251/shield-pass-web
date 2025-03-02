@@ -8,7 +8,7 @@
 
 
 
-import { createContext, Dispatch, PropsWithChildren, SetStateAction, useContext, useState } from "react";
+import { createContext, Dispatch, PropsWithChildren, SetStateAction, useCallback, useContext, useEffect, useState } from "react";
 import { Dialog } from "@/components/ui/dialog"
 
 import { CredentialBasic, CredentialUpdate } from "@/types/credentials";
@@ -42,7 +42,8 @@ const CredentialActionContextProvider = ({ children }: CredentialsActionProvider
   const [selectedCredential, setSelectedCredential] = useState<CredentialBasic | null>(null)
 
   
-  const removequeryParams = () => {
+  const removequeryParams = useCallback(() => {
+    if (typeof window === "undefined") return
     const nextSearchParams = new URLSearchParams(searchParams.toString())
     
     nextSearchParams.delete("share")
@@ -50,11 +51,13 @@ const CredentialActionContextProvider = ({ children }: CredentialsActionProvider
     
     router.replace(`${pathname}`)
     
-  }
+  },[searchParams, router, pathname ])
   
-  if (!selectedCredential) {
-    removequeryParams()
-  }
+  useEffect(() => {
+    if (!selectedCredential && !searchParams.has("search")) {
+      removequeryParams()
+    }
+  },[selectedCredential, searchParams, removequeryParams])
   
   
   const shouldShowSharePopup = searchParams.has("share") && selectedCredential ? true : false
@@ -70,7 +73,7 @@ const CredentialActionContextProvider = ({ children }: CredentialsActionProvider
       <Dialog>
         <EditCredentialForm open={shouldShowEditPopup} closeCallback={removequeryParams} credential={selectedCredential} />
       </Dialog>
-      <ShareCredentialPopup isOpen={shouldShowSharePopup} closeCallback={removequeryParams} />
+      {shouldShowSharePopup && <ShareCredentialPopup isOpen={shouldShowSharePopup} closeCallback={removequeryParams} />}
 
       {children}
 

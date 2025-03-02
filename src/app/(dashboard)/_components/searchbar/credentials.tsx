@@ -1,11 +1,10 @@
 import Link from "next/link";
-import { CredentialSearchItem } from "."
 import Image from "next/image";
-import { CredentialsType } from "@/types/credentials";
+import { CredentialBasic, CredentialsType } from "@/types/credentials";
 
 
 type CredentialsProps = {
-  credentials: CredentialSearchItem[]
+  credentials: CredentialBasic[]
   credentialType: CredentialsType
 }
 

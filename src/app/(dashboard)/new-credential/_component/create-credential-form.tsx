@@ -131,7 +131,7 @@ export default CreateCredentialForm;
 const TwoCols = ({ children }: PropsWithChildren) => {
 
 
-  return <div className="grid grid-cols-2 gap-x-6">
+  return <div className="grid md:grid-cols-2 gap-x-6 gap-y-5">
     {children}
   </div>
 }

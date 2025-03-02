@@ -37,7 +37,7 @@ const CredentialOverview = (
           <h5 className="">{username}</h5>
           <CopyButton textToCopy={username} />
         </div>}
-        <p className="text-xs text-primary-gray mt-8">Last Updated : {getCredentialDate(updatedAt)}</p>
+        { updatedAt && <p className="text-xs text-primary-gray mt-8">Last Updated : {getCredentialDate(new Date(updatedAt))}</p>}
       </div>
     </>
   )

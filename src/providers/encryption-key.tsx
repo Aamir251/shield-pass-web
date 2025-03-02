@@ -2,7 +2,7 @@
 
 
 import { getEncryptionKeyFromLocalStorage } from "@/lib/helpers/cipher";
-import { createContext, PropsWithChildren, useContext, useEffect, useRef, useState } from "react";
+import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button"
 import {
   Drawer,
@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/drawer"
 import MasterPasswordPopupForm from "@/components/forms/master-password-popup-form";
 import { useSession } from "next-auth/react";
-import { removeDataFromLocalStorage } from "@/lib/helpers/utils";
+import { getDataFromLocalStorage, removeDataFromLocalStorage } from "@/lib/helpers/utils";
 import { LOCALSTORAGE_KEYS } from "@/constants";
 
 
@@ -23,13 +23,18 @@ export const EncryptionKeyContext = createContext<EncryptionKeyContextType | nul
 
 const EncryptionKeyContextProvider = ({ children }: PropsWithChildren) => {
 
-
   const session = useSession()
 
   const [ isDrawerOpen, setIsDrawerOpen ] = useState(false)
 
-
   const [encryptionKey, setEncryptionKey] = useState<CryptoKey | null>(null)
+  
+  const resetState = useCallback(() => {
+    removeDataFromLocalStorage(LOCALSTORAGE_KEYS.ENCRYPTION_KEY)
+    removeDataFromLocalStorage(LOCALSTORAGE_KEYS.PRIVATE_KEY)
+    removeDataFromLocalStorage(LOCALSTORAGE_KEYS.USER_EMAIL)
+    setIsDrawerOpen(true)
+  }, [])
 
   const successEncryptionCallback = (key : CryptoKey) => {
     setEncryptionKey(key)
@@ -39,15 +44,16 @@ const EncryptionKeyContextProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
 
     const init = async () => {
+      const existingEmailInStorage = getDataFromLocalStorage(LOCALSTORAGE_KEYS.USER_EMAIL)
+      if (existingEmailInStorage !== session.data?.user.email) {
+        resetState()
+        return
+      }
+
       const key = await getEncryptionKeyFromLocalStorage(session.data?.user.email!)
       if (!key?.extractable) {
-        setIsDrawerOpen(true)
-
-        removeDataFromLocalStorage(LOCALSTORAGE_KEYS.ENCRYPTION_KEY)
-        removeDataFromLocalStorage(LOCALSTORAGE_KEYS.PRIVATE_KEY)
-        removeDataFromLocalStorage(LOCALSTORAGE_KEYS.USER_EMAIL)
-
-        // show the popup to enter master password 
+        resetState()
+        return
       }
 
       setEncryptionKey(key)
@@ -57,7 +63,7 @@ const EncryptionKeyContextProvider = ({ children }: PropsWithChildren) => {
 
     init()
 
-  }, [])
+  }, [resetState, session.data?.user?.email])
 
   const handleChange = () => {
     setIsDrawerOpen(false)

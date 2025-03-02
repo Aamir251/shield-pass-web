@@ -16,31 +16,31 @@ type Props = {
   }
 }
 
-function checkIfValidCategory(categoryName : string) : categoryName is CredentialCategoryPageType {
+const checkIfValidCategory = (categoryName: string): categoryName is CredentialCategoryPageType => {
   return CREDENTIAL_PAGE_CATEGORIES.includes(categoryName as CredentialCategoryPageType)
 }
 
-const CredentialCategoryPage = async ({ params: { category } } : Props) => {
-  
+const CredentialCategoryPage = async ({ params: { category } }: Props) => {
+
   const isCategoryValid = checkIfValidCategory(category)
 
-  if (!isCategoryValid) throw Error ("Oops! you hit the wrong route!")
+  if (!isCategoryValid) throw Error("Oops! you hit the wrong route!")
 
   const { email } = await checkIfSessionExists()
-  
-  let credentials : CredentialBasic[];
+
+  let credentials: CredentialBasic[];
 
   if (category === "recents") {
     credentials = await getRecentCredentialsUsecase(email!)
 
-    
+
     return <CredentialsListWrapper>
       <RecentCredentialsList credentials={credentials} />
     </CredentialsListWrapper>
   }
-  
+
   if (category === "shared") {
-    const { credentials : sharedCredentials }  = await getSharedCredentialsUseCase(email!)
+    const { credentials: sharedCredentials } = await getSharedCredentialsUseCase(email!)
     return <CredentialsListWrapper>
       <SharedCredentialsList credentials={sharedCredentials} />
     </CredentialsListWrapper>
@@ -59,7 +59,7 @@ const CredentialCategoryPage = async ({ params: { category } } : Props) => {
 export default CredentialCategoryPage
 
 
-const CredentialsListWrapper = ({ children } : PropsWithChildren) => {
+const CredentialsListWrapper = ({ children }: PropsWithChildren) => {
 
   return (
     <div className="grid lg:grid-cols-3 gap-x-3">
@@ -76,7 +76,7 @@ type MetaDataProps = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
-export async function generateMetadata({ params } : MetaDataProps ) : Promise<Metadata>  {
+export async function generateMetadata({ params }: MetaDataProps): Promise<Metadata> {
   const category = (await params).category;
 
 

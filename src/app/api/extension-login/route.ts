@@ -25,10 +25,6 @@ export async function POST(req : Request) {
       expiresIn : 3600,
     })
 
-    // cookieStore.set("sp-ext-auth", token)
-
-
-    // console.log("Setting Cookie Token ", token);
     
     return Response.json({ success : true, token }, { status : 200 })
 

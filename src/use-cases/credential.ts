@@ -31,7 +31,6 @@ export const getCredentialsByCategoryUseCase = async (
   category: CredentialCategory,
 ) => {
 
-  console.log({ email, category })
   const userExists = await getUserByEmail(email);
 
   if (!userExists) throw new Error("User Does not Exist");

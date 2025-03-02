@@ -14,3 +14,6 @@ export type UpdateCredential = Partial<CreateCredential>
 
 
 export type CredentialUpdate = CreateCredential
+
+
+export type CredentialSearchItem = Pick<Credential, "id" | "name" | "websiteUrl" | "email" | "category">

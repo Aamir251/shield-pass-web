@@ -74,13 +74,8 @@ async function fetchRecipientPublicKey(recipientEmail: string) {
     const data = await resp.json()
     if (!data.success) throw new Error(data.message)
 
-    console.log({ data })
-    
     const key = data.recipientPublicKey as string // this is in string format
 
-    // convert key (string) to CryptoKey format
-
-    console.log({ key })
 
     const recipientPublicKey = await convertStringToCryptoKey(key)
 

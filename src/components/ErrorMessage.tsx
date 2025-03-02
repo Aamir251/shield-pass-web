@@ -1,11 +1,12 @@
 type ErrorMessageProps = {
   message : string
+  className? : string
 }
 
 
-const ErrorMessage = ({ message } : ErrorMessageProps) => {
+const ErrorMessage = ({ message, className } : ErrorMessageProps) => {
   return (
-    <div>
+    <div className={`${className}`}>
       <h3>{message}</h3>
     </div>
   )

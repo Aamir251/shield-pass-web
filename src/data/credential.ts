@@ -4,7 +4,16 @@ import { CreateCredential, CredentialsType } from "@/types/credentials";
 import { Credential } from "@prisma/client";
 
 
-
+const basicCredentialAttributes = {
+  name: true,
+  email: true,
+  id: true,
+  category: true,
+  websiteUrl: true,
+  updatedAt: true,
+  password: true,
+  username: true
+}
 
 
 export const createCredential = async (credential: CreateCredential) => {
@@ -25,7 +34,7 @@ export const getCredentials = async (
       websiteUrl: true,
       updatedAt: true,
       password: true,
-      username : true
+      username: true
     },
   });
 };
@@ -50,10 +59,10 @@ export const updateCredential = async (
   });
 };
 
-export const deletedSharedCredential= async (originalCredentialId : string, ownerId : string) => {
+export const deletedSharedCredential = async (originalCredentialId: string, ownerId: string) => {
   return await dbClient.sharedCredential.delete({
-    where : {
-      id : originalCredentialId 
+    where: {
+      id: originalCredentialId
     }
   })
 }
@@ -94,21 +103,21 @@ export const getMyCredentialRecipients = async (
 
 
   const resp = await dbClient.sharedCredential.findMany({
-    where : {
+    where: {
       credentialId,
       ownerId
     },
-    select : {
-      recipient : {
-        select : {
-          email : true
+    select: {
+      recipient: {
+        select: {
+          email: true
         }
       }
     }
   })
 
-  return resp.map(el => ({ email : el.recipient.email }))
-  
+  return resp.map(el => ({ email: el.recipient.email }))
+
 
 };
 
@@ -130,7 +139,7 @@ type SharedCredentialRaw = {
 }
 
 
-function sharedCredentialDto(credentials:SharedCredentialRaw[] ) {
+function sharedCredentialDto(credentials: SharedCredentialRaw[]) {
 
   return credentials.map(({ id, password, credential: { email, category, name, updatedAt, username, websiteUrl } }) => ({
     id,
@@ -140,7 +149,7 @@ function sharedCredentialDto(credentials:SharedCredentialRaw[] ) {
     category,
     username,
     updatedAt,
-    password 
+    password
   }))
 
 }
@@ -148,7 +157,7 @@ function sharedCredentialDto(credentials:SharedCredentialRaw[] ) {
 
 export const getCredentialsSharedWithMe = async (userId: string) => {
 
-  const credentials =  await dbClient.sharedCredential.findMany({
+  const credentials = await dbClient.sharedCredential.findMany({
     where: {
       recipientId: userId,
 
@@ -170,17 +179,17 @@ export const getCredentialsSharedWithMe = async (userId: string) => {
   })
 
   const sharedPrivateKey = await dbClient.user.findUnique({
-    where : {
-      id : userId,
+    where: {
+      id: userId,
     },
-    select : {
-      sharedPrivateKey : true
+    select: {
+      sharedPrivateKey: true
     }
   })
 
   return {
-    credentials : sharedCredentialDto(credentials),
-    sharedPrivateKey : sharedPrivateKey?.sharedPrivateKey
+    credentials: sharedCredentialDto(credentials),
+    sharedPrivateKey: sharedPrivateKey?.sharedPrivateKey
   }
 
 };
@@ -199,17 +208,17 @@ export const getRecentCredentials = async (userId: string) => {
       websiteUrl: true,
       updatedAt: true,
       password: true,
-      username : true
+      username: true
     }
   })
 }
 
 
-export const removeCredentialAccess = async (ownerId: string, recipientId: string, credentialId : string) => {
+export const removeCredentialAccess = async (ownerId: string, recipientId: string, credentialId: string) => {
 
   return await dbClient.sharedCredential.delete({
-    where : {
-      ownerId_recipientId_credentialId : {
+    where: {
+      ownerId_recipientId_credentialId: {
         ownerId,
         credentialId,
         recipientId
@@ -236,11 +245,7 @@ export const getSearchResults = async (userId: string, searchString: string) => 
     },
 
     select: {
-      websiteUrl: true,
-      name: true,
-      email: true,
-      id: true,
-      category: true
+      ...basicCredentialAttributes
     }
   })
 

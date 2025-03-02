@@ -201,7 +201,6 @@ export const storeEncryptionKeyLocally = async (key: CryptoKey) => {
 
   // Convert to JSON and store in localStorage
   saveDataToLocalStorage(LOCALSTORAGE_KEYS.ENCRYPTION_KEY, exportedKey)
-  console.log("Key stored in localStorage");
 }
 
 export const getEncryptionKeyFromLocalStorage = async (currentUserEmail : string ) => {
@@ -225,7 +224,6 @@ export const getEncryptionKeyFromLocalStorage = async (currentUserEmail : string
     ["encrypt", "decrypt"] // Key usage
   );
 
-  console.log("Key retrieved from localStorage");
   return key;
 }
 

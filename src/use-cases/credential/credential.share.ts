@@ -18,11 +18,6 @@ export const shareCredentialUseCase = async (
   const owner = await getUserByEmail(ownerEmail);
   
   if (!receiverExists) throw new Error("User does not exist");
-  
-    console.log({owner : owner?.id,
-      receiver : receiverExists.id,
-      credentialId,
-      password });
 
   return await shareCredential(owner?.id!, receiverExists.id, credentialId, password);
 };
@@ -52,7 +47,6 @@ export const removeCredentialAccessUseCase = async (recipientEmail: string, cred
 
   const recipient = await getUserByEmail(recipientEmail)
 
-  console.log({ owner, recipient})
   return await removeCredentialAccess( owner!.id, recipient?.id!, credentialId);
 
 }

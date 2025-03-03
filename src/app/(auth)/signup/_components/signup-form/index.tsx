@@ -10,6 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { signUpMiddleware } from "../../_utils/signup-middleware";
 
 const SignUpForm = () => {
+  
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -18,7 +19,7 @@ const SignUpForm = () => {
   const formAction = async (formData: FormData) => {
     try {
 
-      const { email, formData : finalFormData, password} = await signUpMiddleware(formData)
+      const { email, formData : finalFormData, password ,schoolName } = await signUpMiddleware(formData)
 
       const resp = await signUpAction({ error: "" }, finalFormData)
 

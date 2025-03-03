@@ -6,9 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { extractFormData, handleAuthError, validateFormFields } from "@/lib/helpers/form";
 import Form from "@/components/forms/auth-form";
 import { BASE_URL } from "@/constants";
-import { decryptMainKey, getEncryptionKeyFromLocalStorage, storeEncryptionKeyLocally } from "@/lib/helpers/cipher";
 import { useToast } from "@/hooks/use-toast";
-import { getMainEncryptionKey } from "@/data/user";
 
 
 
@@ -27,8 +25,8 @@ const LoginForm = () => {
       validateFormFields(formData, formFields);
 
       const { email, password } = extractFormData(formData, formFields)
-      
-      const resp = await signIn("credentials", { email, password, redirect : false })
+
+      const resp = await signIn("credentials", { email, password, redirect: false })
 
       resp?.error && handleAuthError(resp.error)
 
@@ -38,9 +36,9 @@ const LoginForm = () => {
       router.push(callbackUrl ?? BASE_URL)
 
     } catch (error: any) {
-      console.log({ LOGIN_ERROR : error })
+      console.log({ LOGIN_ERROR: error })
       toast({
-        title : error.message
+        title: error.message
       })
     }
   }
@@ -51,6 +49,7 @@ const LoginForm = () => {
 
       <Form />
       <LoginButton />
+
     </form>
   )
 }

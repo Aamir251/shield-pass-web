@@ -8,7 +8,7 @@ export const signUpMiddleware = async (formData: FormData) => {
 
 
   // email & password used to login & encryption Key generation on successful sign up
-  const { email, password, schoolName, confirmPassword } = extractFormData(formData, formFields)
+  const { email, password, schoolName, confirmPassword, } = extractFormData(formData, formFields)
 
   if (password !== confirmPassword) throw new Error("Passwords don't match")
 
@@ -45,6 +45,7 @@ export const signUpMiddleware = async (formData: FormData) => {
   return {
     formData,
     email,
-    password
+    password,
+    schoolName
   }
 }

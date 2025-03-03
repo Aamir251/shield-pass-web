@@ -12,9 +12,9 @@ type EncryptionKey = {
 export const signUpAction = async (prevState: any, formData: FormData) => {
 
   try {
-    const formFields = ["username", "email", "password", "sharedPublicKey", "sharedPrivateKey", "mainEncryption", "recoveryEncryption"] as const;
+    const formFields = ["username", "email", "password", "sharedPublicKey", "sharedPrivateKey", "mainEncryption", "recoveryEncryption", "schoolName"] as const;
 
-    let { username, email, password, sharedPublicKey, sharedPrivateKey : privateKey, mainEncryption, recoveryEncryption  } = extractFormData(formData, formFields);
+    let { username, email, password, sharedPublicKey, sharedPrivateKey : privateKey, mainEncryption, recoveryEncryption, schoolName  } = extractFormData(formData, formFields);
     
     const sharedPrivateKey = JSON.parse(privateKey) as EncryptionKey;
 
@@ -27,7 +27,7 @@ export const signUpAction = async (prevState: any, formData: FormData) => {
       password,
       sharedPublicKey, 
       sharedPrivateKey, 
-      
+      schoolName,
       encryptionKeyMain,
       encryptionKeyRecovery
     }

@@ -2,60 +2,83 @@
 
 import { useCallback, useRef, useState } from "react";
 import EmailAndPasswordForm from "./email-and-answer-form";
-import NewPassword from "./new-password";
-import { changePasswordAction } from "../_action";
+import { changePasswordAction, updateEncryptionKeyAction } from "../_action";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import NewPassword from "./new-password";
+import { getNewEncryptedKey } from "./utils";
+import { updateUser } from "@/data/user";
+import { clearLocalStorage } from "@/lib/helpers/utils";
 
 const Form = () => {
 
   const { toast } = useToast();
   const router = useRouter()
-  const [ email, setEmail ] = useState<string>("")
-
-  const steps = [
-    { id: 1, component: EmailAndPasswordForm },
-    { id: 2, component: NewPassword },
-  ];
 
   let formRef = useRef<HTMLFormElement>(null)
 
   const [currentStep, setCurrentStep] = useState(0)
 
-  const handleNext = useCallback((email : string) => {
-    
-    setEmail(email)
+  const handleNext = useCallback(() => {
 
-    if (currentStep < steps.length - 1) {
-      setCurrentStep(currentStep + 1);
-    }
-  }, [currentStep, steps.length]);
+    setCurrentStep(currentStep + 1);
+
+  }, [currentStep]);
 
 
-  const StepComponent = steps[currentStep].component;
 
   const formAction = async (formData: FormData) => {
 
-    formData.set("email", email)
+    const { success, message, encryptedRecoveryKey } = await changePasswordAction(formData)
 
-    const { success, message } = await changePasswordAction(formData)
-
+    
+    
+    
     if (success) {
+      /**
+       * also we need to update the Encryption Key
+       */
+  
+      const email = formData.get("email") as string
+      const schoolName = formData.get("school-name") as string
+      const newPassword = formData.get("password") as string
+
+      
+
+      const newEncryptionKey = await getNewEncryptedKey(encryptedRecoveryKey!, schoolName, newPassword)
+
+      await updateEncryptionKeyAction(email, newEncryptionKey)
+
+
+      // clear local storage
+
+      clearLocalStorage()
+
       toast({
-        title : "Password Updated! 🎉"
+        title: "Password Updated! 🎉"
       })
       router.push("/login")
 
     } else {
+
+      console.log({ message });
+      
       toast({
-        title : message
+        title: message
       })
     }
   }
 
   return (
     <form action={formAction} ref={formRef} className="mt-10">
-      <StepComponent formRef={formRef} moveNext={handleNext} />
+
+      <div className={`${currentStep === 0 ? "block" : "hidden"}`}>
+        <EmailAndPasswordForm moveNext={handleNext} formRef={formRef} />
+      </div>
+
+      <div className={`${currentStep === 1 ? "block" : "hidden"}`}>
+        <NewPassword />
+      </div>
     </form>
   )
 }

@@ -1,6 +1,8 @@
 "use server";
 
+import { updateUser } from "@/data/user";
 import { changePasswordUseCase, verifySchoolNameUseCase } from "@/use-cases/user";
+import { EncryptedKey } from "@prisma/client";
 
 
 export const schoolNameAction = async (formData: FormData) => {
@@ -35,8 +37,8 @@ export const changePasswordAction = async (formData : FormData) => {
   
   const email = formData.get("email") as string
   const password = formData.get("password") as string
-
   const confirmPassword = formData.get("confirm-password") as string
+
 
   if (password !== confirmPassword) {
     return {
@@ -45,12 +47,35 @@ export const changePasswordAction = async (formData : FormData) => {
     }
   }
 
-  const { success, message } = await changePasswordUseCase(email, password);
-
+  const { success, message, encryptedRecoveryKey } = await changePasswordUseCase(email, password);
 
   return {
     success,
-    message
+    message,
+    encryptedRecoveryKey : encryptedRecoveryKey?.encryptionKeyRecovery
   }
+
+}
+
+
+export const updateEncryptionKeyAction = async (email : string, encryptionKey : EncryptedKey) => {
+
+  try {
+    await updateUser(email, { encryptionKeyMain : encryptionKey })
+    return {
+      success : true
+    }
+  } catch (error : any) {
+    
+
+    console.log({ error });
+
+    return {
+      success : false,
+      message : error.message
+    }
+    
+  }
+
 
 }

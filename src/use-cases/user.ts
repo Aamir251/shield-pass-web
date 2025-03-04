@@ -1,4 +1,4 @@
-import { createNewUser, getUserByEmail, getUserSchoolName, NewUser, updateUser } from "@/data/user";
+import { createNewUser, getUserByEmail, getUserRecoveryEncryptionKey, getUserSchoolName, NewUser, updateUser } from "@/data/user";
 import bcrypt from "bcrypt";
 
 export const createUserUseCase = async ({
@@ -69,10 +69,14 @@ export const changePasswordUseCase = async (email : string, password : string) =
     const hashedPassword = bcrypt.hashSync(password, 10)
 
     
-    await updateUser(email, hashedPassword)
+    await updateUser(email, { password : hashedPassword})
+
+    const encryptedRecoveryKey = await getUserRecoveryEncryptionKey(email)
+
 
     return {
-      success : true
+      success : true,
+      encryptedRecoveryKey
     }
 
   } catch (error : any ) {

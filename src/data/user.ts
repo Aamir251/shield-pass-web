@@ -65,12 +65,18 @@ export const getUserSchoolName = async( email : string ) =>
   })
 
 
-export const updateUser = async (email : string, password : string) => 
+export const updateUser = async (email : string, fieldsToUpdate : Partial<NewUser>) => 
   await dbClient.user.update({
     where : {
       email,
     },
     data : {
-      password
+      ...fieldsToUpdate
     }
   })
+
+
+export const getUserRecoveryEncryptionKey = async (email : string ) =>
+  await dbClient.user.findUnique({ where : { email }, select : {
+    encryptionKeyRecovery : true
+  }})

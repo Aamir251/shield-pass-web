@@ -1,3 +1,4 @@
+import { LOCALSTORAGE_KEYS } from "@/constants";
 import crypto from "crypto"
 
 export const getFieldsThatHaveChanged = <T extends object>(
@@ -60,38 +61,44 @@ function getKey(secret: string) {
   return crypto.createHash('sha256').update(secret).digest(); // 32-byte key for AES-256
 }
 
-export const capitalizeFirstLetter = (str : string) => {
+export const capitalizeFirstLetter = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
 
-export const getDataFromLocalStorage = (key : string) => {
+export const getDataFromLocalStorage = (key: string) => {
   const data = localStorage.getItem(key)
   if (!data) return null
   return JSON.parse(data)
 }
 
-export const saveDataToLocalStorage = (key : string, data : any) => {
+export const saveDataToLocalStorage = (key: string, data: any) => {
   return localStorage.setItem(key, JSON.stringify(data))
 }
 
 
-export const removeDataFromLocalStorage = (key : string) => {
+export const removeDataFromLocalStorage = (key: string) => {
   localStorage.removeItem(key)
 }
 
-export const debouncer = (callback : (...args : any[]) => void, delay : number) => {
+export const debouncer = (callback: (...args: any[]) => void, delay: number) => {
 
-  let timeoutId : NodeJS.Timeout | null = null
+  let timeoutId: NodeJS.Timeout | null = null
 
 
-  return (...args : any[]) => {
+  return (...args: any[]) => {
     if (timeoutId !== null) {
       clearTimeout(timeoutId)
     }
-    
+
     timeoutId = setTimeout(() => {
       callback(...args)
     }, delay)
   }
+}
+
+export const clearLocalStorage = () => {
+  removeDataFromLocalStorage(LOCALSTORAGE_KEYS.ENCRYPTION_KEY)
+  removeDataFromLocalStorage(LOCALSTORAGE_KEYS.PRIVATE_KEY)
+  removeDataFromLocalStorage(LOCALSTORAGE_KEYS.USER_EMAIL)
 }

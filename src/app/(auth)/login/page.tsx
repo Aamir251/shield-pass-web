@@ -19,24 +19,6 @@ const LoginPage = () => {
 
 export default LoginPage;
 
-
-
-
 export const metadata: Metadata = {
   title: "Login"
 }
-
-
-
-
-// /* Rectangle 12 */
-
-// position: absolute;
-// width: 769px;
-// height: 982px;
-// left: 756px;
-// top: 0px;
-
-// background: rgba(40, 40, 45, 0.21);
-// backdrop-filter: blur(70px);
-/* Note: backdrop-filter has minimal browser support */

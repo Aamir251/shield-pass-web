@@ -18,6 +18,7 @@ const EmailAndPasswordForm = ({ moveNext, formRef }: StepFormProps) => {
     if (!formRef.current) return
 
     const { success, message } = await schoolNameAction(new FormData(formRef.current))
+    console.log({ success,});
     
     if (!success) {
       toast({
@@ -27,7 +28,7 @@ const EmailAndPasswordForm = ({ moveNext, formRef }: StepFormProps) => {
       return
     }
 
-    moveNext && moveNext(new FormData(formRef.current).get("email") as string )
+    moveNext && moveNext()
 
   }
 
@@ -39,7 +40,7 @@ const EmailAndPasswordForm = ({ moveNext, formRef }: StepFormProps) => {
         </LabelInputWrapper>
 
         <LabelInputWrapper labelTitle="Your first school name :" >
-          <Input placeholder="Cloud Kindergarten" type="email" name="school-name" required />
+          <Input placeholder="Cloud Kindergarten" type="text" name="school-name" required />
         </LabelInputWrapper>
       </div>
 

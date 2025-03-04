@@ -23,6 +23,7 @@ const MasterPasswordPopupForm = (props : Props) => {
           <DrawerTitle>Enter Master Password</DrawerTitle>
           <DrawerDescription>Please enter your Password to continue</DrawerDescription>
         </DrawerHeader>
+
         <Form successEncryptionCallback={props.successEncryptionCallback} email={props.email} >
 
           <DrawerFooter>
@@ -49,12 +50,16 @@ const Form = ({ children, successEncryptionCallback, email }: PropsWithChildren<
     try {
       const password = formData.get("password") as string
 
+      console.log({ password });
+      
+
       if (!password) throw new Error("Please Enter Password!")
 
       // checking if user is valid or not
       const { encryptionKeyMain } = await encryptionKeyAction({ password })
 
-
+      console.log({ encryptionKeyMain });
+      
       const encryptionKey = await decryptMainKey(encryptionKeyMain, password)
 
       await storeEncryptionKeyLocally(encryptionKey)
@@ -65,6 +70,8 @@ const Form = ({ children, successEncryptionCallback, email }: PropsWithChildren<
 
     } catch (error: any) {
 
+      console.log({ error });
+      
       toast({
         title : error.message
       })

@@ -28,7 +28,7 @@ const DashboardLayout = ({ children }: PropsWithChildren<{ params: any }>) => {
             <section className="flex gap-x-4 h-dvh">
               <MainSideBar />
               <div style={{ height: "calc(100dvh - 180px)" }} className="mt-36 lg:mt-auto w-full px-5 lg:px-0 relative ">
-                <div className='w-full lg:max-w-[97%]'>
+                <div className='w-full lg:max-w-[97%] pb-20 md:pb-0'>
                   {children}
                 </div>
                 <Suspense>

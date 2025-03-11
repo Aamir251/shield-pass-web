@@ -12,12 +12,12 @@ const CredentialItem = ({ credential }: CredentialItemProps) => {
 
   return (
     <article
-      className="relative p-6 border text-sm rounded-md overflow-hidden transition bg-card hover:bg-accent "
+      className="relative p-6 border text-sm rounded-md overflow-hidden min-h-48 transition bg-card hover:bg-accent "
     >
 
       <CredentialOverview credential={credential} />
       <ShowMoreActionsButton credential={credential} />
-      <div  className="absolute bottom-5 right-3">
+      <div  className="absolute bottom-3 right-3">
         <CopyPasswordButton password={credential.password} />
       </div>
     </article>

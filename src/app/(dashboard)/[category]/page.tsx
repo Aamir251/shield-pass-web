@@ -62,7 +62,7 @@ export default CredentialCategoryPage
 const CredentialsListWrapper = ({ children }: PropsWithChildren) => {
 
   return (
-    <div className="grid lg:grid-cols-3 gap-x-3">
+    <div className="grid lg:grid-cols-3 gap-y-6 gap-x-3">
       {children}
     </div>
   )

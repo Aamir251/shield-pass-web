@@ -28,7 +28,7 @@ const CredentialOverview = (
       </div>
 
 
-      <div className="mt-4">
+      <div className="mt-4 space-y-3">
         {email && <div className="flex  items-center justify-between">
           <h5 className="">{email}</h5>
           <CopyButton textToCopy={email} />
@@ -37,7 +37,7 @@ const CredentialOverview = (
           <h5 className="">{username}</h5>
           <CopyButton textToCopy={username} />
         </div>}
-        { updatedAt && <p className="text-xs text-primary-gray mt-8">Last Updated : {getCredentialDate(new Date(updatedAt))}</p>}
+        { updatedAt && <p className="text-xs text-primary-gray mt-8 absolute bottom-3">Last Updated : {getCredentialDate(new Date(updatedAt))}</p>}
       </div>
     </>
   )

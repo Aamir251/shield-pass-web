@@ -5,6 +5,7 @@ import {
   deletedSharedCredential,
   getCredentialById,
   getCredentials,
+  getMyCredentialRecipients,
   getRecentCredentials,
   getSearchResults,
   updateCredential,
@@ -70,7 +71,13 @@ export const updateCredentialUseCase = async (
 
   if (!userExists) throw new Error("User Not Found");
 
-  await deletedSharedCredential(credentialId, userExists.id)
+
+  // if credentialRecipients exists, it means the credential was shared with someone
+  const credentialRecipients = await getMyCredentialRecipients(credentialId, userExists.id)
+
+  if (credentialRecipients.length) {
+    await deletedSharedCredential(credentialId, userExists.id)
+  }
 
   return await updateCredential(
     propertiesToUpdate,

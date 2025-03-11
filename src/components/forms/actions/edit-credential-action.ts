@@ -33,7 +33,6 @@ export const editCredentialAction = async (formData: FormData, targetFields: str
         data: encryptedPassword.data
       }
     }
-
     
     await updateCredentialUseCase(email!, fieldsToUpdate, formData.get("credentialId") as string)
 

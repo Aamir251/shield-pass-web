@@ -5,7 +5,7 @@ import { Metadata } from "next";
 
 const SignUpPage = () => {
   return (
-    <div className="relative z-10 flex flex-col justify-center h-full  md:max-w-sm py-5">
+    <div className="relative z-10 flex flex-col justify-center h-full mx-auto lg:mx-0 md:max-w-sm py-5">
 
       <div className="text-center">
         <h1 className="text-4xl text-primary-white">Welcome !</h1>

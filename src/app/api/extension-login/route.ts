@@ -3,6 +3,7 @@ import { NextRequest } from "next/server";
 import jwt from "jsonwebtoken"
 
 import { cookies } from "next/headers";
+import { EncryptedKey } from "@prisma/client";
 
 export async function POST(req : Request) {
 
@@ -16,17 +17,22 @@ export async function POST(req : Request) {
 
     if (!email || !password) throw new Error("Email / Password is missing")
     
-    const user = await authenticateUser(email, password)
-
-    if (!user) throw new Error("Invalid Email or Password")
-
-    
-    const token =  jwt.sign({ email }, process.env.NEXTAUTH_SECRET as string, {
-      expiresIn : 3600,
-    })
+    const user = await authenticateUser(email, password) as unknown as {
+      email : string,
+      sharedPrivateKey : EncryptedKey
+    }
 
     
-    return Response.json({ success : true, token }, { status : 200 })
+    if (!user?.email) throw new Error("Invalid Email or Password")
+
+    
+    // const token =  jwt.sign({ email }, process.env.NEXTAUTH_SECRET as string, {
+    //   expiresIn : 3600,
+    // })
+
+    
+    // return Response.json({ success : true, token }, { status : 200 })
+    return Response.json({ success : true, privateKey : user.sharedPrivateKey }, { status : 200 })
 
   } catch (err : any) {
 

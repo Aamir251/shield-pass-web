@@ -180,18 +180,17 @@ export const getCredentialsSharedWithMe = async (userId: string) => {
     },
   })
 
-  const sharedPrivateKey = await dbClient.user.findUnique({
-    where: {
-      id: userId,
-    },
-    select: {
-      sharedPrivateKey: true
-    }
-  })
+  // const sharedPrivateKey = await dbClient.user.findUnique({
+  //   where: {
+  //     id: userId,
+  //   },
+  //   select: {
+  //     sharedPrivateKey: true
+  //   }
+  // })
 
   return {
     credentials: sharedCredentialDto(credentials),
-    sharedPrivateKey: sharedPrivateKey?.sharedPrivateKey
   }
 
 };

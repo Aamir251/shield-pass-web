@@ -45,6 +45,7 @@ const EncryptionKeyContextProvider = ({ children }: PropsWithChildren) => {
 
     const init = async () => {
       const existingEmailInStorage = getDataFromLocalStorage(LOCALSTORAGE_KEYS.USER_EMAIL)
+     
       if (existingEmailInStorage !== session.data?.user.email) {
         resetState()
         return

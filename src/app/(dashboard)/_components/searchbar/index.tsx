@@ -4,6 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import SearchForm from "./search-form";
 import { useToast } from "@/hooks/use-toast";
 import { useSearchResultContext } from "@/providers/search-result-provider";
+import { debouncer } from "@/lib/helpers/utils";
 import { useCallback } from "react";
 
 type SearchBarProps = {
@@ -13,33 +14,16 @@ type SearchBarProps = {
 
 
 const SearchBar = ({ }: SearchBarProps) => {
-  const { setSearchResults } = useSearchResultContext()
   const { toast } = useToast()
-  const router = useRouter()
-  const pathname = usePathname()
+  const { setSearchResults } = useSearchResultContext()
 
-  const removeQuery = useCallback(() => {
-    router.replace(pathname)
-    setSearchResults(null)
-  },[router, pathname ,setSearchResults ])
 
+  
   const handleSearch = useCallback(async (userInput: string) => {
-    
-    if (!userInput.length) {
-      
-      removeQuery()
+    console.log("searching");
+    if (!userInput) return
 
-      return
-    }
     try {
-      setSearchResults(null)
-      const newUrl = new URL(window.location.toString())
-      newUrl.searchParams.set('search', userInput)
-
-      router.push(`?search=${userInput}`, {
-        scroll : false
-      })
-
       const resp = await fetch("/api/search-credential", {
         method: "POST",
         body: JSON.stringify({
@@ -51,21 +35,28 @@ const SearchBar = ({ }: SearchBarProps) => {
       if (!data.success) throw new Error(data.message)
 
       setSearchResults(data.credentials)
-
     } catch (error: any) {
-
       toast({
         title: error.message
       })
 
     }
-  },[removeQuery, router, setSearchResults, toast ])
+
+
+  }, [setSearchResults])
+
+  const deboundedSearchHandler = useCallback(debouncer(handleSearch, 1200), [handleSearch])
+
+
+
+
+
 
 
   return (
     <div className="absolute top-20 left-1/2 -translate-x-1/2 md:top-6 md:left-auto  w-11/12 md:max-w-sm md:-translate-x-11 z-20">
 
-      <SearchForm removeQuery={removeQuery} handleSearch={handleSearch} />
+      <SearchForm handleSearch={deboundedSearchHandler} />
 
     </div>
   )

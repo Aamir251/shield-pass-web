@@ -68,7 +68,9 @@ export const capitalizeFirstLetter = (str: string) => {
 
 export const getDataFromLocalStorage = (key: string) => {
   const data = localStorage.getItem(key)
-  if (!data) return null
+
+  
+  if (!data || data === "undefined") return null
   return JSON.parse(data)
 }
 
@@ -81,12 +83,15 @@ export const removeDataFromLocalStorage = (key: string) => {
   localStorage.removeItem(key)
 }
 
-export const debouncer = (callback: (...args: any[]) => void, delay: number) => {
+export const debouncer = <T extends (...args : any[]) => Promise<any>>(
+  callback : T,
+  delay : number
+) : ((...args : Parameters<T>) => Promise<void> ) => {
 
   let timeoutId: NodeJS.Timeout | null = null
 
 
-  return (...args: any[]) => {
+  return async (...args: Parameters<T>) => {
     if (timeoutId !== null) {
       clearTimeout(timeoutId)
     }

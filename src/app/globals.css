@@ -164,8 +164,16 @@
   }
   
 }
+* {
+  scrollbar-width: none;
+}
 
-
+*::-webkit-scrollbar {
+  display: none;
+}
+* {
+  -ms-overflow-style: none;
+}
 .sidebar-border {
   border-right: 1px solid var(--border-dark);
 }

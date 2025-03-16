@@ -43,7 +43,7 @@ const SearchResultsWrapper = () => {
   if (!containsSearchQuery) return null
   
   return (
-    <section className="absolute px-5 lg:px-0 top-0 left-0 z-50 bg-background bor w-full h-full lg:max-w-[97%]">
+    <section className="absolute px-5 lg:px-0 top-0 left-0 z-50 bg-background bor w-full h-full lg:max-w-[97%] h-full overflow-y-scroll">
       <SearchResults />
     </section>
   )
